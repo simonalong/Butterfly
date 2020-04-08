@@ -9,13 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>butterfly-sequence</artifactId>
+    <artifactId>butterfly-integration</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.github.simonalong</groupId>
-            <artifactId>butterfly-worker-api</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>

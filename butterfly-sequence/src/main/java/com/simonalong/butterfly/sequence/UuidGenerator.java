@@ -3,6 +3,8 @@ package com.simonalong.butterfly.sequence;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import com.simonalong.butterfly.sequence.splicer.DefaultUuidSplicer;
 import com.simonalong.butterfly.sequence.splicer.UuidSplicer;
+import com.simonalong.butterfly.sequence.util.ServiceLoaderFactory;
+import com.simonalong.butterfly.worker.api.ButterflyConfig;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,13 +14,18 @@ import java.util.Map;
  * @author shizi
  * @since 2020/4/8 11:55 PM
  */
-public final class ButterflyGenerator {
+public final class UuidGenerator {
 
-    private static volatile ButterflyGenerator instance;
+    private static volatile UuidGenerator instance;
     /**
      * key为对应业务命名空间，value为uuid的序列构造器
      */
     private Map<String, UuidSplicer> uUidBuilderMap = new HashMap<>();
+
+    static {
+        // todo
+        ServiceLoaderFactory.init();
+    }
 
     public void setConfig(ButterflyConfig butterflyConfig) {
 
@@ -30,7 +37,7 @@ public final class ButterflyGenerator {
      * @param neo 数据库对象
      * @return 全局id生成器对象
      */
-    public static ButterflyGenerator getInstance(ButterflyConfig butterflyConfig) {
+    public static UuidGenerator getInstance(ButterflyConfig butterflyConfig) {
         if (null == instance) {
             synchronized (UuidGenerator.class) {
                 if (null == instance) {
