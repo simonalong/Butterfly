@@ -1,7 +1,11 @@
-package com.simonalong.butterfly.worker.api.handler;
+package com.simonalong.butterfly.sequence.handler;
 
-import com.simonalong.butterfly.worker.api.UuidGenerator;
-import com.simonalong.butterfly.worker.api.exception.WorkerIdFullException;
+import com.simonalong.butterfly.worker.api.handler.WorkerIdHandler;
+import com.simonalong.neo.Neo;
+import com.simonalong.neo.NeoMap;
+import com.simonalong.neo.TableMap;
+import com.simonalong.neo.uid.entity.UuidGeneratorDO;
+import com.simonalong.neo.uid.exception.WorkerIdFullException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.management.ManagementFactory;
@@ -14,8 +18,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.simonalong.butterfly.worker.api.UuidConstant.HEART_INTERVAL_TIME;
-import static com.simonalong.butterfly.worker.api.UuidConstant.KEEP_EXPIRE_TIME;
+import static com.simonalong.neo.NeoConstant.LOG_PRE;
+import static com.simonalong.neo.uid.UuidConstant.*;
 
 /**
  * @author shizi
@@ -37,14 +41,14 @@ public class DefaultWorkerIdHandler implements WorkerIdHandler {
      * worker_x 节点信息
      */
     private ScheduledThreadPoolExecutor scheduler;
-    private UuidGenerator uuidGenerator;
+    private Neo neo;
     private String namespace;
-//    private UuidGeneratorDO uuidGeneratorDO;
+    private UuidGeneratorDO uuidGeneratorDO;
 
-    public DefaultWorkerIdHandler(String namespace, UuidGenerator uuidGenerator) {
+    public DefaultWorkerIdHandler(String namespace, Neo neo) {
         this.namespace = namespace;
-        this.uuidGenerator = uuidGenerator;
-//        this.uuidGeneratorDO = new UuidGeneratorDO();
+        this.neo = neo;
+        this.uuidGeneratorDO = new UuidGeneratorDO();
         init();
     }
 
@@ -84,7 +88,6 @@ public class DefaultWorkerIdHandler implements WorkerIdHandler {
         uuidGeneratorDO.setWorkId(workerId);
         uuidGeneratorDO.setNamespace(namespace);
         uuidGeneratorDO.setLastExpireTime(afterHour());
-
         uuidGeneratorDO.setUid(uidKey);
         uuidGeneratorDO.setProcessId(processId);
         uuidGeneratorDO.setIp(ip);

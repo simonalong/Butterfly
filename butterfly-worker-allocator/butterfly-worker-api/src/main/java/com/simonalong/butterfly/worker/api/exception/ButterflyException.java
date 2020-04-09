@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.sequence.exception;
+package com.simonalong.butterfly.worker.api.exception;
 
 /**
  * @author shizi

@@ -1,8 +1,11 @@
-package com.simonalong.butterfly.worker.api;import com.simonalong.neo.exception.UuidException;
-import com.simonalong.neo.uid.entity.PaddedLong;
+package com.simonalong.butterfly.worker.api;
+import com.simonalong.butterfly.worker.api.entity.PaddedLong;
+import com.simonalong.butterfly.worker.api.exception.ButterflyException;
 import lombok.experimental.UtilityClass;
 
-import static com.simonalong.neo.uid.UuidConstant.*;
+import static com.simonalong.butterfly.worker.api.UuidConstant.DELAY_THREAD_HOLD;
+import static com.simonalong.butterfly.worker.api.UuidConstant.START_TIME;
+import static com.simonalong.butterfly.worker.api.UuidConstant.TIME_BACK;
 
 /**
  * 时间调整工具
@@ -22,7 +25,6 @@ public class TimeAdjuster {
      *
      * @param usedTime 序列中使用的时间
      */
-    @SuppressWarnings("all")
     public void adjustTime(PaddedLong usedTime) {
         long currentUsedTime = usedTime.get();
         long now = System.currentTimeMillis();
@@ -39,13 +41,13 @@ public class TimeAdjuster {
                     //时间偏差大于门限值，则等待两倍
                     Thread.sleep(offset << 1);
                     if (currentUsedTime > System.currentTimeMillis()) {
-                        throw new UuidException("回拨补偿尝试失败");
+                        throw new ButterflyException("回拨补偿尝试失败");
                     }
                 } catch (InterruptedException ignored) {
                     Thread.currentThread().interrupt();
                 }
             } else {
-                throw new UuidException("回拨时间过大");
+                throw new ButterflyException("回拨时间过大");
             }
         }
     }
@@ -55,7 +57,7 @@ public class TimeAdjuster {
      */
     public long getRelativeTime(long currentTime) {
         if (currentTime <= START_TIME) {
-            throw new UuidException("回拨时间超过2019-11-9 0.0.0.000");
+            throw new ButterflyException("回拨时间超过2019-11-9 0.0.0.000");
         }
         return currentTime - START_TIME;
     }

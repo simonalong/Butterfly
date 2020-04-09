@@ -1,14 +1,14 @@
 package com.simonalong.butterfly.sequence.splicer;
 
-import com.simonalong.butterfly.sequence.UuidSplicer;
-import com.simonalong.neo.Neo;
-import com.simonalong.neo.exception.UuidException;
-import com.simonalong.neo.uid.allocator.BitAllocator;
-import com.simonalong.neo.uid.allocator.DefaultBitAllocator;
+import com.simonalong.butterfly.worker.api.UuidGenerator;
+import com.simonalong.butterfly.worker.api.allocator.BitAllocator;
+import com.simonalong.butterfly.worker.api.allocator.DefaultBitAllocator;
+import com.simonalong.butterfly.worker.api.exception.ButterflyException;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.simonalong.neo.NeoConstant.LOG_PRE;
-import static com.simonalong.neo.uid.UuidConstant.*;
+import static com.simonalong.butterfly.worker.api.UuidConstant.DELAY_START_TIME;
+import static com.simonalong.butterfly.worker.api.UuidConstant.SEQ_LEFT_SHIFT;
+import static com.simonalong.butterfly.worker.api.UuidConstant.TIME_LEFT_SHIFT;
 
 /**
  * @author shizi
@@ -19,13 +19,13 @@ public class DefaultUuidSplicer implements UuidSplicer {
 
     protected BitAllocator bitAllocator;
 
-    public DefaultUuidSplicer(String bizNamespace, Neo neo) {
+    public DefaultUuidSplicer(String bizNamespace, UuidGenerator uuidGenerator) {
         super();
-        init(bizNamespace, neo);
+        init(bizNamespace, uuidGenerator);
     }
 
-    private synchronized void init(String namespace, Neo neo) {
-        this.bitAllocator = new DefaultBitAllocator(namespace, neo);
+    private synchronized void init(String namespace, UuidGenerator uuidGenerator) {
+        this.bitAllocator = new DefaultBitAllocator(namespace, uuidGenerator);
 
         // 延迟启动固定时间10ms
         delayStart();
@@ -34,7 +34,7 @@ public class DefaultUuidSplicer implements UuidSplicer {
     @Override
     synchronized public Long splice() {
         if (null == bitAllocator) {
-            throw new UuidException("bitAllocator not init");
+            throw new ButterflyException("bitAllocator not init");
         }
         int workerId = bitAllocator.getWorkIdValue();
         long seq = bitAllocator.getSequenceValue();

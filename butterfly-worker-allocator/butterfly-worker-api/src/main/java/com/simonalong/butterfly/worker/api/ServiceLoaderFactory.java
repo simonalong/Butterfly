@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.sequence.util;
+package com.simonalong.butterfly.worker.api;
 
 import lombok.experimental.UtilityClass;
 

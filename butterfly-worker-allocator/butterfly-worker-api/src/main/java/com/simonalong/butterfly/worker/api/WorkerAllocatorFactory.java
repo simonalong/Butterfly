@@ -1,7 +1,7 @@
-package com.simonalong.butterfly.sequence;
+package com.simonalong.butterfly.worker.api;
 
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
-import com.simonalong.butterfly.sequence.util.ServiceLoaderFactory;
+import com.simonalong.butterfly.worker.api.ServiceLoaderFactory;
 import com.simonalong.butterfly.worker.api.ButterflyConfig;
 import com.simonalong.butterfly.worker.api.WorkerAllocator;
 
