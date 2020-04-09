@@ -18,6 +18,7 @@
         <module>butterfly-worker-allocator</module>
         <module>butterfly-sequence</module>
         <module>butterfly-integration</module>
+        <module>butterfly-sample</module>
     </modules>
 
     <developers>
