@@ -1,7 +1,5 @@
 package com.simonalong.butterfly.worker.api;
 
-import com.simonalong.butterfly.sequence.util.ServiceLoaderFactory;
-
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -25,6 +23,7 @@ public class UuidAllocatorFactory {
                     Iterator<UuidGenerator> it = uuidGenerators.iterator();
                     if (it.hasNext()) {
                         uuidGenerator = it.next();
+                        uuidGenerator.init(butterflyConfig);
                     }
                 }
             }
