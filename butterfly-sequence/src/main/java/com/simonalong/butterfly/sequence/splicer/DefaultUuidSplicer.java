@@ -6,9 +6,7 @@ import com.simonalong.butterfly.worker.api.allocator.DefaultBitAllocator;
 import com.simonalong.butterfly.worker.api.exception.ButterflyException;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.simonalong.butterfly.worker.api.UuidConstant.DELAY_START_TIME;
-import static com.simonalong.butterfly.worker.api.UuidConstant.SEQ_LEFT_SHIFT;
-import static com.simonalong.butterfly.worker.api.UuidConstant.TIME_LEFT_SHIFT;
+import static com.simonalong.butterfly.worker.api.UuidConstant.*;
 
 /**
  * @author shizi

@@ -11,5 +11,14 @@
 
     <artifactId>butterfly-sample</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>butterfly-sequence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>butterfly-worker-zookeeper</artifactId>
+        </dependency>
+    </dependencies>
 </project>

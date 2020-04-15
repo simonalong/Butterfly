@@ -48,9 +48,7 @@ public final class ButterflyIdGenerator {
      * @param namespaces 命名空间
      */
     public void addNamespaces(String... namespaces) {
-        Arrays.stream(namespaces).forEach(n -> {
-            uUidBuilderMap.putIfAbsent(n, new DefaultUuidSplicer(n, uuidGenerator));
-        });
+        Arrays.stream(namespaces).forEach(n -> uUidBuilderMap.putIfAbsent(n, new DefaultUuidSplicer(n, uuidGenerator)));
     }
 
     /**

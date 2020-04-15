@@ -1,12 +1,13 @@
-package com.simonalong.butterfly.sequence;
+package com.simonalong.buffterfly.sample;
 
+import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
 import lombok.ToString;
 
 /**
  * @author shizi
  * @since 2020/4/10 12:15 AM
  */
-public class ButterflyGeneratorTest extends BaseTest{
+public class ButterflyGeneratorTest {
 
     @Test
     public void test() {
@@ -14,6 +15,6 @@ public class ButterflyGeneratorTest extends BaseTest{
         config.setHost();
         ButterflyIdGenerator idGenerator = ButterflyIdGenerator.getInstance(config);
         idGenerator.addNamespaces("test1", "test2");
-        show(idGenerator.getUUid("test1"));
+        System.out.println(idGenerator.getUUid("test1"));
     }
 }

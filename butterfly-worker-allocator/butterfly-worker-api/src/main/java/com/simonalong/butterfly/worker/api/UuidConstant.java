@@ -15,7 +15,7 @@ public interface UuidConstant {
     /**
      * log前缀
      */
-    String UUID_LOG_PRE = "[neo_snowflake] ";
+    String LOG_PRE = "[butterfly] ";
     /**
      * zk中保留对应节点数据的时间长度
      */
