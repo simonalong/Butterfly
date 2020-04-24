@@ -20,5 +20,19 @@
             <groupId>com.github.simonalong</groupId>
             <artifactId>butterfly-worker-zookeeper</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>butterfly-worker-db</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>butterfly-worker-distribute</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

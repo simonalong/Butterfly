@@ -11,5 +11,10 @@
 
     <artifactId>butterfly-worker-zookeeper</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>butterfly-sequence</artifactId>
+        </dependency>
+    </dependencies>
 </project>

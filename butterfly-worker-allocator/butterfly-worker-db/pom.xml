@@ -11,5 +11,15 @@
 
     <artifactId>butterfly-worker-db</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>butterfly-sequence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>Neo</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

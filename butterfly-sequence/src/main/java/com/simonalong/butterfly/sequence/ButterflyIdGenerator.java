@@ -1,11 +1,6 @@
 package com.simonalong.butterfly.sequence;
 
-import com.simonalong.butterfly.worker.api.exception.ButterflyException;
-import com.simonalong.butterfly.sequence.splicer.DefaultUuidSplicer;
-import com.simonalong.butterfly.sequence.splicer.UuidSplicer;
-import com.simonalong.butterfly.worker.api.ButterflyConfig;
-import com.simonalong.butterfly.worker.api.UuidAllocatorFactory;
-import com.simonalong.butterfly.worker.api.UuidGenerator;
+import com.simonalong.butterfly.sequence.exception.ButterflyException;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,7 +12,7 @@ import java.util.Map;
  */
 public final class ButterflyIdGenerator {
 
-    private UuidGenerator uuidGenerator;
+    private ButterflyConfig butterflyConfig;
     private static volatile ButterflyIdGenerator instance;
     /**
      * key为对应业务命名空间，value为uuid的序列构造器
@@ -34,13 +29,12 @@ public final class ButterflyIdGenerator {
             synchronized (ButterflyIdGenerator.class) {
                 if (null == instance) {
                     instance = new ButterflyIdGenerator();
-                    instance.uuidGenerator = UuidAllocatorFactory.create(butterflyConfig);
+                    instance.butterflyConfig = butterflyConfig;
                 }
             }
         }
         return instance;
     }
-
 
     /**
      * 添加命名空间
@@ -48,7 +42,7 @@ public final class ButterflyIdGenerator {
      * @param namespaces 命名空间
      */
     public void addNamespaces(String... namespaces) {
-        Arrays.stream(namespaces).forEach(n -> uUidBuilderMap.putIfAbsent(n, new DefaultUuidSplicer(n, uuidGenerator)));
+        Arrays.stream(namespaces).forEach(n -> uUidBuilderMap.putIfAbsent(n, new UuidSplicer(n, butterflyConfig)));
     }
 
     /**
