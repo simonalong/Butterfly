@@ -1,18 +1,16 @@
-import com.ggj.platform.cornerstone.snowflake.exception.SnowflakeException;
-import com.ggj.platform.cornerstone.snowflake.handler.*;
+package com.simonalong.butterfly.worker.zk.node;
+
+import com.simonalong.butterfly.sequence.exception.ButterflyException;
+import com.simonalong.butterfly.worker.zk.ZookeeperClient;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ggj.platform.cornerstone.snowflake.SnowflakeConstant.*;
-
 /**
- * 对应命名空间下所有节点信息进行统一管理
- *
  * @author shizi
- * @since 2020/2/6 10:50 上午
+ * @since 2020/4/25 11:03 AM
  */
 @Slf4j
 public class NamespaceNodeManager {
@@ -49,7 +47,7 @@ public class NamespaceNodeManager {
             return;
         }
         if (null == zkClient) {
-            throw new SnowflakeException("zkClient不可为空");
+            throw new ButterflyException("zkClient不可为空");
         }
 
         ConfigNodeHandler configNodeHandler = new DefaultConfigNodeHandler(namespace, zkClient);
@@ -90,7 +88,7 @@ public class NamespaceNodeManager {
      */
     private void check(String namespace) {
         if (!configNodeHandlerMap.containsKey(namespace)) {
-            throw new SnowflakeException("命名空间" + namespace + "不存在");
+            throw new ButterflyException("命名空间" + namespace + "不存在");
         }
     }
 }

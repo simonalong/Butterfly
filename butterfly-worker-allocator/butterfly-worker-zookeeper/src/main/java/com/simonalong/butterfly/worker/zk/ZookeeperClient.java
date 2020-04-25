@@ -1,8 +1,9 @@
+package com.simonalong.butterfly.worker.zk;
+
 import com.alibaba.fastjson.JSON;
-import com.ggj.platform.cornerstone.snowflake.exception.SnowflakeException;
+import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.*;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,14 +13,16 @@ import java.util.concurrent.Phaser;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.simonalong.butterfly.sequence.UuidConstant.LOG_PRE;
+
 /**
  * @author shizi
- * @since 2020/2/3 11:50 上午
+ * @since 2020/4/25 10:38 AM
  */
 @Slf4j
 public class ZookeeperClient {
 
-    private static final String ZK_LOG_PRE = "[ggj_snowflake][zookeeper]：";
+    private static final String ZK_LOG_PRE = LOG_PRE + "[zookeeper]：";
     private static final int SESSION_TIMEOUT = 10000;
 
     private String connectString;
@@ -32,7 +35,7 @@ public class ZookeeperClient {
     /**
      * 观察者回调器
      */
-    private CallbackWatcher watcher = new CallbackWatcher();
+    private ZookeeperClient.CallbackWatcher watcher = new ZookeeperClient.CallbackWatcher();
     /**
      * 连接断开或者会话超时回调
      */
@@ -66,7 +69,7 @@ public class ZookeeperClient {
             phaser.arriveAndAwaitAdvance();
         } catch (Throwable e) {
             log.error(ZK_LOG_PRE + "连接创建失败，发生 IOException", e);
-            throw new SnowflakeException("连接创建失败");
+            throw new ButterflyException("连接创建失败");
         }
         return zookeeperClient;
     }
@@ -172,7 +175,7 @@ public class ZookeeperClient {
      * 循环创建永久节点
      */
     public Boolean addPersistentNodeWithRecurse(String nodePath) {
-        List<String> nodeList = Stream.of(nodePath.split("/")).filter(d -> !StringUtils.isEmpty(d)).collect(Collectors.toList());
+        List<String> nodeList = Stream.of(nodePath.split("/")).filter(d -> !strIsEmpty(d)).collect(Collectors.toList());
 
         String path = "";
         for (String node : nodeList) {
@@ -253,7 +256,7 @@ public class ZookeeperClient {
                     }
                 }
             } else if (Event.KeeperState.Disconnected == state) {
-                log.error(ZK_LOG_PRE + "与ZK服务器断开连接", new SnowflakeException("与ZK服务器断开连接"));
+                log.error(ZK_LOG_PRE + "与ZK服务器断开连接", new ButterflyException("与ZK服务器断开连接"));
                 if (null != disconnectCallback) {
                     disconnectCallback.run();
                 }
@@ -263,7 +266,7 @@ public class ZookeeperClient {
                     disconnectCallback.run();
                 }
             }
-            log.info(ZK_LOG_PRE + "---------------------end-------------------");
+            log.debug(ZK_LOG_PRE + "---------------------end-------------------");
         }
     }
 
@@ -407,5 +410,9 @@ public class ZookeeperClient {
             Thread.currentThread().interrupt();
         }
         return false;
+    }
+
+    private Boolean strIsEmpty(String str){
+        return null == str || "".equals(str);
     }
 }

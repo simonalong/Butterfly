@@ -1,13 +1,13 @@
-package com.simonalong.butterfly.worker.db.handler;
+package com.simonalong.butterfly.worker.zk.node;
 
 /**
  * 节点 worker_xx 读取和更新管理器
  *
  * @author shizi
- * @since 2020/2/7 1:02 上午
+ * @since 2020/4/25 11:19 AM
  */
-public interface WorkerNodeHandler
-{
+public interface WorkerNodeHandler {
+
     /**
      * 当前业务的key
      */

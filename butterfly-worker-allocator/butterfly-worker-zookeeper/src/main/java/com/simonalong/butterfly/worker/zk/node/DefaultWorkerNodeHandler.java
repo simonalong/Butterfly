@@ -1,10 +1,8 @@
-package com.simonalong.butterfly.worker.db.handler;
+package com.simonalong.butterfly.worker.zk.node;
 
 import com.alibaba.fastjson.JSON;
-import com.ggj.platform.cornerstone.snowflake.ZookeeperClient;
-import com.ggj.platform.cornerstone.snowflake.allocator.DefaultWorkerIdAllocator;
-import com.ggj.platform.cornerstone.snowflake.allocator.WorkerIdAllocator;
-import com.ggj.platform.cornerstone.snowflake.entity.WorkerNodeInfo;
+import com.simonalong.butterfly.worker.zk.ZookeeperClient;
+import com.simonalong.butterfly.worker.zk.entity.WorkerNodeEntity;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.management.ManagementFactory;
@@ -16,15 +14,17 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.ggj.platform.cornerstone.snowflake.SnowflakeConstant.*;
+import static com.simonalong.butterfly.worker.zk.ZkConstant.*;
 
 /**
+ * worker节点处理器
+ *
  * @author shizi
- * @since 2020/2/7 11:06 上午
+ * @since 2020/4/25 11:01 AM
  */
 @Slf4j
-public class DefaultWorkerNodeHandler implements WorkerNodeHandler
-{
+public class DefaultWorkerNodeHandler implements WorkerNodeHandler {
+
     /**
      * 当前启动的唯一健
      */
@@ -32,22 +32,19 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler
     /**
      * worker_x 节点信息
      */
-    private WorkerNodeInfo workerNodeInfo;
+    private WorkerNodeEntity workerNodeEntity;
     private ScheduledThreadPoolExecutor scheduler;
     private ZookeeperClient zookeeperClient;
     private WorkerIdAllocator workerIdAllocator;
 
-    public DefaultWorkerNodeHandler(String namespace, ZookeeperClient zookeeperClient,
-                                    ConfigNodeHandler configNodeHandler)
-    {
+    public DefaultWorkerNodeHandler(String namespace, ZookeeperClient zookeeperClient, ConfigNodeHandler configNodeHandler) {
         this.zookeeperClient = zookeeperClient;
         init();
         this.workerIdAllocator = new DefaultWorkerIdAllocator(namespace, zookeeperClient, this, configNodeHandler);
-        this.workerNodeInfo = getWorkerNodeInfo();
+        this.workerNodeEntity = getWorkerNodeEntity();
     }
 
-    private void init()
-    {
+    private void init() {
         // 初始胡uidKey
         initKey();
 
@@ -60,72 +57,63 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler
 
 
     @Override
-    public String getUidKey()
-    {
+    public String getUidKey() {
         return uidKey;
     }
 
     @Override
-    public Long getLastExpireTime()
-    {
-        return workerNodeInfo.getLastExpireTime();
+    public Long getLastExpireTime() {
+        return workerNodeEntity.getLastExpireTime();
     }
 
     @Override
-    public String getIp()
-    {
-        return workerNodeInfo.getIp();
+    public String getIp() {
+        return workerNodeEntity.getIp();
     }
 
     @Override
-    public String getProcessId()
-    {
-        return workerNodeInfo.getProcessId();
+    public String getProcessId() {
+        return workerNodeEntity.getProcessId();
     }
 
     @Override
-    public Integer getWorkerId()
-    {
+    public Integer getWorkerId() {
         return workerIdAllocator.getWorkerId();
     }
 
     /**
      * 刷新节点信息
      */
-    public void refreshNodeInfo()
-    {
-        updateWorkerNodeInfo(getWorkerNodeInfo());
+    @Override
+    public void refreshNodeInfo() {
+        updateWorkerNodeInfo(getWorkerNodeEntity());
     }
 
     /**
      * 刷新指定节点的信息
      */
-    public void refreshNodeInfo(String workerNodePath)
-    {
-        updateWorkerNodeInfo(workerNodePath, getWorkerNodeInfo());
+    @Override
+    public void refreshNodeInfo(String workerNodePath) {
+        updateWorkerNodeInfo(workerNodePath, getWorkerNodeEntity());
     }
 
     /**
      * 获取本次进程启动的唯一编号
      */
-    private void initKey()
-    {
+    private void initKey() {
         uidKey = UUID.randomUUID().toString();
     }
 
     /**
      * 初始化数据的心跳上报
      */
-    private void initHeartBeatReport()
-    {
-        scheduler = new ScheduledThreadPoolExecutor(1, new ThreadFactory()
-        {
+    private void initHeartBeatReport() {
+        scheduler = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
             private AtomicInteger threadNum = new AtomicInteger(0);
 
             @Override
             @SuppressWarnings("all")
-            public Thread newThread(Runnable r)
-            {
+            public Thread newThread(Runnable r) {
                 Thread thread = new Thread(r, "Thread-Snowflake-heart" + threadNum.getAndIncrement());
                 thread.setDaemon(true);
                 return thread;
@@ -139,62 +127,46 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler
     /**
      * 进程关闭时候清理业务数据
      */
-    private void addShutdownHook()
-    {
-        Runtime.getRuntime().addShutdownHook(new Thread(() ->
-        {
-            log.info(LOG_PRE + "进程即将退出，清理本次启动申请的zk资源");
+    private void addShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            log.info(ZK_LOG_PRE + "进程即将退出，清理本次启动申请的zk资源");
             updateWorkerNodeInfo(null);
             zookeeperClient.deleteNode(workerIdAllocator.getWorkerNodePath() + SESSION_NODE);
-            if (null != scheduler)
-            {
+            if (null != scheduler) {
                 scheduler.shutdown();
             }
         }));
     }
 
-    private WorkerNodeInfo getWorkerNodeInfo()
-    {
-        return new WorkerNodeInfo().setIp(getIpStr()).setProcessId(getProcessIdStr()).setLastExpireTime(afterHour()).setUidKey(uidKey);
+    private WorkerNodeEntity getWorkerNodeEntity() {
+        return new WorkerNodeEntity().setIp(getIpStr()).setProcessId(getProcessIdStr()).setLastExpireTime(afterHour()).setUidKey(uidKey);
     }
 
-    private void updateWorkerNodeInfo(WorkerNodeInfo workerNodeInfo)
-    {
+    private void updateWorkerNodeInfo(WorkerNodeEntity workerNodeInfo) {
         updateWorkerNodeInfo(workerIdAllocator.getWorkerNodePath(), workerNodeInfo);
     }
 
     /**
      * 更新节点worker_x 中的信息
      */
-    private void updateWorkerNodeInfo(String workerNodePath, WorkerNodeInfo workerNodeInfo)
-    {
-        try
-        {
-            if (null != workerNodeInfo)
-            {
+    private void updateWorkerNodeInfo(String workerNodePath, WorkerNodeEntity workerNodeInfo) {
+        try {
+            if (null != workerNodeInfo) {
                 zookeeperClient.writeNodeData(workerNodePath, JSON.toJSONString(workerNodeInfo));
-            }
-            else
-            {
+            } else {
                 zookeeperClient.writeNodeData(workerNodePath, "");
             }
-        }
-        catch (Throwable e)
-        {
+        } catch (Throwable e) {
             log.error("节点worker_" + getWorkerId() + "更新失败", e);
         }
 
-        this.workerNodeInfo = workerNodeInfo;
+        this.workerNodeEntity = workerNodeInfo;
     }
 
-    private String getIpStr()
-    {
-        try
-        {
+    private String getIpStr() {
+        try {
             return InetAddress.getLocalHost().getHostAddress();
-        }
-        catch (UnknownHostException e)
-        {
+        } catch (UnknownHostException e) {
             return "null";
         }
     }
@@ -202,16 +174,14 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler
     /**
      * 将时间向未来延长固定的小时
      */
-    private long afterHour()
-    {
+    private long afterHour() {
         return System.currentTimeMillis() + KEEP_EXPIRE_TIME;
     }
 
     /**
      * 获取进程id字符串
      */
-    private String getProcessIdStr()
-    {
+    private String getProcessIdStr() {
         return ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
     }
 }

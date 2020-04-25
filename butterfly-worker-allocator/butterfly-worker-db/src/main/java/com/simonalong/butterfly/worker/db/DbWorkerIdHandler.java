@@ -2,7 +2,7 @@ package com.simonalong.butterfly.worker.db;
 
 import com.simonalong.butterfly.sequence.exception.WorkerIdFullException;
 import com.simonalong.butterfly.sequence.spi.WorkerIdHandler;
-import com.simonalong.butterfly.worker.db.entity.UuidGeneratorDO;
+import com.simonalong.butterfly.worker.entity.UuidGeneratorDO;
 import com.simonalong.neo.Neo;
 import com.simonalong.neo.NeoMap;
 import com.simonalong.neo.TableMap;

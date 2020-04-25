@@ -1,13 +1,11 @@
-package com.simonalong.butterfly.worker.db.allocator;
+package com.simonalong.butterfly.worker.zk.node;
 
 /**
- * workerId 的分配器
- *
  * @author shizi
- * @since 2020/2/6 3:39 下午
+ * @since 2020/4/25 10:45 AM
  */
-public interface WorkerIdAllocator
-{
+public interface WorkerIdAllocator {
+
     /**
      * 获取workerId
      */

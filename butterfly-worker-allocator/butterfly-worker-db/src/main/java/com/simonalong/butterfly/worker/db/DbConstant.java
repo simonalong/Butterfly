@@ -2,11 +2,15 @@ package com.simonalong.butterfly.worker.db;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.simonalong.butterfly.sequence.UuidConstant.LOG_PRE;
+
 /**
  * @author shizi
  * @since 2020/4/25 12:59 AM
  */
 public interface DbConstant {
+
+    String DB_LOG_PRE = LOG_PRE + "[db]";
     /**
      * 全局id生成器的表名
      */

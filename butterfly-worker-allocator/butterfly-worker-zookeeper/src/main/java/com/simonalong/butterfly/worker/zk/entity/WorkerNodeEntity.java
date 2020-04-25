@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.worker.db.entity;
+package com.simonalong.butterfly.worker.zk.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -6,15 +6,12 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * worker 节点中的配置
- *
- * @author 柿子
- * @since 2019/11/8 10:42 上午
+ * @author shizi
+ * @since 2020/4/25 11:16 AM
  */
 @Data
 @Accessors(chain = true)
-public class WorkerNodeInfo implements Serializable
-{
+public class WorkerNodeEntity implements Serializable {
 
     /**
      * 当前业务的key

@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.worker.db.entity;
+package com.simonalong.butterfly.worker.entity;
 
 import com.simonalong.neo.annotation.Column;
 import com.simonalong.neo.annotation.Table;

@@ -1,5 +1,4 @@
-package com.simonalong.butterfly.worker.db.entity;
-
+package com.simonalong.butterfly.worker.zk.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -7,15 +6,13 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * config 节点中的信息
- *
- * @author 柿子
- * @since 2019/11/7 10:38 下午
+ * @author shizi
+ * @since 2020/4/25 11:14 AM
  */
 @Data
 @Accessors(chain = true)
-public class ConfigNodeInfo implements Serializable
-{
+public class ConfigNodeEntity implements Serializable {
+
     /**
      * 当前业务的最大机器个数，为2的次幂
      */
