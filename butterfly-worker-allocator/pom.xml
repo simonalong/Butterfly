@@ -12,14 +12,6 @@
     <artifactId>butterfly-worker-allocator</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>butterfly-worker-db</module>
-        <module>butterfly-worker-api</module>
-        <module>butterfly-worker-zookeeper</module>
-        <module>butterfly-worker-distribute</module>
-        <module>butterfly-worker-distribute</module>
-        <module>butterfly-worker-distribute</module>
-        <module>butterfly-worker-db-allocator</module>
-        <module>butterfly-worker-zookeeper-allocator</module>
         <module>butterfly-db-allocator</module>
         <module>butterfly-zookeeper-allocator</module>
         <module>butterfly-distribute-client-allocator</module>
