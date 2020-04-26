@@ -16,6 +16,7 @@ import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_MARK;
  * @author shizi
  * @since 2020/2/3 10:15 下午
  */
+// todo 这个默认的bit分配器，这里也要进行修改，因为这个东西在distribute中，client和server端采用的都是不同的
 public class DefaultBitAllocator implements BitAllocator {
 
     private String namespace;
