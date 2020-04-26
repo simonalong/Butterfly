@@ -16,5 +16,9 @@
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>butterfly-sequence</artifactId>
+        </dependency>
     </dependencies>
 </project>
