@@ -31,6 +31,7 @@ public final class ButterflyIdGenerator {
                 if (null == instance) {
                     instance = new ButterflyIdGenerator();
                     instance.butterflyConfig = butterflyConfig;
+                    // todo 建议这里直接对这个配置进行核查，不要到运行的时候再进行核查，这个时候就有点晚了，可能会放过异常
                 }
             }
         }

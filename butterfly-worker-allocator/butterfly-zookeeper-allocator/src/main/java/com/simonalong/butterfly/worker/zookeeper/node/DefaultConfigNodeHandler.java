@@ -2,8 +2,8 @@ package com.simonalong.butterfly.worker.zookeeper.node;
 
 import com.alibaba.fastjson.JSON;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
-import com.simonalong.butterfly.worker.zk.ZookeeperClient;
-import com.simonalong.butterfly.worker.zk.entity.ConfigNodeEntity;
+import com.simonalong.butterfly.worker.zookeeper.ZookeeperClient;
+import com.simonalong.butterfly.worker.zookeeper.entity.ConfigNodeEntity;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,11 +23,6 @@ public class DefaultConfigNodeHandler implements ConfigNodeHandler {
         this.zookeeperClient = zookeeperClient;
         this.namespace = namespace;
         init();
-    }
-
-    @Override
-    public int getRsv() {
-        return configNodeEntity.getRsv();
     }
 
     @Override

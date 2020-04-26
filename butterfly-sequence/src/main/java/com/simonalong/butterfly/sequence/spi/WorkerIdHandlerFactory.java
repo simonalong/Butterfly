@@ -16,6 +16,10 @@ public final class WorkerIdHandlerFactory {
         ServiceLoaderFactory.init(WorkerLoader.class);
     }
 
+    public static void checkConfig(ButterflyConfig butterflyConfig) {
+
+    }
+
     public static WorkerIdHandler getWorkerIdHandler(String namespace, ButterflyConfig butterflyConfig) {
         Collection<WorkerLoader> workerLoaderCollection = ServiceLoaderFactory.getChildObject(WorkerLoader.class);
         if (haveNonDefault(workerLoaderCollection)) {

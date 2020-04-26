@@ -9,17 +9,15 @@ package com.simonalong.butterfly.worker.zookeeper.node;
 public interface ConfigNodeHandler {
 
     /**
-     * 读取配置中的预留信息
-     */
-    int getRsv();
-
-    /**
      * 读取当前最大的机器个数
+     * @return value
      */
     int getCurrentMaxMachineNum();
 
     /**
      * 更新当前最大的机器个数
+     *
+     * @param value 待更新的值
      */
     void updateCurrentMaxMachineNum(int value);
 }

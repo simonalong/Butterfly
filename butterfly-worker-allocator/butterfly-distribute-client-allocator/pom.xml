@@ -11,5 +11,18 @@
 
     <artifactId>butterfly-distribute-client-allocator</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>butterfly-sequence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>butterfly-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo</artifactId>
+        </dependency>
+    </dependencies>
 </project>

@@ -2,7 +2,7 @@ package com.simonalong.butterfly.worker.zookeeper.node;
 
 import lombok.experimental.UtilityClass;
 
-import static com.simonalong.butterfly.worker.zk.ZkConstant.*;
+import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.*;
 
 /**
  * @author shizi

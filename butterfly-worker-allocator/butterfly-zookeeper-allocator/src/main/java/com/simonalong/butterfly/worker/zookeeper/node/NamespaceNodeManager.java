@@ -1,7 +1,7 @@
 package com.simonalong.butterfly.worker.zookeeper.node;
 
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
-import com.simonalong.butterfly.worker.zk.ZookeeperClient;
+import com.simonalong.butterfly.worker.zookeeper.ZookeeperClient;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,13 +57,6 @@ public class NamespaceNodeManager {
 
     public int getWorkerId(String namespace) {
         return getWorkerNodeHandler(namespace).getWorkerId();
-    }
-
-    /**
-     * 获取保留字段的值，默认为0
-     */
-    public int getRsv(String namespace) {
-        return getConfigNodeHandler(namespace).getRsv();
     }
 
     /**

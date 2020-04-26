@@ -3,6 +3,7 @@ package com.simonalong.butterfly.worker.zookeeper;
 import com.alibaba.fastjson.JSON;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.zookeeper.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +26,7 @@ public class ZookeeperClient {
     private static final int SESSION_TIMEOUT = 10000;
 
     private String connectString;
-    private ZooKeeper zk = null;
+    private ZooKeeper zookeeper = null;
     /**
      * 用于服务启动的同步
      */
@@ -63,7 +64,7 @@ public class ZookeeperClient {
             this.close();
             phaser.register();
             this.connectString = connectString;
-            zk = new ZooKeeper(connectString, SESSION_TIMEOUT, watcher);
+            zookeeper = new ZooKeeper(connectString, SESSION_TIMEOUT, watcher);
             log.info("连接zookeeper: " + connectString);
             phaser.arriveAndAwaitAdvance();
         } catch (Throwable e) {
@@ -194,7 +195,7 @@ public class ZookeeperClient {
     public void deleteNode(String nodePath) {
         try {
             if (nodeExist(nodePath)) {
-                this.zk.delete(nodePath, -1);
+                this.zookeeper.delete(nodePath, -1);
                 log.info("节点{}删除成功", nodePath);
             } else {
                 log.warn("节点{}不存在, 无需删除", nodePath);
@@ -225,7 +226,7 @@ public class ZookeeperClient {
     public void writeNodeData(String nodePath, String data) {
         if (null != nodePath) {
             try {
-                this.zk.setData(nodePath, data.getBytes(), -1);
+                this.zookeeper.setData(nodePath, data.getBytes(), -1);
             } catch (KeeperException | InterruptedException e) {
                 log.warn("写入节点{}数据{}错误", nodePath, data);
                 throw new RuntimeException("写入节点" + nodePath + "数据" + data + "错误", e);
@@ -273,9 +274,9 @@ public class ZookeeperClient {
      * 关闭ZK连接
      */
     public void close() throws InterruptedException {
-        if (null != this.zk) {
+        if (null != this.zookeeper) {
             try {
-                this.zk.close();
+                this.zookeeper.close();
             } catch (Exception e) {
                 log.error("关闭连接失败");
             }
@@ -287,7 +288,7 @@ public class ZookeeperClient {
      */
     public List<String> getChildrenPathList(String path) {
         try {
-            return zk.getChildren(path, false).stream().map(r -> path + "/" + r).collect(Collectors.toList());
+            return zookeeper.getChildren(path, false).stream().map(r -> path + "/" + r).collect(Collectors.toList());
         } catch (KeeperException | InterruptedException e) {
             log.error("读取路径" + path + "的子节点路径失败");
         }
@@ -299,7 +300,7 @@ public class ZookeeperClient {
      */
     public List<String> getChildrenNameList(String path) {
         try {
-            return new ArrayList<>(zk.getChildren(path, false));
+            return new ArrayList<>(zookeeper.getChildren(path, false));
         } catch (KeeperException | InterruptedException e) {
             log.error("读取路径" + path + "的子节点名字失败");
         }
@@ -313,8 +314,8 @@ public class ZookeeperClient {
      */
     public String readData(String path) {
         try {
-            if (null != zk.exists(path, false)) {
-                return new String(this.zk.getData(path, false, null));
+            if (null != zookeeper.exists(path, false)) {
+                return new String(this.zookeeper.getData(path, false, null));
             }
             return null;
         } catch (KeeperException e) {
@@ -342,7 +343,7 @@ public class ZookeeperClient {
      */
     public Boolean nodeExist(String nodePath) {
         try {
-            return null != this.zk.exists(nodePath, false);
+            return null != this.zookeeper.exists(nodePath, false);
         } catch (KeeperException | InterruptedException e) {
             log.error("判断节点是否存在异常", e);
         }
@@ -394,8 +395,8 @@ public class ZookeeperClient {
      */
     private Boolean createNode(String node, String data, CreateMode createMode) {
         try {
-            if (null == this.zk.exists(node, false)) {
-                String realPath = zk.create(node, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode);
+            if (null == this.zookeeper.exists(node, false)) {
+                String realPath = zookeeper.create(node, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode);
                 log.info(ZK_LOG_PRE + "节点创建成功, Path: " + realPath);
                 return true;
             } else {

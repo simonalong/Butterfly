@@ -11,5 +11,10 @@
 
     <artifactId>butterfly-distribute-server-allocator</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo</artifactId>
+        </dependency>
+    </dependencies>
 </project>

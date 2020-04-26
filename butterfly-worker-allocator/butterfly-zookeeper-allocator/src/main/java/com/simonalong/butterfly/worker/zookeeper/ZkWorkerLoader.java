@@ -4,7 +4,7 @@ import com.simonalong.butterfly.sequence.ButterflyConfig;
 import com.simonalong.butterfly.sequence.WorkerLoader;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import com.simonalong.butterfly.sequence.spi.WorkerIdHandler;
-import com.simonalong.butterfly.worker.zk.node.DefaultConfigNodeHandler;
+import com.simonalong.butterfly.worker.zookeeper.node.DefaultConfigNodeHandler;
 
 /**
  * @author shizi

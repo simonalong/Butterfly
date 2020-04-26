@@ -18,15 +18,15 @@
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
-            <artifactId>butterfly-worker-zookeeper</artifactId>
+            <artifactId>butterfly-zookeeper-allocator</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
-            <artifactId>butterfly-worker-db</artifactId>
+            <artifactId>butterfly-db-allocator</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
-            <artifactId>butterfly-worker-distribute</artifactId>
+            <artifactId>butterfly-distribute-client-allocator</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
