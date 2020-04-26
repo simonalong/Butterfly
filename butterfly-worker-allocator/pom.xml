@@ -17,6 +17,13 @@
         <module>butterfly-worker-zookeeper</module>
         <module>butterfly-worker-distribute</module>
         <module>butterfly-worker-distribute</module>
+        <module>butterfly-worker-distribute</module>
+        <module>butterfly-worker-db-allocator</module>
+        <module>butterfly-worker-zookeeper-allocator</module>
+        <module>butterfly-db-allocator</module>
+        <module>butterfly-zookeeper-allocator</module>
+        <module>butterfly-distribute-client-allocator</module>
+        <module>butterfly-distribute-server-allocator</module>
     </modules>
 
 

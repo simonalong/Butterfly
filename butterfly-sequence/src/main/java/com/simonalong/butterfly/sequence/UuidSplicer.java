@@ -3,6 +3,7 @@ package com.simonalong.butterfly.sequence;
 import com.simonalong.butterfly.sequence.allocator.BitAllocator;
 import com.simonalong.butterfly.sequence.allocator.DefaultBitAllocator;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.simonalong.butterfly.sequence.UuidConstant.*;
@@ -14,6 +15,7 @@ import static com.simonalong.butterfly.sequence.UuidConstant.*;
 @Slf4j
 final class UuidSplicer {
 
+    @Getter
     private BitAllocator bitAllocator;
 
     UuidSplicer(String bizNamespace, ButterflyConfig butterflyConfig) {

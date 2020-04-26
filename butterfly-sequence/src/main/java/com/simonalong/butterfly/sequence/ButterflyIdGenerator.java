@@ -1,5 +1,6 @@
 package com.simonalong.butterfly.sequence;
 
+import com.simonalong.butterfly.sequence.allocator.BitAllocator;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 
 import java.util.Arrays;
@@ -53,6 +54,10 @@ public final class ButterflyIdGenerator {
      */
     public long getUUid(String namespace) {
         return getUUidSplicer(namespace).splice();
+    }
+
+    public BitAllocator getBitAllocator(String namespace) {
+        return getUUidSplicer(namespace).getBitAllocator();
     }
 
     private UuidSplicer getUUidSplicer(String namespace) {

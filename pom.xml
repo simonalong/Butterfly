@@ -14,10 +14,10 @@
     <description>发号器框架：完美解决雪花算法所有问题</description>
 
     <modules>
-        <module>butterfly-server</module>
         <module>butterfly-worker-allocator</module>
         <module>butterfly-sequence</module>
         <module>butterfly-sample</module>
+        <module>butterfly-distribute</module>
     </modules>
 
     <developers>
@@ -55,19 +55,25 @@
             </dependency>
             <dependency>
                 <groupId>com.github.simonalong</groupId>
-                <artifactId>butterfly-worker-db</artifactId>
+                <artifactId>butterfly-db-allocator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.simonalong</groupId>
-                <artifactId>butterfly-worker-zookeeper</artifactId>
+                <artifactId>butterfly-distribute-client-allocator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.simonalong</groupId>
-                <artifactId>butterfly-worker-distribute</artifactId>
+                <artifactId>butterfly-distribute-server-allocator</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.simonalong</groupId>
+                <artifactId>butterfly-zookeeper-allocator</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -83,7 +89,6 @@
 
     <build>
         <plugins>
-            <!-- Source -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -101,7 +106,6 @@
                 </executions>
             </plugin>
 
-            <!--maven编译指定版本-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -112,7 +116,6 @@
                 </configuration>
             </plugin>
 
-            <!--javadoc-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -142,8 +145,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--自动发布到中央仓库后自动执行-->
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
