@@ -16,7 +16,7 @@ import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_MARK;
  * @author shizi
  * @since 2020/2/3 10:15 下午
  */
-public class DefaultBitAllocator implements BitAllocator {
+public class DefaultBitAllocator implements BeanBitAllocator {
 
     private String namespace;
     private PaddedLong currentTime;

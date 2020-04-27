@@ -27,10 +27,6 @@ public class ZkWorkerLoader implements WorkerLoader {
 
     @Override
     public WorkerIdHandler loadIdHandler(String namespace, ButterflyConfig butterflyConfig) {
-        if (!configAvailable(butterflyConfig)) {
-            throw new ButterflyException("the config is available for db：" + butterflyConfig);
-        }
-
         ZkButterflyConfig zkConfig = (ZkButterflyConfig) butterflyConfig;
         String host = zkConfig.getHost();
 

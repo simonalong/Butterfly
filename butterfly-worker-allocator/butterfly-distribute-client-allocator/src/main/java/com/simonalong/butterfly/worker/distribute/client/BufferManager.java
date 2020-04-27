@@ -46,10 +46,6 @@ public class BufferManager {
         this.currentSequence = new PaddedLong(0);
     }
 
-    public int getRsv() {
-        return currentBuffer.getRsv();
-    }
-
     public long getTime() {
         return currentBuffer.getTime();
     }
@@ -84,7 +80,7 @@ public class BufferManager {
             // 到达最后
             if (sequence >= SEQ_MAX_SIZE) {
                 if (refreshState != RefreshEnum.READY_RPC && refreshState != RefreshEnum.FINISH) {
-                    throw new ButterflyException("server端获取新的buffer失败");
+                    throw new ButterflyException("server get new buffer fail");
                 }
                 switchBuffer();
             }
@@ -122,7 +118,7 @@ public class BufferManager {
      */
     private synchronized void switchBuffer() {
         if (refreshState == RefreshEnum.READY_RPC) {
-            throw new ButterflyException("server端获取新的buffer失败");
+            throw new ButterflyException("server get new buffer fail");
         }
         // 表示切换完成
         if (refreshState == RefreshEnum.NON) {
@@ -141,8 +137,8 @@ public class BufferManager {
 
     private void updateBuffer(Response<BitSequenceDTO> sequenceDTO) {
         if (!sequenceDTO.isSuccess()) {
-            log.error("server返回信息异常：rsp={}", sequenceDTO);
-            throw new ButterflyException("server返回信息异常");
+            log.error("server return error：rsp={}", sequenceDTO);
+            throw new ButterflyException("server return error");
         }
 
         BitSequenceDTO bitSequence = sequenceDTO.getData();

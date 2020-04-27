@@ -32,7 +32,6 @@ public final class ButterflyIdGenerator {
                 if (null == instance) {
                     instance = new ButterflyIdGenerator();
                     instance.butterflyConfig = butterflyConfig;
-                    WorkerIdHandlerFactory.checkConfig(butterflyConfig);
                 }
             }
         }

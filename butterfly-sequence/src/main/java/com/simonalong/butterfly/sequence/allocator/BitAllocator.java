@@ -32,14 +32,4 @@ public interface BitAllocator {
      * @return workId
      */
     int getWorkIdValue();
-
-    /**
-     * 是否接受对应的配置
-     *
-     * @param butterflyConfig 具体的配置
-     * @return true：接受，false：不接受
-     */
-    default boolean acceptConfig(ButterflyConfig butterflyConfig) {
-        return true;
-    }
 }

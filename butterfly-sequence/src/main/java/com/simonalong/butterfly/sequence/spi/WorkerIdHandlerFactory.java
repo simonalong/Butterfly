@@ -16,33 +16,12 @@ public final class WorkerIdHandlerFactory {
         ServiceLoaderFactory.init(WorkerLoader.class);
     }
 
-    public static void checkConfig(ButterflyConfig butterflyConfig) {
-        Collection<WorkerLoader> workerLoaderCollection = ServiceLoaderFactory.getChildObject(WorkerLoader.class);
-        if (haveNonDefault(workerLoaderCollection)) {
-            for (WorkerLoader allocator : workerLoaderCollection) {
-                if (!allocator.isDefault()) {
-                    if (!allocator.configAvailable(butterflyConfig)) {
-                        throw new ButterflyException("the config " + butterflyConfig + " is illegal to this worker");
-                    }
-                }
-            }
-        } else {
-            for (WorkerLoader allocator : workerLoaderCollection) {
-                if (allocator.isDefault()) {
-                    if (!allocator.configAvailable(butterflyConfig)) {
-                        throw new ButterflyException("the config " + butterflyConfig + " is illegal to this worker");
-                    }
-                }
-            }
-        }
-    }
-
     public static WorkerIdHandler getWorkerIdHandler(String namespace, ButterflyConfig butterflyConfig) {
         Collection<WorkerLoader> workerLoaderCollection = ServiceLoaderFactory.getChildObject(WorkerLoader.class);
         if (haveNonDefault(workerLoaderCollection)) {
             for (WorkerLoader allocator : workerLoaderCollection) {
                 if (!allocator.isDefault()) {
-                    if (!allocator.configAvailable(butterflyConfig)) {
+                    if (allocator.configAvailable(butterflyConfig)) {
                         return allocator.loadIdHandler(namespace, butterflyConfig);
                     }
                 }
@@ -50,7 +29,7 @@ public final class WorkerIdHandlerFactory {
         } else {
             for (WorkerLoader allocator : workerLoaderCollection) {
                 if (allocator.isDefault()) {
-                    if (!allocator.configAvailable(butterflyConfig)) {
+                    if (allocator.configAvailable(butterflyConfig)) {
                         return allocator.loadIdHandler(namespace, butterflyConfig);
                     }
                 }

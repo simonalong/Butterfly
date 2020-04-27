@@ -5,14 +5,17 @@ import com.simonalong.butterfly.sequence.WorkerLoader;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import com.simonalong.butterfly.sequence.spi.WorkerIdHandler;
 import com.simonalong.neo.Neo;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author shizi
  * @since 2020/4/25 12:49 AM
  */
+@Slf4j
 public class DbWorkerLoader implements WorkerLoader {
 
-    private ThreadLocal<Neo> threadLocal;
+    private static Neo db;
+
     @Override
     public Boolean configAvailable(ButterflyConfig butterflyConfig) {
         if (null == butterflyConfig) {
@@ -22,26 +25,20 @@ public class DbWorkerLoader implements WorkerLoader {
             return true;
         }
 
-        DbButterflyConfig dbButterflyConfig = (DbButterflyConfig) butterflyConfig;
-        String url = dbButterflyConfig.getUrl();
-        String userName = dbButterflyConfig.getUserName();
-        String password = dbButterflyConfig.getPassword();
-        Neo.connect(url, userName, password);
-
+        try {
+            DbButterflyConfig dbButterflyConfig = (DbButterflyConfig) butterflyConfig;
+            String url = dbButterflyConfig.getUrl();
+            String userName = dbButterflyConfig.getUserName();
+            String password = dbButterflyConfig.getPassword();
+            db = Neo.connect(url, userName, password);
+        } catch (Throwable e) {
+            log.error("config is illegal ", e);
+        }
         return true;
     }
 
     @Override
     public WorkerIdHandler loadIdHandler(String namespace, ButterflyConfig butterflyConfig) {
-        if (!configAvailable(butterflyConfig)) {
-            throw new ButterflyException("the config is available for db：" + butterflyConfig);
-        }
-
-        DbButterflyConfig dbButterflyConfig = (DbButterflyConfig) butterflyConfig;
-        String url = dbButterflyConfig.getUrl();
-        String userName = dbButterflyConfig.getUserName();
-        String password = dbButterflyConfig.getPassword();
-
-        return new DbWorkerIdHandler(namespace, Neo.connect(url, userName, password));
+        return new DbWorkerIdHandler(namespace, db);
     }
 }

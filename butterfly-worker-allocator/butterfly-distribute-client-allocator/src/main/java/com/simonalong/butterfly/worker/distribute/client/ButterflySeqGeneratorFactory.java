@@ -15,11 +15,6 @@ public class ButterflySeqGeneratorFactory {
     private static volatile ButterflyDistributeApi butterflyDistributeApi;
     private String zkAddress = null;
 
-    public ButterflySeqGeneratorFactory sequenceApi(ButterflyDistributeApi butterflyDistributeApi) {
-        ButterflySeqGeneratorFactory.butterflyDistributeApi = butterflyDistributeApi;
-        return this;
-    }
-
     public static ButterflySeqGeneratorFactory getInstance() {
         if (null != INSTANCE) {
             return INSTANCE;
@@ -47,7 +42,7 @@ public class ButterflySeqGeneratorFactory {
         if (null != butterflyDistributeApi) {
             return butterflyDistributeApi;
         }
-        assert null != zkAddress : "请先设置zk地址";
+        assert null != zkAddress : "please set zookeeper's address";
 
         // 硬编码引用
         ReferenceConfig<ButterflyDistributeApi> reference = new ReferenceConfig<>();

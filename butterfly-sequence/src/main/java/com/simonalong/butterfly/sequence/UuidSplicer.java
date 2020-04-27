@@ -1,8 +1,7 @@
 package com.simonalong.butterfly.sequence;
 
 import com.simonalong.butterfly.sequence.allocator.BitAllocator;
-import com.simonalong.butterfly.sequence.allocator.BitAllocatorFactory;
-import com.simonalong.butterfly.sequence.allocator.DefaultBitAllocator;
+import com.simonalong.butterfly.sequence.allocator.BeanBitAllocatorFactory;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +19,17 @@ final class UuidSplicer {
     private BitAllocator bitAllocator;
 
     UuidSplicer(String bizNamespace, ButterflyConfig butterflyConfig) {
-        super();
-        init(bizNamespace, butterflyConfig);
-    }
+        synchronized (this) {
+            this.bitAllocator = BeanBitAllocatorFactory.getBitAllocator(bizNamespace, butterflyConfig);
 
-    private synchronized void init(String namespace, ButterflyConfig butterflyConfig) {
-        this.bitAllocator = BitAllocatorFactory.getBitAllocator(namespace, butterflyConfig);
-
-        // 延迟启动固定时间10ms
-        delayStart();
+            // 延迟启动固定时间10ms
+            try {
+                this.wait(DELAY_START_TIME);
+            } catch (InterruptedException e) {
+                log.warn(LOG_PRE + "延迟启动失败");
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     synchronized Long splice() {
@@ -40,19 +41,5 @@ final class UuidSplicer {
         long time = bitAllocator.getTimeValue();
 
         return (time << TIME_LEFT_SHIFT) | (seq << SEQ_LEFT_SHIFT) | workerId;
-    }
-
-    /**
-     * 延迟一段时间启动
-     */
-    private void delayStart() {
-        synchronized (this) {
-            try {
-                this.wait(DELAY_START_TIME);
-            } catch (InterruptedException e) {
-                log.warn(LOG_PRE + "延迟启动失败");
-                Thread.currentThread().interrupt();
-            }
-        }
     }
 }

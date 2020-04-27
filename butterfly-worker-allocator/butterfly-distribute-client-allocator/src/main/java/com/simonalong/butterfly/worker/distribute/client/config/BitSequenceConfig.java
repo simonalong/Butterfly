@@ -14,8 +14,7 @@ public class BitSequenceConfig {
     private Integer sequence;
     private Integer workId;
 
-    public void update(BitSequenceDTO bitSequenceDTO)
-    {
+    public void update(BitSequenceDTO bitSequenceDTO) {
         this.time = bitSequenceDTO.getTime();
         this.workId = bitSequenceDTO.getWorkId();
     }
