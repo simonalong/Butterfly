@@ -17,10 +17,6 @@ public final class WorkerIdHandlerFactory {
     }
 
     public static void checkConfig(ButterflyConfig butterflyConfig) {
-
-    }
-
-    public static WorkerIdHandler getWorkerIdHandler(String namespace, ButterflyConfig butterflyConfig) {
         Collection<WorkerLoader> workerLoaderCollection = ServiceLoaderFactory.getChildObject(WorkerLoader.class);
         if (haveNonDefault(workerLoaderCollection)) {
             for (WorkerLoader allocator : workerLoaderCollection) {
@@ -28,7 +24,6 @@ public final class WorkerIdHandlerFactory {
                     if (!allocator.configAvailable(butterflyConfig)) {
                         throw new ButterflyException("the config " + butterflyConfig + " is illegal to this worker");
                     }
-                    return allocator.loadIdHandler(namespace, butterflyConfig);
                 }
             }
         } else {
@@ -37,6 +32,22 @@ public final class WorkerIdHandlerFactory {
                     if (!allocator.configAvailable(butterflyConfig)) {
                         throw new ButterflyException("the config " + butterflyConfig + " is illegal to this worker");
                     }
+                }
+            }
+        }
+    }
+
+    public static WorkerIdHandler getWorkerIdHandler(String namespace, ButterflyConfig butterflyConfig) {
+        Collection<WorkerLoader> workerLoaderCollection = ServiceLoaderFactory.getChildObject(WorkerLoader.class);
+        if (haveNonDefault(workerLoaderCollection)) {
+            for (WorkerLoader allocator : workerLoaderCollection) {
+                if (!allocator.isDefault()) {
+                    return allocator.loadIdHandler(namespace, butterflyConfig);
+                }
+            }
+        } else {
+            for (WorkerLoader allocator : workerLoaderCollection) {
+                if (allocator.isDefault()) {
                     return allocator.loadIdHandler(namespace, butterflyConfig);
                 }
             }
