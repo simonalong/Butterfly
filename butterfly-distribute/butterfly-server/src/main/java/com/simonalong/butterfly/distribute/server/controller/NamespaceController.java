@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.distribute.server;
+package com.simonalong.butterfly.distribute.server.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

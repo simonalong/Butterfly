@@ -31,7 +31,8 @@ public class ButterflyDistributeApiImpl implements ButterflyDistributeApi {
 
         BitSequenceDTO sequenceDTO = new BitSequenceDTO();
         sequenceDTO.setNamespace(namespace);
-        sequenceDTO.setNamespaceExist();
+        // todo 这里还要进行考虑
+        // sequenceDTO.setNamespaceExist();
         bitAllocator.getSequenceValue();
         return null;
     }
