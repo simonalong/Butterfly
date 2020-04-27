@@ -1,5 +1,7 @@
 package com.simonalong.butterfly.sequence.allocator;
 
+import com.simonalong.butterfly.sequence.ButterflyConfig;
+
 /**
  * 序列中的bit对应的值的分配器
  * <p>
@@ -30,4 +32,14 @@ public interface BitAllocator {
      * @return workId
      */
     int getWorkIdValue();
+
+    /**
+     * 是否接受对应的配置
+     *
+     * @param butterflyConfig 具体的配置
+     * @return true：接受，false：不接受
+     */
+    default boolean acceptConfig(ButterflyConfig butterflyConfig) {
+        return true;
+    }
 }

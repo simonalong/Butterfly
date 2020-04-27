@@ -12,12 +12,23 @@ import com.simonalong.neo.Neo;
  */
 public class DbWorkerLoader implements WorkerLoader {
 
+    private ThreadLocal<Neo> threadLocal;
     @Override
     public Boolean configAvailable(ButterflyConfig butterflyConfig) {
         if (null == butterflyConfig) {
             return false;
         }
-        return butterflyConfig instanceof DbButterflyConfig;
+        if (!(butterflyConfig instanceof DbButterflyConfig)) {
+            return true;
+        }
+
+        DbButterflyConfig dbButterflyConfig = (DbButterflyConfig) butterflyConfig;
+        String url = dbButterflyConfig.getUrl();
+        String userName = dbButterflyConfig.getUserName();
+        String password = dbButterflyConfig.getPassword();
+        Neo.connect(url, userName, password);
+
+        return true;
     }
 
     @Override

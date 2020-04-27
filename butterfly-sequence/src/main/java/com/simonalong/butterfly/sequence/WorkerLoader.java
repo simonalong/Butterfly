@@ -18,7 +18,7 @@ public interface WorkerLoader {
     }
 
     /**
-     * 是否接收对应的配置
+     * 配置是否合法
      *
      * @param butterflyConfig 发号器对应的配置
      * @return true：接受，false：不接受

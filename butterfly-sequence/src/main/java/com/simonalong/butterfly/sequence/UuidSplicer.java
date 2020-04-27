@@ -1,6 +1,7 @@
 package com.simonalong.butterfly.sequence;
 
 import com.simonalong.butterfly.sequence.allocator.BitAllocator;
+import com.simonalong.butterfly.sequence.allocator.BitAllocatorFactory;
 import com.simonalong.butterfly.sequence.allocator.DefaultBitAllocator;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import lombok.Getter;
@@ -24,7 +25,7 @@ final class UuidSplicer {
     }
 
     private synchronized void init(String namespace, ButterflyConfig butterflyConfig) {
-        this.bitAllocator = new DefaultBitAllocator(namespace, butterflyConfig);
+        this.bitAllocator = BitAllocatorFactory.getBitAllocator(namespace, butterflyConfig);
 
         // 延迟启动固定时间10ms
         delayStart();

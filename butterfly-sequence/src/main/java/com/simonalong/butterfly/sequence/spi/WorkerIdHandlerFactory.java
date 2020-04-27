@@ -42,13 +42,17 @@ public final class WorkerIdHandlerFactory {
         if (haveNonDefault(workerLoaderCollection)) {
             for (WorkerLoader allocator : workerLoaderCollection) {
                 if (!allocator.isDefault()) {
-                    return allocator.loadIdHandler(namespace, butterflyConfig);
+                    if (!allocator.configAvailable(butterflyConfig)) {
+                        return allocator.loadIdHandler(namespace, butterflyConfig);
+                    }
                 }
             }
         } else {
             for (WorkerLoader allocator : workerLoaderCollection) {
                 if (allocator.isDefault()) {
-                    return allocator.loadIdHandler(namespace, butterflyConfig);
+                    if (!allocator.configAvailable(butterflyConfig)) {
+                        return allocator.loadIdHandler(namespace, butterflyConfig);
+                    }
                 }
             }
         }
