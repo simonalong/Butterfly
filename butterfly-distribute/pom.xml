@@ -12,7 +12,7 @@
     <artifactId>butterfly-distribute</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>butterfly-server-api</module>
+        <module>butterfly-api</module>
         <module>butterfly-server</module>
         <module>butterfly-api</module>
     </modules>

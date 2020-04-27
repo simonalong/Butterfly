@@ -12,4 +12,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class DistributeServerButterflyConfig extends ButterflyConfig {
 
+    private String zkHost;
 }

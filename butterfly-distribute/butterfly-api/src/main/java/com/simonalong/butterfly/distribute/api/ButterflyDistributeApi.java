@@ -12,13 +12,6 @@ import java.util.List;
 public interface ButterflyDistributeApi {
 
     /**
-     * 首次连接server，获取对应命名空间的所有初始序列中的值
-     * @param namespaceList 命名空间级别
-     * @return bit序列中各个部分的值的集合
-     */
-    Response<List<BitSequenceDTO>> getNext(List<String> namespaceList);
-
-    /**
      * 获取下一个buffer对应的配置
      * @param namespace 业务命名空间
      * @return bit序列中各个部分的值
