@@ -17,7 +17,7 @@ public class ButterflyGeneratorTest {
         ZkButterflyConfig config = new ZkButterflyConfig();
         config.setHost("localhost:2181");
         ButterflyIdGenerator idGenerator = ButterflyIdGenerator.getInstance(config);
-        idGenerator.declareNamespace("test1", "test2");
+        idGenerator.addNamespaces("test1", "test2");
         System.out.println(idGenerator.getUUid("test1"));
     }
 
@@ -28,7 +28,7 @@ public class ButterflyGeneratorTest {
         config.setUserName("");
         config.setPassword("");
         ButterflyIdGenerator idGenerator = ButterflyIdGenerator.getInstance(config);
-        idGenerator.declareNamespace("test1", "test2");
+        idGenerator.addNamespaces("test1", "test2");
         System.out.println(idGenerator.getUUid("test1"));
     }
 
@@ -37,7 +37,7 @@ public class ButterflyGeneratorTest {
         DistributeButterflyConfig config = new DistributeButterflyConfig();
         config.setZkHose("localhost:2181");
         ButterflyIdGenerator idGenerator = ButterflyIdGenerator.getInstance(config);
-        idGenerator.declareNamespace("test1", "test2");
+        idGenerator.addNamespaces("test1", "test2");
         System.out.println(idGenerator.getUUid("test1"));
     }
 }

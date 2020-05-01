@@ -1,5 +1,6 @@
 package com.simonalong.butterfly.worker.db;
 
+import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import com.simonalong.butterfly.sequence.exception.WorkerIdFullException;
 import com.simonalong.butterfly.sequence.spi.WorkerIdHandler;
 import com.simonalong.butterfly.worker.db.entity.UuidGeneratorDO;
@@ -18,6 +19,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.simonalong.butterfly.sequence.UuidConstant.DISTRIBUTE_SERVER;
 import static com.simonalong.butterfly.sequence.UuidConstant.LOG_PRE;
 import static com.simonalong.butterfly.worker.db.DbConstant.*;
 
@@ -53,8 +55,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
     }
 
     private void init() {
-        // 如果namespace不存在则创建
-        tryAddNamespaceToDb(namespace);
+        checkNamespace(namespace);
 
         // 配置基本信息
         initBaseInfo();
@@ -154,25 +155,13 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
         insertWorker();
     }
 
-    private void addNamespace(){
+    private void checkNamespace(String namespace) {
+        if (null == namespace || "".equals(namespace)) {
+            throw new ButterflyException("命名空间为空");
+        }
 
-    }
-
-    /**
-     * 添加数据到db中
-     *
-     * @param namespace 命名空间
-     */
-    private void tryAddNamespaceToDb(String namespace) {
-        // todo 添加db的命名空间添加
-        try {
-            // 不存在则添加
-            if (!snowflakeNamespaceService.namespaceExistInDb(snowflakeNamespaceInsertReq.getNamespace())) {
-                snowflakeNamespaceService.insert(snowflakeNamespaceInsertReq);
-            }
-        } catch (Throwable e) {
-            log.error("添加节点数据到db失败，data=" + snowflakeNamespaceInsertReq.toString(), e);
-            throw new SnowflakeServerException("添加节点" + snowflakeNamespaceInsertReq.getNamespace() + "数据失败");
+        if (namespace.equals(DISTRIBUTE_SERVER)) {
+            throw new ButterflyException("node [" + namespace + "] is distribute'node, forbidden to add");
         }
     }
 

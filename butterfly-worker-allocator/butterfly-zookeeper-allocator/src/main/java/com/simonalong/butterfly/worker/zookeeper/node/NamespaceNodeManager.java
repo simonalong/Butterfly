@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.simonalong.butterfly.sequence.UuidConstant.DISTRIBUTE_SERVER;
 import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.*;
 
 /**
@@ -101,11 +102,11 @@ public class NamespaceNodeManager {
      */
     private void tryAddNamespace(String namespace) {
         if (null == namespace || "".equals(namespace)) {
-            throw new ButterflyException("命名空间为空");
+            throw new ButterflyException("namespace is null");
         }
 
         if (namespace.equals(DISTRIBUTE_SERVER)) {
-            throw new ButterflyException("节点" + namespace + "为服务节点，不可添加");
+            throw new ButterflyException("node [" + namespace + "] is distribute'node, forbidden to add");
         }
 
         try {
@@ -115,8 +116,8 @@ public class NamespaceNodeManager {
                 createNamespaceNode(namespace);
             }
         } catch (Throwable e) {
-            log.error("添加节点{}到zk中失败", namespace);
-            throw new ButterflyException("添加节点" + namespace + "到zk中失败");
+            log.error("fail to add node[{}] to zookeeper", namespace);
+            throw new ButterflyException("fail to add node[" + namespace + "] to zookeeper");
         }
     }
 

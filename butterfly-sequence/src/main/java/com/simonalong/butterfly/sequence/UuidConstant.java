@@ -52,4 +52,8 @@ public interface UuidConstant {
      * 延迟启动时间，10ms
      */
     long DELAY_START_TIME = 10L;
+    /**
+     * 分布式模式下的业务节点
+     */
+    String DISTRIBUTE_SERVER = "butterfly-server";
 }

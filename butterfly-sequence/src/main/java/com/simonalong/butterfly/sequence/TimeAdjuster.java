@@ -16,7 +16,7 @@ import static com.simonalong.butterfly.sequence.UuidConstant.TIME_BACK;
 public class TimeAdjuster {
 
     /**
-     * 调整时间
+     * 优化调整时间，防止时间过快或者过慢
      *
      * <p>注意下面的{@code @SuppressWarnings("all")}这个不能删除，因为代码{@code Thread.sleep}通过不了sonar检测，添加
      * 这个可以使其通过，sonar检测建议采用{@code wait()}，但是{@code wait}这个会释放锁，但是这里的逻辑是不能释放锁，释放锁会有时间

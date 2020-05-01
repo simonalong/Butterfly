@@ -44,10 +44,6 @@ public interface ZkConstant {
      */
     String SESSION_CREATE_LOCK = "/session_lock";
     /**
-     * 分布式模式下的业务节点
-     */
-    String DISTRIBUTE_SERVER = "butterfly-server";
-    /**
      * 雪花算法：本机模式
      */
     String MODE_LOCAL = "local";
