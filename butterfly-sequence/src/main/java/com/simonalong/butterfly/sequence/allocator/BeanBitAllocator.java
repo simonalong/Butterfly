@@ -6,7 +6,7 @@ import com.simonalong.butterfly.sequence.ButterflyConfig;
  * @author shizi
  * @since 2020/4/27 11:49 PM
  */
-public interface BeanBitAllocator extends BitAllocator{
+public interface BeanBitAllocator extends BitAllocator {
 
     /**
      * 是否接受对应的配置
@@ -21,7 +21,7 @@ public interface BeanBitAllocator extends BitAllocator{
     /**
      * 初始化的配置的处理
      *
-     * @param namespace 命名空间
+     * @param namespace       命名空间
      * @param butterflyConfig 配置
      */
     default void postConstruct(String namespace, ButterflyConfig butterflyConfig) {}

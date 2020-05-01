@@ -1,11 +1,11 @@
-package com.simonalong.butterfly.worker.distribute.client;
+package com.simonalong.butterfly.worker.distribute;
 
 import com.simonalong.butterfly.distribute.api.ButterflyDistributeApi;
 import com.simonalong.butterfly.distribute.model.BitSequenceDTO;
 import com.simonalong.butterfly.distribute.model.Response;
 import com.simonalong.butterfly.sequence.ButterflyConfig;
 import com.simonalong.butterfly.sequence.allocator.BeanBitAllocator;
-import com.simonalong.butterfly.worker.distribute.client.config.DistributeClientButterflyConfig;
+import com.simonalong.butterfly.worker.distribute.config.DistributeClientButterflyConfig;
 import lombok.extern.slf4j.Slf4j;
 
 /**

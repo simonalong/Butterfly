@@ -67,12 +67,7 @@
             </dependency>
             <dependency>
                 <groupId>com.github.simonalong</groupId>
-                <artifactId>butterfly-distribute-client-allocator</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.simonalong</groupId>
-                <artifactId>butterfly-distribute-server-allocator</artifactId>
+                <artifactId>butterfly-distribute-allocator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

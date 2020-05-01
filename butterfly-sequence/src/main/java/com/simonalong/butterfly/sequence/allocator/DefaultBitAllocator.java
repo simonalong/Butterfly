@@ -16,7 +16,7 @@ import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_MARK;
  * @author shizi
  * @since 2020/2/3 10:15 下午
  */
-public class DefaultBitAllocator implements BeanBitAllocator {
+public class DefaultBitAllocator implements BeanBitAllocator, ExpireBitAllocator {
 
     private String namespace;
     private PaddedLong currentTime;
@@ -69,7 +69,8 @@ public class DefaultBitAllocator implements BeanBitAllocator {
     /**
      * 获取过期时间
      */
-    private Long getLastExpireTime(String namespace) {
+    @Override
+    public Long getLastExpireTime(String namespace) {
         return getWorkerIdHandler(namespace).getLastExpireTime();
     }
 

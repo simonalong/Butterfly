@@ -1,10 +1,10 @@
-package com.simonalong.butterfly.worker.distribute.client;
+package com.simonalong.butterfly.worker.distribute;
 
 import com.simonalong.butterfly.distribute.model.BitSequenceDTO;
 import com.simonalong.butterfly.distribute.model.Response;
 import com.simonalong.butterfly.sequence.PaddedLong;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
-import com.simonalong.butterfly.worker.distribute.client.config.BitSequenceConfig;
+import com.simonalong.butterfly.worker.distribute.config.BitSequenceConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CompletableFuture;

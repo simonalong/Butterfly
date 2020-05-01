@@ -1,7 +1,7 @@
 package com.simonalong.butterfly.distribute.server.config;
 
 import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
-import com.simonalong.butterfly.worker.distribute.server.DistributeServerButterflyConfig;
+import com.simonalong.butterfly.worker.zookeeper.ZkButterflyConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +18,8 @@ public class ButterflySequenceServerConfig {
 
     @Bean
     public ButterflyIdGenerator butterflyIdGenerator() {
-        DistributeServerButterflyConfig config = new DistributeServerButterflyConfig();
-        config.setZkHost(zookeeperHost);
+        ZkButterflyConfig config = new ZkButterflyConfig();
+        config.setHost(zookeeperHost);
         return ButterflyIdGenerator.getInstance(config);
     }
 }

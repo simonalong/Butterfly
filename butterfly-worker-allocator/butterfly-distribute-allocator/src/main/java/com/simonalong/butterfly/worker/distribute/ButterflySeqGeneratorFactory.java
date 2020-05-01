@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.worker.distribute.client;
+package com.simonalong.butterfly.worker.distribute;
 
 import com.simonalong.butterfly.distribute.api.ButterflyDistributeApi;
 import org.apache.dubbo.config.ApplicationConfig;

@@ -1,6 +1,6 @@
 dubbo:
   application:
-    name: config_server
+    name: butterfly_server
   registry:
     address: zookeeper://127.0.0.1:2181
   protocol:

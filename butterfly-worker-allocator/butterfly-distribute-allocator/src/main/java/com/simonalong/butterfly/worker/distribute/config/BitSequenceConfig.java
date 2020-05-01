@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.worker.distribute.client.config;
+package com.simonalong.butterfly.worker.distribute.config;
 
 import com.simonalong.butterfly.distribute.model.BitSequenceDTO;
 import lombok.Data;
