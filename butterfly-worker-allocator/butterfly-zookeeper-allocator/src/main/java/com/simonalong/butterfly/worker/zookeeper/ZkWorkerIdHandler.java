@@ -1,9 +1,7 @@
 package com.simonalong.butterfly.worker.zookeeper;
 
 import com.simonalong.butterfly.sequence.spi.WorkerIdHandler;
-import com.simonalong.butterfly.worker.zookeeper.node.ConfigNodeHandler;
-import com.simonalong.butterfly.worker.zookeeper.node.DefaultWorkerNodeHandler;
-import com.simonalong.butterfly.worker.zookeeper.node.WorkerNodeHandler;
+import com.simonalong.butterfly.worker.zookeeper.node.NamespaceNodeManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,19 +11,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ZkWorkerIdHandler implements WorkerIdHandler {
 
-    private WorkerNodeHandler workerNodeHandler;
+    private NamespaceNodeManager namespaceNodeManager = NamespaceNodeManager.getInstance();
+    private String namespace;
 
     @Override
     public Long getLastExpireTime() {
-        return workerNodeHandler.getLastExpireTime();
+        return namespaceNodeManager.getExpireTime(namespace);
     }
 
     @Override
     public Integer getWorkerId() {
-        return workerNodeHandler.getWorkerId();
+        return namespaceNodeManager.getWorkerId(namespace);
     }
 
-    public ZkWorkerIdHandler(String namespace, ZookeeperClient zookeeperClient, ConfigNodeHandler configNodeHandler) {
-        this.workerNodeHandler = new DefaultWorkerNodeHandler(namespace, zookeeperClient, configNodeHandler);
+    public ZkWorkerIdHandler(String namespace, ZookeeperClient zookeeperClient) {
+        namespaceNodeManager.setZkClient(zookeeperClient);
+        namespaceNodeManager.add(namespace);
+        this.namespace = namespace;
     }
 }

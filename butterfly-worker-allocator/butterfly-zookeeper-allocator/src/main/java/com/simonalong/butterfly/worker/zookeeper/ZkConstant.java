@@ -22,7 +22,7 @@ public interface ZkConstant {
     /**
      * 根路径
      */
-    String ROOT_PATH = GGJ_PATH + "/sequence/snowflake";
+    String ROOT_PATH = GGJ_PATH + "/butterfly/sequence";
     /**
      * 机器节点的左前缀
      */
@@ -46,7 +46,7 @@ public interface ZkConstant {
     /**
      * 分布式模式下的业务节点
      */
-    String DISTRIBUTE_SERVER = "snowflake-server";
+    String DISTRIBUTE_SERVER = "butterfly-server";
     /**
      * 雪花算法：本机模式
      */

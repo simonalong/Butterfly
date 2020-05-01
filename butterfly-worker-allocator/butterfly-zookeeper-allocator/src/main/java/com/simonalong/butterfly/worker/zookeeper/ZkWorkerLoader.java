@@ -32,6 +32,6 @@ public class ZkWorkerLoader implements WorkerLoader {
 
         ZookeeperClient zkClient = ZookeeperClient.getInstance();
         zkClient.connect(host);
-        return new ZkWorkerIdHandler(namespace, zkClient, new DefaultConfigNodeHandler(namespace, zkClient));
+        return new ZkWorkerIdHandler(namespace, zkClient);
     }
 }

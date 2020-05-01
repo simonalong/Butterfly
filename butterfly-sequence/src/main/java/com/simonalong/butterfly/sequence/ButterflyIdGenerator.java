@@ -39,12 +39,13 @@ public final class ButterflyIdGenerator {
     }
 
     /**
-     * 添加命名空间
+     * 声明命名空间
+     * <p>
+     *  如果命名空间不存在，则新建，如果存在，则采用已经存在的命名空间
      *
      * @param namespaces 命名空间
      */
-    public void addNamespaces(String... namespaces) {
-        // todo
+    public void declareNamespace(String... namespaces) {
         Arrays.stream(namespaces).forEach(n -> uUidBuilderMap.putIfAbsent(n, new UuidSplicer(n, butterflyConfig)));
     }
 

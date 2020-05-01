@@ -16,10 +16,6 @@ public class BitSequenceDTO implements Serializable {
      */
     private String namespace;
     /**
-     * 业务命名空间是否已经存在，0：不存在，1：已经存在
-     */
-    private Integer namespaceExist;
-    /**
      * 41bit时间的值
      */
     private Long time;

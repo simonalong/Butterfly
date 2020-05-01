@@ -20,7 +20,7 @@ public interface DbConstant {
      */
     String UUID_LOG_PRE = "[neo_snowflake] ";
     /**
-     * zk中保留对应节点数据的时间长度
+     * 占据该节点的最长时间
      */
     long KEEP_EXPIRE_TIME = TimeUnit.HOURS.toMillis(24);
     /**

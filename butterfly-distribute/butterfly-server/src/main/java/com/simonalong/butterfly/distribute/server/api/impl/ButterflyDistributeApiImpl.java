@@ -31,14 +31,12 @@ public class ButterflyDistributeApiImpl implements ButterflyDistributeApi, Initi
     public Response<BitSequenceDTO> getNext(String namespace) {
         DefaultBitAllocator bitAllocator;
         if (!namespaceSet.contains(namespace)) {
-            butterflyIdGenerator.addNamespaces(namespace);
+            butterflyIdGenerator.declareNamespace(namespace);
         }
         bitAllocator = (DefaultBitAllocator) butterflyIdGenerator.getBitAllocator(namespace);
 
         BitSequenceDTO sequenceDTO = new BitSequenceDTO();
         sequenceDTO.setNamespace(namespace);
-        // todo 这里还要进行考虑
-        sequenceDTO.setNamespaceExist(1);
         sequenceDTO.setTime(getTimeValue(namespace, bitAllocator));
         sequenceDTO.setWorkId(bitAllocator.getWorkIdValue());
         return Response.success(sequenceDTO);
@@ -47,7 +45,7 @@ public class ButterflyDistributeApiImpl implements ButterflyDistributeApi, Initi
     /**
      * 获取序列中的时间值
      */
-    public long getTimeValue(String namespace, DefaultBitAllocator bitAllocator) {
+    private long getTimeValue(String namespace, DefaultBitAllocator bitAllocator) {
         long time = TimeAdjuster.getRelativeTime(currentTime.getAndIncrement());
         // 调整时间，防止时间过快或者过慢
         TimeAdjuster.adjustTime(currentTime);
@@ -72,7 +70,7 @@ public class ButterflyDistributeApiImpl implements ButterflyDistributeApi, Initi
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         currentTime = new PaddedLong(System.currentTimeMillis());
     }
 }

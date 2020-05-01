@@ -53,6 +53,9 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
     }
 
     private void init() {
+        // 如果namespace不存在则创建
+        tryAddNamespaceToDb(namespace);
+
         // 配置基本信息
         initBaseInfo();
 
@@ -151,6 +154,28 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
         insertWorker();
     }
 
+    private void addNamespace(){
+
+    }
+
+    /**
+     * 添加数据到db中
+     *
+     * @param namespace 命名空间
+     */
+    private void tryAddNamespaceToDb(String namespace) {
+        // todo 添加db的命名空间添加
+        try {
+            // 不存在则添加
+            if (!snowflakeNamespaceService.namespaceExistInDb(snowflakeNamespaceInsertReq.getNamespace())) {
+                snowflakeNamespaceService.insert(snowflakeNamespaceInsertReq);
+            }
+        } catch (Throwable e) {
+            log.error("添加节点数据到db失败，data=" + snowflakeNamespaceInsertReq.toString(), e);
+            throw new SnowflakeServerException("添加节点" + snowflakeNamespaceInsertReq.getNamespace() + "数据失败");
+        }
+    }
+
     /**
      * 从已存在的worker里面查看过期的，有过期的则获取并更新数据
      *
@@ -183,7 +208,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      * 如果数据达到最大，则阻止进程启动
      */
     private void insertWorker() {
-        Integer result = neo.tx(() -> {
+        Boolean success = neo.tx(() -> {
             Integer maxWorkerId = neo.exeValue(Integer.class, "select max(work_id) from %s where namespace = ? for update", UUID_TABLE, namespace);
             if (null == maxWorkerId) {
                 uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, 0));
@@ -192,13 +217,13 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
                     uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1));
                 } else {
                     log.error(LOG_PRE + "namespace {} have full worker, init fail");
-                    return 0;
+                    return false;
                 }
             }
-            return 1;
+            return true;
         });
 
-        if (0 == result) {
+        if (!success) {
             throw new WorkerIdFullException("namespace " + namespace + " have full worker, init fail");
         }
     }
