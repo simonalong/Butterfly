@@ -5,7 +5,7 @@ import com.simonalong.butterfly.distribute.model.BitSequenceDTO;
 import com.simonalong.butterfly.distribute.model.Response;
 import com.simonalong.butterfly.sequence.ButterflyConfig;
 import com.simonalong.butterfly.sequence.allocator.BeanBitAllocator;
-import com.simonalong.butterfly.worker.distribute.config.DistributeClientButterflyConfig;
+import com.simonalong.butterfly.worker.distribute.config.DistributeButterflyConfig;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2020/4/27 7:52 PM
  */
 @Slf4j
-public class DistributeClientBitAllocator implements BeanBitAllocator {
+public class DistributeBitAllocator implements BeanBitAllocator {
 
     private BufferManager bufferManager;
     /**
@@ -27,7 +27,7 @@ public class DistributeClientBitAllocator implements BeanBitAllocator {
         if (null == butterflyConfig) {
             return false;
         }
-        return butterflyConfig instanceof DistributeClientButterflyConfig;
+        return butterflyConfig instanceof DistributeButterflyConfig;
     }
 
     /**
@@ -38,7 +38,7 @@ public class DistributeClientBitAllocator implements BeanBitAllocator {
      */
     @Override
     public void postConstruct(String namespace, ButterflyConfig butterflyConfig) {
-        DistributeClientButterflyConfig config = (DistributeClientButterflyConfig) butterflyConfig;
+        DistributeButterflyConfig config = (DistributeButterflyConfig) butterflyConfig;
         String zkHost = config.getZkHose();
 
         ButterflySeqGeneratorFactory factory = ButterflySeqGeneratorFactory.getInstance().init(zkHost);

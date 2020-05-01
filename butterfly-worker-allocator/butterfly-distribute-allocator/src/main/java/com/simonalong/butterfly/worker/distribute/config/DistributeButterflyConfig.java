@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DistributeClientButterflyConfig extends ButterflyConfig {
+public class DistributeButterflyConfig extends ButterflyConfig {
 
     private String zkHose;
 }

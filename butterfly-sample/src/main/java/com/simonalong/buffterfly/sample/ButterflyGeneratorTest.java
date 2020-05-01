@@ -3,6 +3,7 @@ package com.simonalong.buffterfly.sample;
 import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
 import com.simonalong.butterfly.worker.db.DbButterflyConfig;
 import com.simonalong.butterfly.worker.distribute.client.config.DistributeClientButterflyConfig;
+import com.simonalong.butterfly.worker.distribute.config.DistributeButterflyConfig;
 import com.simonalong.butterfly.worker.zookeeper.ZkButterflyConfig;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class ButterflyGeneratorTest {
 
     @Test
     public void testDistribute() {
-        DistributeClientButterflyConfig config = new DistributeClientButterflyConfig();
+        DistributeButterflyConfig config = new DistributeButterflyConfig();
         config.setZkHose("localhost:2181");
         ButterflyIdGenerator idGenerator = ButterflyIdGenerator.getInstance(config);
         idGenerator.addNamespaces("test1", "test2");
