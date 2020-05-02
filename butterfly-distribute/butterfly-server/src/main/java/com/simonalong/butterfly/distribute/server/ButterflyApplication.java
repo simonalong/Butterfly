@@ -1,5 +1,6 @@
 package com.simonalong.butterfly.distribute.server;
 
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author shizi
  * @since 2020/4/28 12:16 AM
  */
+@EnableDubbo
 @SpringBootApplication
 public class ButterflyApplication {
 

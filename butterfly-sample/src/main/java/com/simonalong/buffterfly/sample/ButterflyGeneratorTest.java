@@ -1,9 +1,13 @@
 package com.simonalong.buffterfly.sample;
 
+import com.simonalong.butterfly.distribute.api.ButterflyDistributeApi;
 import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
 import com.simonalong.butterfly.worker.db.DbButterflyConfig;
 import com.simonalong.butterfly.worker.distribute.config.DistributeButterflyConfig;
 import com.simonalong.butterfly.worker.zookeeper.ZkButterflyConfig;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
 import org.junit.Test;
 
 /**
@@ -46,6 +50,10 @@ public class ButterflyGeneratorTest {
         config.setZkHose("localhost:2181");
         ButterflyIdGenerator idGenerator = ButterflyIdGenerator.getInstance(config);
         idGenerator.addNamespaces("test1", "test2");
-        System.out.println(idGenerator.getUUid("test1"));
+
+        // {symbol=0, sequence=0, workerId=11, abstractTime=2020-05-03 01:34:07.586, time=6140047586, uuid=25753226150150155}
+        System.out.println(ButterflyIdGenerator.parseUid(idGenerator.getUUid("test1")));
+        // {symbol=0, sequence=1, workerId=11, abstractTime=2020-05-03 01:34:07.586, time=6140047586, uuid=25753226150158347}
+        System.out.println(ButterflyIdGenerator.parseUid(idGenerator.getUUid("test1")));
     }
 }

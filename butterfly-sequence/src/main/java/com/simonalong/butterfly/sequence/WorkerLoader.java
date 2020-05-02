@@ -18,12 +18,12 @@ public interface WorkerLoader {
 //    }
 
     /**
-     * 配置是否合法
+     * 是否接收当前配置
      *
      * @param butterflyConfig 发号器对应的配置
      * @return true：接受，false：不接受
      */
-    Boolean configAvailable(ButterflyConfig butterflyConfig);
+    boolean acceptConfig(ButterflyConfig butterflyConfig);
 
     /**
      * 获取workerId的实例

@@ -20,7 +20,7 @@ public class ZkWorkerLoader implements WorkerLoader {
 //    }
 
     @Override
-    public Boolean configAvailable(ButterflyConfig butterflyConfig) {
+    public boolean acceptConfig(ButterflyConfig butterflyConfig) {
         if (null == butterflyConfig) {
             return false;
         }

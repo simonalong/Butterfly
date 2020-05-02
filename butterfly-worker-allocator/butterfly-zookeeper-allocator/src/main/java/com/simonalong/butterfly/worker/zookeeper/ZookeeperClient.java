@@ -266,7 +266,7 @@ public class ZookeeperClient {
                     disconnectCallback.run();
                 }
             }
-            log.debug(ZK_LOG_PRE + "---------------------end-------------------");
+            log.info(ZK_LOG_PRE + "---------------------end-------------------");
         }
     }
 

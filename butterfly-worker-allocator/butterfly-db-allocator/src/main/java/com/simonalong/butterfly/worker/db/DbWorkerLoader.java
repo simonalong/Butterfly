@@ -17,7 +17,7 @@ public class DbWorkerLoader implements WorkerLoader {
     private static Neo db;
 
     @Override
-    public Boolean configAvailable(ButterflyConfig butterflyConfig) {
+    public boolean acceptConfig(ButterflyConfig butterflyConfig) {
         if (null == butterflyConfig) {
             return false;
         }

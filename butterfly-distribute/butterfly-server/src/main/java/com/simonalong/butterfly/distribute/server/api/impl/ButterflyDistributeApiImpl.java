@@ -8,6 +8,7 @@ import com.simonalong.butterfly.sequence.PaddedLong;
 import com.simonalong.butterfly.sequence.TimeAdjuster;
 import com.simonalong.butterfly.sequence.allocator.DefaultBitAllocator;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.common.utils.ConcurrentHashSet;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,6 +20,7 @@ import java.util.Set;
  * @author shizi
  * @since 2020/4/28 12:11 AM
  */
+@Slf4j
 @Service
 public class ButterflyDistributeApiImpl implements ButterflyDistributeApi, InitializingBean {
 
@@ -29,6 +31,7 @@ public class ButterflyDistributeApiImpl implements ButterflyDistributeApi, Initi
 
     @Override
     public Response<BitSequenceDTO> getNext(String namespace) {
+        log.info("getNext namespace={}", namespace);
         DefaultBitAllocator bitAllocator;
         if (!namespaceSet.contains(namespace)) {
             butterflyIdGenerator.addNamespaces(namespace);

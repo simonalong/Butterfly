@@ -2,12 +2,14 @@ package com.simonalong.butterfly.distribute.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author shizi
  * @since 2020/4/26 11:05 PM
  */
 @Data
-public class Response<T> {
+public class Response<T> implements Serializable {
 
     private String errCode;
     private String errMsg;

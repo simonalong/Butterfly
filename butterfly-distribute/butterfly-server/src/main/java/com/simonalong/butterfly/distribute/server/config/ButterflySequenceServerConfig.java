@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ButterflySequenceServerConfig {
 
-    @Value("dubbo.registry.address")
+    @Value("${dubbo.registry.address}")
     private String zookeeperHost;
 
     @Bean

@@ -45,17 +45,12 @@ public class ButterflySeqGeneratorFactory {
         assert null != zkAddress : "please set zookeeper's address";
 
         // 硬编码引用
-        ReferenceConfig<ButterflyDistributeApi> reference = new ReferenceConfig<>();
-        reference.setApplication(new ApplicationConfig("butterfly-consumer"));
-        reference.setRegistry(new RegistryConfig(zkAddress));
-        reference.setInterface(ButterflyDistributeApi.class);
+        ReferenceConfig<ButterflyDistributeApi> rc=new ReferenceConfig<>();
+        rc.setApplication(new ApplicationConfig("butterfly-consumer"));
+        rc.setRegistry(new RegistryConfig(zkAddress, "zookeeper"));
+        rc.setInterface(ButterflyDistributeApi.class);
 
-        reference.setCheck(false);
-        reference.setAsync(false);
-        reference.setTimeout(3000);
-        reference.setCluster("gsf_failover");
-
-        butterflyDistributeApi = reference.get();
+        butterflyDistributeApi = rc.get();
         return butterflyDistributeApi;
     }
 }

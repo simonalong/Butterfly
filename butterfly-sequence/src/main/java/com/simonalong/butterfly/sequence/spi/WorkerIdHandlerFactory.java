@@ -19,14 +19,14 @@ public final class WorkerIdHandlerFactory {
     public static WorkerIdHandler getWorkerIdHandler(String namespace, ButterflyConfig butterflyConfig) {
         Collection<WorkerLoader> workerLoaderCollection = ServiceLoaderFactory.getChildObject(WorkerLoader.class);
         for (WorkerLoader allocator : workerLoaderCollection) {
-            if (allocator.configAvailable(butterflyConfig)) {
+            if (allocator.acceptConfig(butterflyConfig)) {
                 return allocator.loadIdHandler(namespace, butterflyConfig);
             }
         }
         //        } else {
         //            for (WorkerLoader allocator : workerLoaderCollection) {
         //                if (allocator.isDefault()) {
-        //                    if (allocator.configAvailable(butterflyConfig)) {
+        //                    if (allocator.acceptConfig(butterflyConfig)) {
         //                        return allocator.loadIdHandler(namespace, butterflyConfig);
         //                    }
         //                }
