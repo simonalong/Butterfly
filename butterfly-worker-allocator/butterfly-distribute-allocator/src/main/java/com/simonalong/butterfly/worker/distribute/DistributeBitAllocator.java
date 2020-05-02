@@ -8,6 +8,8 @@ import com.simonalong.butterfly.sequence.allocator.BeanBitAllocator;
 import com.simonalong.butterfly.worker.distribute.config.DistributeButterflyConfig;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.simonalong.butterfly.worker.distribute.DistributeConstant.DTB_LOG_PRE;
+
 /**
  * @author shizi
  * @since 2020/4/27 7:52 PM
@@ -46,7 +48,7 @@ public class DistributeBitAllocator implements BeanBitAllocator {
 
         Response<BitSequenceDTO> response = api.getNext(namespace);
         if (!response.isSuccess()) {
-            log.error("get seq fail，namespace={}, errCode={}, errMsg={}", namespace, response.getErrCode(), response.getErrMsg());
+            log.error(DTB_LOG_PRE + "get seq fail，namespace={}, errCode={}, errMsg={}", namespace, response.getErrCode(), response.getErrMsg());
             throw new RuntimeException("get seq fail：" + response.getErrMsg());
         }
         this.bufferManager = new BufferManager(response.getData());

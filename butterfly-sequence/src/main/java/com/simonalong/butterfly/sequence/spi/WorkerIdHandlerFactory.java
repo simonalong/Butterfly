@@ -23,25 +23,6 @@ public final class WorkerIdHandlerFactory {
                 return allocator.loadIdHandler(namespace, butterflyConfig);
             }
         }
-        //        } else {
-        //            for (WorkerLoader allocator : workerLoaderCollection) {
-        //                if (allocator.isDefault()) {
-        //                    if (allocator.acceptConfig(butterflyConfig)) {
-        //                        return allocator.loadIdHandler(namespace, butterflyConfig);
-        //                    }
-        //                }
-        //            }
-        //        }
         throw new ButterflyException("not find workerId allocator, please add butterfly-worker-allocator-db or butterfly-worker-allocator-distribute");
     }
-
-    //    /**
-    //     * 查看是否有非默认的
-    //     * <p> 如果有非默认的，则采用非默认的，否则采用默认的
-    //     *
-    //     * @return true：有非默认的（即用户自己制定的），false：用户没有指定，则采用默认的
-    //     */
-    //    private static Boolean haveNonDefault(Collection<WorkerLoader> workerLoaderCollection) {
-    //        return workerLoaderCollection.stream().anyMatch(e -> !e.isDefault());
-    //    }
 }

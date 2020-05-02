@@ -6,6 +6,8 @@ import com.simonalong.butterfly.worker.zookeeper.ZookeeperClient;
 import com.simonalong.butterfly.worker.zookeeper.entity.ConfigNodeEntity;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.ZK_LOG_PRE;
+
 /**
  * 对配置节点的处理
  *
@@ -36,7 +38,7 @@ public class DefaultConfigNodeHandler implements ConfigNodeHandler {
         try {
             zookeeperClient.writeNodeData(ZkNodeHelper.getConfigPath(namespace), JSON.toJSONString(configNodeEntity.setCurrentMaxMachine(maxMachine)));
         } catch (Throwable e) {
-            log.error("更新机器个数失败");
+            log.error(ZK_LOG_PRE + "更新机器个数失败");
             throw new ButterflyException("更新机器个数失败");
         }
     }

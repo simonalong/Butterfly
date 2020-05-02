@@ -18,10 +18,6 @@ public class ConfigNodeEntity implements Serializable {
      */
     private Integer currentMaxMachine;
     /**
-     * 机房的bit占用
-     */
-    private Integer rsvBits;
-    /**
      * 时间戳占用bit
      */
     private Integer timestampBits;

@@ -19,8 +19,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.simonalong.butterfly.sequence.UuidConstant.DISTRIBUTE_SERVER;
-import static com.simonalong.butterfly.sequence.UuidConstant.LOG_PRE;
+import static com.simonalong.butterfly.sequence.UuidConstant.*;
 import static com.simonalong.butterfly.worker.db.DbConstant.*;
 
 /**
@@ -115,7 +114,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
         });
 
         // 延迟10秒上报，每5秒上报一次数据
-        scheduler.scheduleWithFixedDelay(this::refreshNodeInfo, 10, HEART_INTERVAL_TIME, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(this::refreshNodeInfo, 10, HEART_TIME, TimeUnit.SECONDS);
     }
 
     /**
@@ -123,7 +122,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      */
     private void addShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            log.info(LOG_PRE + "进程即将退出，清理本次启动申请的db资源");
+            log.info(DB_LOG_PRE + "进程即将退出，清理本次启动申请的db资源");
             neo.delete(UUID_TABLE, uuidGeneratorDO.getId());
             if (null != scheduler) {
                 scheduler.shutdown();
@@ -202,10 +201,10 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
             if (null == maxWorkerId) {
                 uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, 0));
             } else {
-                if (maxWorkerId + 1 < WORKER_MAX_SIZE) {
+                if (maxWorkerId + 1 < MAX_WORKER_SIZE) {
                     uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1));
                 } else {
-                    log.error(LOG_PRE + "namespace {} have full worker, init fail");
+                    log.error(DB_LOG_PRE + "namespace {} have full worker, init fail");
                     return false;
                 }
             }
@@ -229,7 +228,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      * 将时间向未来延长固定的小时
      */
     private long afterHour() {
-        return System.currentTimeMillis() + KEEP_EXPIRE_TIME;
+        return System.currentTimeMillis() + KEEP_NODE_EXIST_TIME;
     }
 
     /**

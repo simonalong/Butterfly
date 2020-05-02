@@ -14,6 +14,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.simonalong.butterfly.sequence.UuidConstant.HEART_TIME;
+import static com.simonalong.butterfly.sequence.UuidConstant.KEEP_NODE_EXIST_TIME;
 import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.*;
 
 /**
@@ -114,14 +116,14 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler {
             @Override
             @SuppressWarnings("all")
             public Thread newThread(Runnable r) {
-                Thread thread = new Thread(r, "Thread-Snowflake-heart" + threadNum.getAndIncrement());
+                Thread thread = new Thread(r, "Thread-Butterfly-Heart" + threadNum.getAndIncrement());
                 thread.setDaemon(true);
                 return thread;
             }
         });
 
         // 每5秒上报一次数据
-        scheduler.scheduleWithFixedDelay(this::refreshNodeInfo, 10, HEART_INTERVAL_TIME, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(this::refreshNodeInfo, 10, HEART_TIME, TimeUnit.SECONDS);
     }
 
     /**
@@ -157,7 +159,7 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler {
                 zookeeperClient.writeNodeData(workerNodePath, "");
             }
         } catch (Throwable e) {
-            log.error("节点worker_" + getWorkerId() + "更新失败", e);
+            log.error(ZK_LOG_PRE + "节点worker_" + getWorkerId() + "更新失败", e);
         }
 
         this.workerNodeEntity = workerNodeInfo;
@@ -175,7 +177,7 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler {
      * 将时间向未来延长固定的小时
      */
     private long afterHour() {
-        return System.currentTimeMillis() + KEEP_EXPIRE_TIME;
+        return System.currentTimeMillis() + KEEP_NODE_EXIST_TIME;
     }
 
     /**

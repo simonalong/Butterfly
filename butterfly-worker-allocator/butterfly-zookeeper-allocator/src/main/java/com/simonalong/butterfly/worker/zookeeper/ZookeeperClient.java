@@ -65,7 +65,7 @@ public class ZookeeperClient {
             phaser.register();
             this.connectString = connectString;
             zookeeper = new ZooKeeper(connectString, SESSION_TIMEOUT, watcher);
-            log.info("连接zookeeper: " + connectString);
+            log.info(ZK_LOG_PRE + "连接zookeeper: " + connectString);
             phaser.arriveAndAwaitAdvance();
         } catch (Throwable e) {
             log.error(ZK_LOG_PRE + "连接创建失败，发生 IOException", e);
@@ -196,12 +196,12 @@ public class ZookeeperClient {
         try {
             if (nodeExist(nodePath)) {
                 this.zookeeper.delete(nodePath, -1);
-                log.info("节点{}删除成功", nodePath);
+                log.info(ZK_LOG_PRE + "节点{}删除成功", nodePath);
             } else {
-                log.warn("节点{}不存在, 无需删除", nodePath);
+                log.warn(ZK_LOG_PRE + "节点{}不存在, 无需删除", nodePath);
             }
         } catch (InterruptedException | KeeperException e) {
-            log.error("删除节点" + nodePath + "失败", e);
+            log.error(ZK_LOG_PRE + "删除节点" + nodePath + "失败", e);
             throw new RuntimeException("删除节点" + nodePath + "失败");
         }
     }
@@ -228,7 +228,7 @@ public class ZookeeperClient {
             try {
                 this.zookeeper.setData(nodePath, data.getBytes(), -1);
             } catch (KeeperException | InterruptedException e) {
-                log.warn("写入节点{}数据{}错误", nodePath, data);
+                log.warn(ZK_LOG_PRE + "写入节点{}数据{}错误", nodePath, data);
                 throw new RuntimeException("写入节点" + nodePath + "数据" + data + "错误", e);
             }
         }
@@ -278,7 +278,7 @@ public class ZookeeperClient {
             try {
                 this.zookeeper.close();
             } catch (Exception e) {
-                log.error("关闭连接失败");
+                log.error(ZK_LOG_PRE + "关闭连接失败");
             }
         }
     }
@@ -290,7 +290,7 @@ public class ZookeeperClient {
         try {
             return zookeeper.getChildren(path, false).stream().map(r -> path + "/" + r).collect(Collectors.toList());
         } catch (KeeperException | InterruptedException e) {
-            log.error("读取路径" + path + "的子节点路径失败");
+            log.error(ZK_LOG_PRE + "读取路径" + path + "的子节点路径失败");
         }
         return Collections.emptyList();
     }
@@ -302,7 +302,7 @@ public class ZookeeperClient {
         try {
             return new ArrayList<>(zookeeper.getChildren(path, false));
         } catch (KeeperException | InterruptedException e) {
-            log.error("读取路径" + path + "的子节点名字失败");
+            log.error(ZK_LOG_PRE + "读取路径" + path + "的子节点名字失败");
         }
         return Collections.emptyList();
     }
@@ -345,7 +345,7 @@ public class ZookeeperClient {
         try {
             return null != this.zookeeper.exists(nodePath, false);
         } catch (KeeperException | InterruptedException e) {
-            log.error("判断节点是否存在异常", e);
+            log.error(ZK_LOG_PRE + "判断节点是否存在异常", e);
         }
         return false;
     }

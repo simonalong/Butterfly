@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.simonalong.butterfly.sequence.UuidConstant.DISTRIBUTE_SERVER;
+import static com.simonalong.butterfly.sequence.UuidConstant.*;
 import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.*;
 
 /**
@@ -116,7 +116,7 @@ public class NamespaceNodeManager {
                 createNamespaceNode(namespace);
             }
         } catch (Throwable e) {
-            log.error("fail to add node[{}] to zookeeper", namespace);
+            log.error(ZK_LOG_PRE + "fail to add node[{}] to zookeeper", namespace);
             throw new ButterflyException("fail to add node[" + namespace + "] to zookeeper");
         }
     }
@@ -132,7 +132,6 @@ public class NamespaceNodeManager {
 
             ConfigNodeEntity configEntity = new ConfigNodeEntity();
             configEntity.setCurrentMaxMachine(DEFAULT_MAX_MACHINE_NUM);
-            configEntity.setRsvBits(RSV_BITS);
             configEntity.setTimestampBits(TIME_BITS);
             configEntity.setSequenceBits(SEQ_BITS);
             configEntity.setWorkerBits(WORKER_BITS);

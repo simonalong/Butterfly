@@ -14,11 +14,6 @@ import org.junit.Test;
  */
 public class ZkWorkerLoader implements WorkerLoader {
 
-//    @Override
-//    public Boolean isDefault() {
-//        return true;
-//    }
-
     @Override
     public boolean acceptConfig(ButterflyConfig butterflyConfig) {
         if (null == butterflyConfig) {

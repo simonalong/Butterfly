@@ -2,10 +2,11 @@ package com.simonalong.butterfly.worker.db;
 
 import com.simonalong.butterfly.sequence.ButterflyConfig;
 import com.simonalong.butterfly.sequence.WorkerLoader;
-import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import com.simonalong.butterfly.sequence.spi.WorkerIdHandler;
 import com.simonalong.neo.Neo;
 import lombok.extern.slf4j.Slf4j;
+
+import static com.simonalong.butterfly.worker.db.DbConstant.DB_LOG_PRE;
 
 /**
  * @author shizi
@@ -32,7 +33,7 @@ public class DbWorkerLoader implements WorkerLoader {
             String password = dbButterflyConfig.getPassword();
             db = Neo.connect(url, userName, password);
         } catch (Throwable e) {
-            log.error("config is illegal ", e);
+            log.error(DB_LOG_PRE + "config is illegal ", e);
         }
         return true;
     }

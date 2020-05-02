@@ -1,4 +1,5 @@
 package com.simonalong.butterfly.sequence;
+
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import lombok.experimental.UtilityClass;
 

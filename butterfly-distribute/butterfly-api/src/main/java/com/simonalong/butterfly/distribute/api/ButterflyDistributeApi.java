@@ -3,8 +3,6 @@ package com.simonalong.butterfly.distribute.api;
 import com.simonalong.butterfly.distribute.model.BitSequenceDTO;
 import com.simonalong.butterfly.distribute.model.Response;
 
-import java.util.List;
-
 /**
  * @author shizi
  * @since 2020/4/26 11:04 PM

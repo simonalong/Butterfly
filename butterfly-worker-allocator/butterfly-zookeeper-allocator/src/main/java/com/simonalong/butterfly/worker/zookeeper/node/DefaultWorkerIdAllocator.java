@@ -7,6 +7,7 @@ import com.simonalong.butterfly.worker.zookeeper.entity.SessionNodeEntity;
 import com.simonalong.butterfly.worker.zookeeper.entity.WorkerNodeEntity;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.simonalong.butterfly.sequence.UuidConstant.MAX_WORKER_SIZE;
 import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.*;
 
 /**
@@ -197,7 +198,7 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
     private Integer getWorkId(Integer index) {
         int maxNum = configNodeHandler.getCurrentMaxMachineNum();
         assert maxNum != 0 : "当前机器个数不为0";
-        assert maxNum <= WORKER_MAX_SIZE : "当前机器最大个数设置有误";
+        assert maxNum <= MAX_WORKER_SIZE : "当前机器最大个数设置有误";
         return index & (maxNum - 1);
     }
 
@@ -208,7 +209,7 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
      * 这个个数是bit内部约束的最大个数
      */
     private Integer getMaxMachineNum() {
-        return Math.toIntExact(WORKER_MAX_SIZE);
+        return Math.toIntExact(MAX_WORKER_SIZE);
     }
 
     /**

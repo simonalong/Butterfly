@@ -1,13 +1,9 @@
 package com.simonalong.buffterfly.sample;
 
-import com.simonalong.butterfly.distribute.api.ButterflyDistributeApi;
 import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
 import com.simonalong.butterfly.worker.db.DbButterflyConfig;
 import com.simonalong.butterfly.worker.distribute.config.DistributeButterflyConfig;
 import com.simonalong.butterfly.worker.zookeeper.ZkButterflyConfig;
-import org.apache.dubbo.config.ApplicationConfig;
-import org.apache.dubbo.config.ReferenceConfig;
-import org.apache.dubbo.config.RegistryConfig;
 import org.junit.Test;
 
 /**

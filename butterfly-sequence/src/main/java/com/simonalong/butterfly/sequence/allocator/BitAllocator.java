@@ -1,7 +1,5 @@
 package com.simonalong.butterfly.sequence.allocator;
 
-import com.simonalong.butterfly.sequence.ButterflyConfig;
-
 /**
  * 序列中的bit对应的值的分配器
  * <p>

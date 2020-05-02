@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.CompletableFuture;
 
 import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_MAX_SIZE;
+import static com.simonalong.butterfly.worker.distribute.DistributeConstant.DTB_LOG_PRE;
 
 /**
  * @author shizi
@@ -108,7 +109,7 @@ public class BufferManager {
                     refreshState = RefreshEnum.FINISH;
                 }
             } catch (Throwable e) {
-                log.error("rpc 调用异常", e);
+                log.error(DTB_LOG_PRE + "rpc 调用异常", e);
             }
         });
     }
@@ -137,7 +138,7 @@ public class BufferManager {
 
     private void updateBuffer(Response<BitSequenceDTO> sequenceDTO) {
         if (!sequenceDTO.isSuccess()) {
-            log.error("server return error：rsp={}", sequenceDTO);
+            log.error(DTB_LOG_PRE + "server return error：rsp={}", sequenceDTO);
             throw new ButterflyException("server return error");
         }
 

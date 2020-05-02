@@ -21,7 +21,10 @@ public interface UuidConstant {
      * 机器id增加占用的bit数
      */
     int WORKER_BITS = 13;
-    long WORKER_MAX_SIZE = 1 << WORKER_BITS;
+    /**
+     * worker节点的最大值
+     */
+    long MAX_WORKER_SIZE = 1 << WORKER_BITS;
     /**
      * 自增域占用的bit数
      */
@@ -45,6 +48,10 @@ public interface UuidConstant {
      */
     long DELAY_THREAD_HOLD = TimeUnit.HOURS.toMillis(20);
     /**
+     * 节点保留的时间
+     */
+    long KEEP_NODE_EXIST_TIME = TimeUnit.HOURS.toMillis(24);
+    /**
      * 时间回拨的容忍度，2秒
      */
     long TIME_BACK = 2000L;
@@ -56,4 +63,8 @@ public interface UuidConstant {
      * 分布式模式下的业务节点
      */
     String DISTRIBUTE_SERVER = "butterfly-server";
+    /**
+     * 心跳间隔时间单位秒
+     */
+    long HEART_TIME = 5L;
 }
