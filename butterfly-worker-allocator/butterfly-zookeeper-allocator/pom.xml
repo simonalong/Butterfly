@@ -26,6 +26,11 @@
             <artifactId>zookeeper</artifactId>
             <version>3.4.14</version>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

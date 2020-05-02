@@ -19,11 +19,13 @@ public class BeanBitAllocatorFactory {
 
     public BitAllocator getBitAllocator(String namespace, ButterflyConfig butterflyConfig) {
         Collection<BeanBitAllocator> bitAllocatorCollection = ServiceLoaderFactory.getChildObject(BeanBitAllocator.class);
-        for (BeanBitAllocator allocator : bitAllocatorCollection) {
-            if (allocator instanceof DefaultBitAllocator) {
-                if (allocator.acceptConfig(butterflyConfig)) {
-                    allocator.postConstruct(namespace, butterflyConfig);
-                    return allocator;
+        if (null != bitAllocatorCollection) {
+            for (BeanBitAllocator allocator : bitAllocatorCollection) {
+                if (allocator instanceof DefaultBitAllocator) {
+                    if (allocator.acceptConfig(butterflyConfig)) {
+                        allocator.postConstruct(namespace, butterflyConfig);
+                        return allocator;
+                    }
                 }
             }
         }

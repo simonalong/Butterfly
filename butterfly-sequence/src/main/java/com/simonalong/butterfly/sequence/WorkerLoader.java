@@ -8,14 +8,14 @@ import com.simonalong.butterfly.sequence.spi.WorkerIdHandler;
  */
 public interface WorkerLoader {
 
-    /**
-     * 是否是默认
-     *
-     * @return true: 是默认，false：不是默认
-     */
-    default Boolean isDefault() {
-        return false;
-    }
+//    /**
+//     * 是否是默认
+//     *
+//     * @return true: 是默认，false：不是默认
+//     */
+//    default Boolean isDefault() {
+//        return false;
+//    }
 
     /**
      * 配置是否合法

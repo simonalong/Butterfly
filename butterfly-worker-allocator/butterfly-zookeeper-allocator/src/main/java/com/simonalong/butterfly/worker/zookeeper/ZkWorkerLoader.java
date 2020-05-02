@@ -1,10 +1,12 @@
 package com.simonalong.butterfly.worker.zookeeper;
 
 import com.simonalong.butterfly.sequence.ButterflyConfig;
+import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
 import com.simonalong.butterfly.sequence.WorkerLoader;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import com.simonalong.butterfly.sequence.spi.WorkerIdHandler;
 import com.simonalong.butterfly.worker.zookeeper.node.DefaultConfigNodeHandler;
+import org.junit.Test;
 
 /**
  * @author shizi
@@ -12,10 +14,10 @@ import com.simonalong.butterfly.worker.zookeeper.node.DefaultConfigNodeHandler;
  */
 public class ZkWorkerLoader implements WorkerLoader {
 
-    @Override
-    public Boolean isDefault() {
-        return true;
-    }
+//    @Override
+//    public Boolean isDefault() {
+//        return true;
+//    }
 
     @Override
     public Boolean configAvailable(ButterflyConfig butterflyConfig) {
