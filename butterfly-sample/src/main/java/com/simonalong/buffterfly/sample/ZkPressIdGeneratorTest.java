@@ -62,16 +62,16 @@ public class ZkPressIdGeneratorTest extends BaseTest {
     public void testQps2() {
         lowToHighPressRun();
 
-        //biz=biz0, qps = 3.4482758620689653单位（w/s）
-        //biz=biz0, qps = 17.536231884057973单位（w/s）
-        //biz=biz0, qps = 205.0单位（w/s）
-        //biz=biz0, qps = 402.09302325581393单位（w/s）
-        //biz=biz0, qps = 436.0416666666667单位（w/s）
-        //biz=biz0, qps = 369.11764705882354单位（w/s）
-        //biz=biz0, qps = 366.5783664459161单位（w/s）
-        //biz=biz0, qps = 81.69486745628878单位（w/s）
-        //biz=biz0, qps = 57.426150121065376单位（w/s）
-        //biz=biz0, qps = 55.03840704004773单位（w/s）
+        //biz=biz0, qps = 6.666666666666667单位（w/s）
+        //biz=biz0, qps = 75.625单位（w/s）
+        //biz=biz0, qps = 273.3333333333333单位（w/s）
+        //biz=biz0, qps = 785.9090909090909单位（w/s）
+        //biz=biz0, qps = 820.7843137254902单位（w/s）
+        //biz=biz0, qps = 836.6666666666666单位（w/s）
+        //biz=biz0, qps = 830.3单位（w/s）
+        //biz=biz0, qps = 68.43609733049847单位（w/s）
+        //biz=biz0, qps = 57.405300738230665单位（w/s）
+        //biz=biz0, qps = 55.03019909029901单位（w/s）
     }
 
     /**
