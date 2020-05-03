@@ -131,23 +131,4 @@ public class DbPressIdGeneratorTest extends BaseTest {
         //biz=biz1, qps = 738.8473520249221单位（w/s）
         //biz=biz1, qps = 775.2205882352941单位（w/s）
     }
-
-    @Test
-    public void test2(){
-        Neo neo = Neo.connect("jdbc:mysql://127.0.0.1:3306/neo?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowPublicKeyRetrieval=true", "neo_test", "neo@Test123");
-        UuidGeneratorDO data = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, 0 + 1));
-        show(data);
-    }
-
-    private UuidGeneratorDO generateUuidGeneratorDo(Long id, Integer workerId) {
-        UuidGeneratorDO uuidGeneratorDO = new UuidGeneratorDO();
-        uuidGeneratorDO.setId(id);
-        uuidGeneratorDO.setWorkId(workerId);
-        uuidGeneratorDO.setNamespace("dd");
-        uuidGeneratorDO.setLastExpireTime(new Date().getTime());
-        uuidGeneratorDO.setUid("asdfasdf");
-        uuidGeneratorDO.setProcessId(321231 + "");
-        uuidGeneratorDO.setIp("asdf");
-        return uuidGeneratorDO;
-    }
 }
