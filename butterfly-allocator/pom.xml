@@ -10,15 +10,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>butterfly-sequence</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <artifactId>butterfly-allocator</artifactId>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>butterfly-allocator-db</module>
+        <module>butterfly-allocator-zookeeper</module>
+        <module>butterfly-allocator-distribute</module>
+    </modules>
 
 </project>

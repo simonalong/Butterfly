@@ -1,15 +1,9 @@
 package com.simonalong.buffterfly.sample;
 
 import com.simonalong.butterfly.worker.db.DbButterflyConfig;
-import com.simonalong.butterfly.worker.db.entity.UuidGeneratorDO;
-import com.simonalong.neo.Neo;
 import lombok.SneakyThrows;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.util.Date;
-
-import static com.simonalong.butterfly.worker.db.DbConstant.UUID_TABLE;
 
 /**
  * @author shizi

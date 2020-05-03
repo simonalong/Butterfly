@@ -6,10 +6,13 @@
         <artifactId>butterfly-distribute</artifactId>
         <groupId>com.github.simonalong</groupId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>butterfly-api</artifactId>
-
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <description>分布式模式（distribute）下的api</description>
 
 </project>

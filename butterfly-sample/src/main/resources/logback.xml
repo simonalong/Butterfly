@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="APP_NAME" value="${APP_NAME}"/>
-    <property name="LOG_HOME" value="${log.home}"/>
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%p] ${hostname} %c %M [%t] : %m%n"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -12,7 +10,7 @@
     </appender>
 
     <appender name="THREAD_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/app-info.log</file>
+        <file>${LOG_HOME}/butter.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
@@ -21,7 +19,7 @@
             <charset>UTF-8</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/app-info.log.%d{yyyyMMdd}</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/butter.log.%d{yyyyMMdd}</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
