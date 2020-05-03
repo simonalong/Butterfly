@@ -1,7 +1,6 @@
 package com.simonalong.buffterfly.sample;
 
-import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
-import com.simonalong.butterfly.worker.distribute.config.DistributeButterflyConfig;
+import com.simonalong.butterfly.worker.zookeeper.ZkButterflyConfig;
 import lombok.SneakyThrows;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,37 +11,19 @@ import org.junit.Test;
  */
 public class ZkPressIdGeneratorTest extends BaseTest {
 
-    private static DistributeButterflyConfig config = new DistributeButterflyConfig();
 
     @BeforeClass
     public static void beforeClass() {
-        config.setZkHose("localhost:2181");
+        config = new ZkButterflyConfig();
+        ((ZkButterflyConfig)config).setHost("localhost:2181");
     }
 
     /**
      * 基本测试
      */
     @Test
-    public void generateTest1() {
-        ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
-        generator.addNamespaces("test1", "test2");
-
-        //{symbol=0, sequence=0, workerId=11, abstractTime=2020-05-03 01:34:07.590, time=6140047590, uuid=25753226166927371}
-        //{symbol=0, sequence=1, workerId=11, abstractTime=2020-05-03 01:34:07.590, time=6140047590, uuid=25753226166935563}
-        //{symbol=0, sequence=2, workerId=11, abstractTime=2020-05-03 01:34:07.590, time=6140047590, uuid=25753226166943755}
-        //{symbol=0, sequence=3, workerId=11, abstractTime=2020-05-03 01:34:07.590, time=6140047590, uuid=25753226166951947}
-        //{symbol=0, sequence=4, workerId=11, abstractTime=2020-05-03 01:34:07.590, time=6140047590, uuid=25753226166960139}
-        //{symbol=0, sequence=5, workerId=11, abstractTime=2020-05-03 01:34:07.590, time=6140047590, uuid=25753226166968331}
-        //{symbol=0, sequence=6, workerId=11, abstractTime=2020-05-03 01:34:07.590, time=6140047590, uuid=25753226166976523}
-        //{symbol=0, sequence=7, workerId=11, abstractTime=2020-05-03 01:34:07.590, time=6140047590, uuid=25753226166984715}
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test1")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test1")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
+    public void baseRunTest() {
+        baseRun();
     }
 
     /**
@@ -51,17 +32,7 @@ public class ZkPressIdGeneratorTest extends BaseTest {
     @Test
     @SneakyThrows
     public void testQps1() {
-        // todo 跑一下
-        ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
-        generator.addNamespaces("biz0");
-        int count = 10;
-        int callNum = 10;
-        int concurrentNum = 100;
-
-        for (int i = 0; i < count; i++) {
-            generateFun(generator, "biz0", callNum, concurrentNum);
-            Thread.sleep(1000);
-        }
+        lowPressRun();
 
         //biz=biz0, qps = 4.0单位（w/s）
         //biz=biz0, qps = 9.090909090909092单位（w/s）
@@ -81,17 +52,7 @@ public class ZkPressIdGeneratorTest extends BaseTest {
     @Test
     @SneakyThrows
     public void testQps2() {
-        // todo 跑一下
-        ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
-        generator.addNamespaces("biz0");
-        int count = 10;
-        int callNum = 10;
-        int concurrentNum = 100;
-
-        for (int i = 0; i < count; i++) {
-            generateFun(generator, "biz0", callNum + i * i * 100, concurrentNum + i * 10 * i);
-            Thread.sleep(1000);
-        }
+        lowToHighPressRun();
 
         //biz=biz0, qps = 5.882352941176471单位（w/s）
         //biz=biz0, qps = 80.66666666666667单位（w/s）
@@ -111,17 +72,7 @@ public class ZkPressIdGeneratorTest extends BaseTest {
     @Test
     @SneakyThrows
     public void testQps3() {
-        // todo 跑一下
-        ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
-        generator.addNamespaces("biz0");
-        int count = 10;
-        int callNum = 1000;
-        int concurrentNum = 10000;
-
-        for (int i = 0; i < count; i++) {
-            generateFun(generator, "biz0", callNum, concurrentNum);
-            Thread.sleep(1000);
-        }
+        highPressRun();
 
         //biz=biz0, qps = 51.956149010235364单位（w/s）
         //biz=biz0, qps = 53.98402072986396单位（w/s）
@@ -141,18 +92,7 @@ public class ZkPressIdGeneratorTest extends BaseTest {
     @Test
     @SneakyThrows
     public void testQps4() {
-        // todo 跑一下
-        ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
-        generator.addNamespaces("biz0", "biz1");
-        int count = 10;
-        int callNum = 10;
-        int concurrentNum = 100;
-
-        for (int i = 0; i < count; i++) {
-            generateFun(generator, "biz0", callNum + i * i * 100, concurrentNum + i * 10 * i);
-            generateFun(generator, "biz1", callNum + i * i * 100, concurrentNum + i * 10 * i);
-            Thread.sleep(1000);
-        }
+        lowToHighMultiBizPressRun();
 
         //biz=biz0, qps = 1.492537313432836单位（w/s）
         //biz=biz0, qps = 20.862068965517242单位（w/s）
@@ -176,5 +116,4 @@ public class ZkPressIdGeneratorTest extends BaseTest {
         //biz=biz1, qps = 738.8473520249221单位（w/s）
         //biz=biz1, qps = 775.2205882352941单位（w/s）
     }
-
 }

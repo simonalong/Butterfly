@@ -15,11 +15,11 @@ public interface ZkConstant {
     /**
      * 格格家中间件的zk顶层路径
      */
-    String GGJ_PATH = "/ggj/platform";
+    String PATH_PRE = "/com/simonalong";
     /**
      * 根路径
      */
-    String ROOT_PATH = GGJ_PATH + "/butterfly/sequence";
+    String ROOT_PATH = PATH_PRE + "/butterfly/sequence";
     /**
      * 机器节点的左前缀
      */
