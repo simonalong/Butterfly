@@ -55,7 +55,7 @@ public class DistributePressIdGeneratorTest extends BaseTest {
     }
 
     /**
-     * 低qps一段时间后到高QPS，可以支撑更高，但是一旦持续的高并发，则后面会慢慢降下来
+     * 低qps一段时间后到高QPS，可以支撑更高
      */
     @Test
     @SneakyThrows

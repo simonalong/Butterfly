@@ -65,11 +65,11 @@ public class ZookeeperClient {
             phaser.register();
             this.connectString = connectString;
             zookeeper = new ZooKeeper(connectString, SESSION_TIMEOUT, watcher);
-            log.info(ZK_LOG_PRE + "连接zookeeper: " + connectString);
+            log.info(ZK_LOG_PRE + "connect zookeeper: " + connectString);
             phaser.arriveAndAwaitAdvance();
         } catch (Throwable e) {
-            log.error(ZK_LOG_PRE + "连接创建失败，发生 IOException", e);
-            throw new ButterflyException("连接创建失败");
+            log.error(ZK_LOG_PRE + "connect fail", e);
+            throw new ButterflyException("connect fail");
         }
         return zookeeperClient;
     }
@@ -196,13 +196,13 @@ public class ZookeeperClient {
         try {
             if (nodeExist(nodePath)) {
                 this.zookeeper.delete(nodePath, -1);
-                log.info(ZK_LOG_PRE + "节点{}删除成功", nodePath);
+                log.info(ZK_LOG_PRE + "node({}) delete success", nodePath);
             } else {
-                log.warn(ZK_LOG_PRE + "节点{}不存在, 无需删除", nodePath);
+                log.warn(ZK_LOG_PRE + "node({}) not exist, no need to delete", nodePath);
             }
         } catch (InterruptedException | KeeperException e) {
-            log.error(ZK_LOG_PRE + "删除节点" + nodePath + "失败", e);
-            throw new RuntimeException("删除节点" + nodePath + "失败");
+            log.error(ZK_LOG_PRE + "delete node (" + nodePath + ") fail", e);
+            throw new RuntimeException("delete node (" + nodePath + ") fail");
         }
     }
 
@@ -228,8 +228,8 @@ public class ZookeeperClient {
             try {
                 this.zookeeper.setData(nodePath, data.getBytes(), -1);
             } catch (KeeperException | InterruptedException e) {
-                log.warn(ZK_LOG_PRE + "写入节点{}数据{}错误", nodePath, data);
-                throw new RuntimeException("写入节点" + nodePath + "数据" + data + "错误", e);
+                log.warn(ZK_LOG_PRE + "write data({}) to node({}) fail", data, nodePath);
+                throw new RuntimeException("write data(" + data + ") to node(" + nodePath + ") fail");
             }
         }
     }
@@ -243,25 +243,25 @@ public class ZookeeperClient {
             Event.EventType type = event.getType();
             String path = event.getPath();
 
-            log.info(ZK_LOG_PRE + "收到Watcher通知");
-            log.info(ZK_LOG_PRE + "连接状态:\t" + state.toString());
-            log.info(ZK_LOG_PRE + "事件类型:\t" + type.toString());
+            log.info(ZK_LOG_PRE + "receive Watcher notify");
+            log.info(ZK_LOG_PRE + "connect status:\t" + state.toString());
+            log.info(ZK_LOG_PRE + "event type:\t" + type.toString());
             if (Event.KeeperState.SyncConnected == state) {
                 // 成功连接上ZK服务器
                 if (Event.EventType.None == type) {
-                    log.info(ZK_LOG_PRE + "成功连接上ZK服务器");
+                    log.info(ZK_LOG_PRE + "connect zookeeper server success");
                     phaser.arriveAndDeregister();
                     if (null != connectSuccessCallback) {
                         connectSuccessCallback.run();
                     }
                 }
             } else if (Event.KeeperState.Disconnected == state) {
-                log.error(ZK_LOG_PRE + "与ZK服务器断开连接", new ButterflyException("与ZK服务器断开连接"));
+                log.error(ZK_LOG_PRE + "disconnect to zookeeper server", new ButterflyException("disconnect to zookeeper server"));
                 if (null != disconnectCallback) {
                     disconnectCallback.run();
                 }
             } else if (Event.KeeperState.Expired == state) {
-                log.error(ZK_LOG_PRE + "会话失效，重新建立连接");
+                log.error(ZK_LOG_PRE + "session expire，ready to reconnect");
                 if (null != disconnectCallback) {
                     disconnectCallback.run();
                 }
@@ -278,7 +278,7 @@ public class ZookeeperClient {
             try {
                 this.zookeeper.close();
             } catch (Exception e) {
-                log.error(ZK_LOG_PRE + "关闭连接失败");
+                log.error(ZK_LOG_PRE + "close connect fail");
             }
         }
     }
@@ -290,7 +290,7 @@ public class ZookeeperClient {
         try {
             return zookeeper.getChildren(path, false).stream().map(r -> path + "/" + r).collect(Collectors.toList());
         } catch (KeeperException | InterruptedException e) {
-            log.error(ZK_LOG_PRE + "读取路径" + path + "的子节点路径失败");
+            log.error(ZK_LOG_PRE + "read path(" + path + ")'child path fail");
         }
         return Collections.emptyList();
     }
@@ -302,7 +302,7 @@ public class ZookeeperClient {
         try {
             return new ArrayList<>(zookeeper.getChildren(path, false));
         } catch (KeeperException | InterruptedException e) {
-            log.error(ZK_LOG_PRE + "读取路径" + path + "的子节点名字失败");
+            log.error(ZK_LOG_PRE + "read path(" + path + ")'child path name fail");
         }
         return Collections.emptyList();
     }
@@ -319,10 +319,10 @@ public class ZookeeperClient {
             }
             return null;
         } catch (KeeperException e) {
-            log.error(ZK_LOG_PRE + "读取数据失败，发生KeeperException，path: " + path);
+            log.error(ZK_LOG_PRE + "read data fail，path: " + path);
             return null;
         } catch (InterruptedException e) {
-            log.error(ZK_LOG_PRE + "读取数据失败，发生 InterruptedException，path: " + path);
+            log.error(ZK_LOG_PRE + "read data fail，path: " + path);
             Thread.currentThread().interrupt();
             return null;
         }
@@ -345,7 +345,7 @@ public class ZookeeperClient {
         try {
             return null != this.zookeeper.exists(nodePath, false);
         } catch (KeeperException | InterruptedException e) {
-            log.error(ZK_LOG_PRE + "判断节点是否存在异常", e);
+            log.error(ZK_LOG_PRE + "judge node exist fail", e);
         }
         return false;
     }
@@ -397,22 +397,22 @@ public class ZookeeperClient {
         try {
             if (null == this.zookeeper.exists(node, false)) {
                 String realPath = zookeeper.create(node, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode);
-                log.info(ZK_LOG_PRE + "节点创建成功, Path: " + realPath);
+                log.info(ZK_LOG_PRE + "node create success, Path: " + realPath);
                 return true;
             } else {
-                log.info(ZK_LOG_PRE + "节点" + node + "已经存在");
+                log.info(ZK_LOG_PRE + "node(" + node + ") has existed");
                 return false;
             }
         } catch (KeeperException e) {
-            log.error(ZK_LOG_PRE + "节点" + node + "创建失败，发生KeeperException");
+            log.error(ZK_LOG_PRE + "node(" + node + ") create fail");
         } catch (InterruptedException e) {
-            log.error(ZK_LOG_PRE + "节点" + node + "创建失败，发生 InterruptedException");
+            log.error(ZK_LOG_PRE + "node(" + node + ") create fail");
             Thread.currentThread().interrupt();
         }
         return false;
     }
 
-    private Boolean strIsEmpty(String str){
+    private Boolean strIsEmpty(String str) {
         return null == str || "".equals(str);
     }
 }

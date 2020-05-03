@@ -109,7 +109,7 @@ public class BufferManager {
                     refreshState = RefreshEnum.FINISH;
                 }
             } catch (Throwable e) {
-                log.error(DTB_LOG_PRE + "rpc 调用异常", e);
+                log.error(DTB_LOG_PRE + "rpc fail", e);
             }
         });
     }

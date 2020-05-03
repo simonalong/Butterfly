@@ -26,7 +26,7 @@ final class UuidSplicer {
             try {
                 this.wait(DELAY_START_TIME);
             } catch (InterruptedException e) {
-                log.warn(LOG_PRE + "延迟启动失败");
+                log.warn(LOG_PRE + "delay start fail");
                 Thread.currentThread().interrupt();
             }
         }

@@ -131,7 +131,7 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler {
      */
     private void addShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            log.info(ZK_LOG_PRE + "进程即将退出，清理本次启动申请的zk资源");
+            log.info(ZK_LOG_PRE + "process ready to quit, clear resources of zookeeper");
             updateWorkerNodeInfo(null);
             zookeeperClient.deleteNode(workerIdAllocator.getWorkerNodePath() + SESSION_NODE);
             if (null != scheduler) {
@@ -159,7 +159,7 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler {
                 zookeeperClient.writeNodeData(workerNodePath, "");
             }
         } catch (Throwable e) {
-            log.error(ZK_LOG_PRE + "节点worker_" + getWorkerId() + "更新失败", e);
+            log.error(ZK_LOG_PRE + "node(worker_" + getWorkerId() + ") update fail", e);
         }
 
         this.workerNodeEntity = workerNodeInfo;
