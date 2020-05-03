@@ -31,6 +31,14 @@ public class DbPressIdGeneratorTest extends BaseTest {
     @Test
     public void baseRunTest() {
         baseRun();
+        //{symbol=0, sequence=1, workerId=0, abstractTime=2020-05-03 10:08:56.075, time=6170936075, uuid=25882781863124992}
+        //{symbol=0, sequence=2, workerId=0, abstractTime=2020-05-03 10:08:56.075, time=6170936075, uuid=25882781863133184}
+        //{symbol=0, sequence=1, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612832768}
+        //{symbol=0, sequence=2, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612840960}
+        //{symbol=0, sequence=3, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612849152}
+        //{symbol=0, sequence=4, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612857344}
+        //{symbol=0, sequence=5, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612865536}
+        //{symbol=0, sequence=6, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612873728}
     }
 
     /**
@@ -41,16 +49,16 @@ public class DbPressIdGeneratorTest extends BaseTest {
     public void testQps1() {
         lowPressRun();
 
-        //biz=biz0, qps = 4.0单位（w/s）
-        //biz=biz0, qps = 9.090909090909092单位（w/s）
+        //biz=biz0, qps = 5.555555555555555单位（w/s）
+        //biz=biz0, qps = 4.761904761904762单位（w/s）
+        //biz=biz0, qps = 6.25单位（w/s）
         //biz=biz0, qps = 7.142857142857143单位（w/s）
-        //biz=biz0, qps = 11.11111111111111单位（w/s）
-        //biz=biz0, qps = 7.6923076923076925单位（w/s）
-        //biz=biz0, qps = 5.0单位（w/s）
         //biz=biz0, qps = 6.666666666666667单位（w/s）
-        //biz=biz0, qps = 11.11111111111111单位（w/s）
+        //biz=biz0, qps = 5.555555555555555单位（w/s）
+        //biz=biz0, qps = 6.25单位（w/s）
+        //biz=biz0, qps = 7.142857142857143单位（w/s）
+        //biz=biz0, qps = 7.142857142857143单位（w/s）
         //biz=biz0, qps = 8.333333333333334单位（w/s）
-        //biz=biz0, qps = 7.6923076923076925单位（w/s）
     }
 
     /**
@@ -61,16 +69,16 @@ public class DbPressIdGeneratorTest extends BaseTest {
     public void testQps2() {
         lowToHighPressRun();
 
-        //biz=biz0, qps = 5.882352941176471单位（w/s）
-        //biz=biz0, qps = 80.66666666666667单位（w/s）
-        //biz=biz0, qps = 410.0单位（w/s）
-        //biz=biz0, qps = 576.3333333333334单位（w/s）
-        //biz=biz0, qps = 789.811320754717单位（w/s）
-        //biz=biz0, qps = 1021.5116279069767单位（w/s）
-        //biz=biz0, qps = 1177.7304964539007单位（w/s）
-        //biz=biz0, qps = 71.68770106409305单位（w/s）
-        //biz=biz0, qps = 57.44005812545411单位（w/s）
-        //biz=biz0, qps = 55.02609603340292单位（w/s）
+        //biz=biz0, qps = 5.2631578947368425单位（w/s）
+        //biz=biz0, qps = 44.81481481481482单位（w/s）
+        //biz=biz0, qps = 302.10526315789474单位（w/s）
+        //biz=biz0, qps = 480.27777777777777单位（w/s）
+        //biz=biz0, qps = 504.33734939759034单位（w/s）
+        //biz=biz0, qps = 507.8034682080925单位（w/s）
+        //biz=biz0, qps = 553.5333333333333单位（w/s）
+        //biz=biz0, qps = 95.54419525065963单位（w/s）
+        //biz=biz0, qps = 57.426150121065376单位（w/s）
+        //biz=biz0, qps = 55.03019909029901单位（w/s）
     }
 
     /**
