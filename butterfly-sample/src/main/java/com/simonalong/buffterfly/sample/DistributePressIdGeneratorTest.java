@@ -23,6 +23,15 @@ public class DistributePressIdGeneratorTest extends BaseTest {
     @Test
     public void baseRunTest() {
         baseRun();
+
+        //{symbol=0, sequence=0, workerId=2, abstractTime=2020-05-03 14:48:17.407, time=6187697407, uuid=25953083984969730}
+        //{symbol=0, sequence=1, workerId=2, abstractTime=2020-05-03 14:48:17.407, time=6187697407, uuid=25953083984977922}
+        //{symbol=0, sequence=2, workerId=2, abstractTime=2020-05-03 14:48:17.407, time=6187697407, uuid=25953083984986114}
+        //{symbol=0, sequence=3, workerId=2, abstractTime=2020-05-03 14:48:17.407, time=6187697407, uuid=25953083984994306}
+        //{symbol=0, sequence=4, workerId=2, abstractTime=2020-05-03 14:48:17.407, time=6187697407, uuid=25953083985002498}
+        //{symbol=0, sequence=5, workerId=2, abstractTime=2020-05-03 14:48:17.407, time=6187697407, uuid=25953083985010690}
+        //{symbol=0, sequence=6, workerId=2, abstractTime=2020-05-03 14:48:17.407, time=6187697407, uuid=25953083985018882}
+        //{symbol=0, sequence=7, workerId=2, abstractTime=2020-05-03 14:48:17.407, time=6187697407, uuid=25953083985027074}
     }
 
     /**
@@ -33,16 +42,16 @@ public class DistributePressIdGeneratorTest extends BaseTest {
     public void testQps1() {
         lowPressRun();
 
-        //biz=biz0, qps = 4.0单位（w/s）
-        //biz=biz0, qps = 9.090909090909092单位（w/s）
-        //biz=biz0, qps = 7.142857142857143单位（w/s）
-        //biz=biz0, qps = 11.11111111111111单位（w/s）
+        //biz=biz0, qps = 5.2631578947368425单位（w/s）
         //biz=biz0, qps = 7.6923076923076925单位（w/s）
-        //biz=biz0, qps = 5.0单位（w/s）
-        //biz=biz0, qps = 6.666666666666667单位（w/s）
-        //biz=biz0, qps = 11.11111111111111单位（w/s）
+        //biz=biz0, qps = 7.6923076923076925单位（w/s）
         //biz=biz0, qps = 8.333333333333334单位（w/s）
-        //biz=biz0, qps = 7.6923076923076925单位（w/s）
+        //biz=biz0, qps = 7.142857142857143单位（w/s）
+        //biz=biz0, qps = 7.142857142857143单位（w/s）
+        //biz=biz0, qps = 8.333333333333334单位（w/s）
+        //biz=biz0, qps = 10.0单位（w/s）
+        //biz=biz0, qps = 9.090909090909092单位（w/s）
+        //biz=biz0, qps = 8.333333333333334单位（w/s）
     }
 
     /**
@@ -53,16 +62,16 @@ public class DistributePressIdGeneratorTest extends BaseTest {
     public void testQps2() {
         lowToHighPressRun();
 
-        //biz=biz0, qps = 5.882352941176471单位（w/s）
-        //biz=biz0, qps = 80.66666666666667单位（w/s）
-        //biz=biz0, qps = 410.0单位（w/s）
-        //biz=biz0, qps = 576.3333333333334单位（w/s）
-        //biz=biz0, qps = 789.811320754717单位（w/s）
-        //biz=biz0, qps = 1021.5116279069767单位（w/s）
-        //biz=biz0, qps = 1177.7304964539007单位（w/s）
-        //biz=biz0, qps = 71.68770106409305单位（w/s）
-        //biz=biz0, qps = 57.44005812545411单位（w/s）
-        //biz=biz0, qps = 55.02609603340292单位（w/s）
+        //biz=biz0, qps = 4.3478260869565215单位（w/s）
+        //biz=biz0, qps = 28.80952380952381单位（w/s）
+        //biz=biz0, qps = 58.57142857142857单位（w/s）
+        //biz=biz0, qps = 83.52657004830918单位（w/s）
+        //biz=biz0, qps = 100.86746987951807单位（w/s）
+        //biz=biz0, qps = 146.41666666666666单位（w/s）
+        //biz=biz0, qps = 183.89811738648947单位（w/s）
+        //biz=biz0, qps = 193.90227576974564单位（w/s）
+        //biz=biz0, qps = 239.0826612903226单位（w/s）
+        //biz=biz0, qps = 222.49321676213447单位（w/s）
     }
 
     /**
@@ -73,16 +82,16 @@ public class DistributePressIdGeneratorTest extends BaseTest {
     public void testQps3() {
         highPressRun();
 
-        //biz=biz0, qps = 51.956149010235364单位（w/s）
-        //biz=biz0, qps = 53.98402072986396单位（w/s）
-        //biz=biz0, qps = 53.97527932207049单位（w/s）
-        //biz=biz0, qps = 53.972366148531954单位（w/s）
-        //biz=biz0, qps = 53.97527932207049单位（w/s）
-        //biz=biz0, qps = 53.978192810104716单位（w/s）
-        //biz=biz0, qps = 53.97527932207049单位（w/s）
-        //biz=biz0, qps = 53.97527932207049单位（w/s）
-        //biz=biz0, qps = 53.972366148531954单位（w/s）
-        //biz=biz0, qps = 53.98402072986396单位（w/s）
+        //biz=biz0, qps = 132.17023526301878单位（w/s）
+        //biz=biz0, qps = 79.14523149980214单位（w/s）
+        //biz=biz0, qps = 45.77077993409008单位（w/s）
+        //biz=biz0, qps = 46.010858562620776单位（w/s）
+        //biz=biz0, qps = 46.140358971992804单位（w/s）
+        //biz=biz0, qps = 46.112699437425064单位（w/s）
+        //biz=biz0, qps = 46.20858555519616单位（w/s）
+        //biz=biz0, qps = 45.76030750926646单位（w/s）
+        //biz=biz0, qps = 45.54148829583751单位（w/s）
+        //biz=biz0, qps = 45.57261996992207单位（w/s）
     }
 
     /**
@@ -93,26 +102,26 @@ public class DistributePressIdGeneratorTest extends BaseTest {
     public void testQps4() {
         lowToHighMultiBizPressRun();
 
-        //biz=biz0, qps = 1.492537313432836单位（w/s）
-        //biz=biz0, qps = 20.862068965517242单位（w/s）
-        //biz=biz0, qps = 119.58333333333333单位（w/s）
-        //biz=biz0, qps = 402.09302325581393单位（w/s）
-        //biz=biz0, qps = 581.3888888888889单位（w/s）
-        //biz=biz0, qps = 660.5263157894736单位（w/s）
-        //biz=biz0, qps = 751.4027149321267单位（w/s）
-        //biz=biz0, qps = 85.83407407407407单位（w/s）
-        //biz=biz0, qps = 60.890885750962774单位（w/s）
-        //biz=biz0, qps = 57.79700837966951单位（w/s）
+        //biz=biz0, qps = 5.0单位（w/s）
+        //biz=biz0, qps = 44.81481481481482单位（w/s）
+        //biz=biz0, qps = 56.27450980392157单位（w/s）
+        //biz=biz0, qps = 80.79439252336448单位（w/s）
+        //biz=biz0, qps = 114.68493150684931单位（w/s）
+        //biz=biz0, qps = 170.91439688715954单位（w/s）
+        //biz=biz0, qps = 194.906103286385单位（w/s）
+        //biz=biz0, qps = 233.4327155519742单位（w/s）
+        //biz=biz0, qps = 232.06457925636008单位（w/s）
+        //biz=biz0, qps = 218.4107724178751单位（w/s）
 
-        //biz=biz1, qps = 5.882352941176471单位（w/s）
-        //biz=biz1, qps = 21.228070175438596单位（w/s）
-        //biz=biz1, qps = 260.90909090909093单位（w/s）
-        //biz=biz1, qps = 367.8723404255319单位（w/s）
-        //biz=biz1, qps = 709.4915254237288单位（w/s）
-        //biz=biz1, qps = 574.1830065359477单位（w/s）
-        //biz=biz1, qps = 646.147859922179单位（w/s）
-        //biz=biz1, qps = 616.3617021276596单位（w/s）
-        //biz=biz1, qps = 738.8473520249221单位（w/s）
-        //biz=biz1, qps = 775.2205882352941单位（w/s）
+        //biz=biz1, qps = 14.285714285714286单位（w/s）
+        //biz=biz1, qps = 55.0单位（w/s）
+        //biz=biz1, qps = 88.3076923076923单位（w/s）
+        //biz=biz1, qps = 114.50331125827815单位（w/s）
+        //biz=biz1, qps = 175.14644351464435单位（w/s）
+        //biz=biz1, qps = 196.09375单位（w/s）
+        //biz=biz1, qps = 214.8253557567917单位（w/s）
+        //biz=biz1, qps = 239.6112489660877单位（w/s）
+        //biz=biz1, qps = 226.84839789574366单位（w/s）
+        //biz=biz1, qps = 212.989898989899单位（w/s）
     }
 }

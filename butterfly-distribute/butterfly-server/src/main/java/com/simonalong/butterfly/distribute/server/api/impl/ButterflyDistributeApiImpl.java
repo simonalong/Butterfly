@@ -31,7 +31,6 @@ public class ButterflyDistributeApiImpl implements ButterflyDistributeApi, Initi
 
     @Override
     public Response<BitSequenceDTO> getNext(String namespace) {
-        log.info("getNext namespace={}", namespace);
         DefaultBitAllocator bitAllocator;
         if (!namespaceSet.contains(namespace)) {
             butterflyIdGenerator.addNamespaces(namespace);

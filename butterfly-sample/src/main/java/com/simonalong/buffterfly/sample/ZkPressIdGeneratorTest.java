@@ -102,26 +102,26 @@ public class ZkPressIdGeneratorTest extends BaseTest {
     public void testQps4() {
         lowToHighMultiBizPressRun();
 
-        //biz=biz0, qps = 3.8461538461538463单位（w/s）
-        //biz=biz0, qps = 22.830188679245282单位（w/s）
-        //biz=biz0, qps = 287.0单位（w/s）
-        //biz=biz0, qps = 384.22222222222223单位（w/s）
-        //biz=biz0, qps = 377.1171171171171单位（w/s）
-        //biz=biz0, qps = 387.0044052863436单位（w/s）
-        //biz=biz0, qps = 433.57702349869453单位（w/s）
-        //biz=biz0, qps = 104.77034358047017单位（w/s）
-        //biz=biz0, qps = 62.9432059447983单位（w/s）
-        //biz=biz0, qps = 60.72157314464374单位（w/s）
+        //biz=biz0, qps = 5.555555555555555单位（w/s）
+        //biz=biz0, qps = 67.22222222222223单位（w/s）
+        //biz=biz0, qps = 574.0单位（w/s）
+        //biz=biz0, qps = 720.4166666666666单位（w/s）
+        //biz=biz0, qps = 664.4444444444445单位（w/s）
+        //biz=biz0, qps = 821.0280373831775单位（w/s）
+        //biz=biz0, qps = 775.981308411215单位（w/s）
+        //biz=biz0, qps = 74.47043701799485单位（w/s）
+        //biz=biz0, qps = 59.53062248995984单位（w/s）
+        //biz=biz0, qps = 57.143631436314365单位（w/s）
 
-        //biz=biz1, qps = 7.142857142857143单位（w/s）
-        //biz=biz1, qps = 75.625单位（w/s）
-        //biz=biz1, qps = 318.8888888888889单位（w/s）
-        //biz=biz1, qps = 432.25单位（w/s）
-        //biz=biz1, qps = 402.5单位（w/s）
-        //biz=biz1, qps = 388.716814159292单位（w/s）
-        //biz=biz1, qps = 446.39784946236557单位（w/s）
-        //biz=biz1, qps = 398.4731774415406单位（w/s）
-        //biz=biz1, qps = 377.05882352941177单位（w/s）
-        //biz=biz1, qps = 368.8205897051474单位（w/s）
+        //biz=biz1, qps = 20.0单位（w/s）
+        //biz=biz1, qps = 134.44444444444446单位（w/s）
+        //biz=biz1, qps = 574.0单位（w/s）
+        //biz=biz1, qps = 960.5555555555555单位（w/s）
+        //biz=biz1, qps = 930.2222222222222单位（w/s）
+        //biz=biz1, qps = 844.7115384615385单位（w/s）
+        //biz=biz1, qps = 1044.4025157232704单位（w/s）
+        //biz=biz1, qps = 995.4982817869416单位（w/s）
+        //biz=biz1, qps = 960.2024291497976单位（w/s）
+        //biz=biz1, qps = 894.5575757575757单位（w/s）
     }
 }
