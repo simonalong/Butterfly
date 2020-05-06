@@ -35,6 +35,7 @@ Butterfly（蝴蝶）是一个超高性能的发号器框架。框架通过引�
 
 我们这里仅仅用zookeeper来举例子
 
+目前还未发布到maven中央仓库，还在测试阶段，如果要使用，请自行打包到私人仓库
 ```xml
 <dependency>
   <groupId>com.github.simonalong</groupId>
