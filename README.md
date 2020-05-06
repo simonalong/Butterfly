@@ -27,7 +27,38 @@ Butterfly（蝴蝶）是一个超高性能的发号器框架。框架通过引�
 信息安全：自增位放在高位，id不是完全连续的，防止外部恶意的数据爬取<br/>
 易用性：开发接入非常简单<br/>
 
-## 详细介绍
+## 快速入门
+对于使用根据机器id的分配方式不同，这里有三种方式：
+- （单机版）zookeeper分配workerId
+- （单机版）db分配workerId
+- （分布式版）distribute分配workerId
+
+我们这里仅仅用zookeeper来举例子
+
+```xml
+<dependency>
+  <groupId>com.github.simonalong</groupId>
+  <artifactId>butterfly-zookeeper-allocator</artifactId>
+  <!--替换为具体版本号-->
+  <version>${last.version.release}</version>
+</dependency>
+```
+使用示例
+```java
+@Test
+public void test(){
+    ZkButterflyConfig config = new ZkButterflyConfig();
+    config.setHost("localhost:2181");
+
+    ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
+    // 添加业务空间，如果业务空间不存在，则会注册
+    generator.addNamespaces("test1", "test2");
+    Long uuid = generator.getUUid("test1");
+    System.out.println(uuid);
+}
+```
+
+## 更多内容
 对于详细内容介绍，请见文档[Butterfly说明文档](https://www.yuque.com/simonalong/butterfly)
 
 技术讨论群： 请先加WX，并注明来源
