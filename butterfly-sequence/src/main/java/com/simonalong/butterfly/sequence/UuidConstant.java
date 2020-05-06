@@ -12,10 +12,6 @@ public interface UuidConstant {
      * log前缀
      */
     String LOG_PRE = "[butterfly]";
-    /**
-     * 2020-02-22 00:00:00.000 对应的long型时间，作为回拨时间的最低进行计算
-     */
-    long START_TIME = 1582300800000L;
 
     /**
      * 机器id增加占用的bit数

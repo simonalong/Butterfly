@@ -52,6 +52,9 @@ public void test(){
     config.setHost("localhost:2181");
 
     ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
+    // 设置起始时间，如果不设置，则默认从2020年2月22日开始
+    generator.setStartTime(2020, 5, 1, 0, 0, 0);
+            
     // 添加业务空间，如果业务空间不存在，则会注册
     generator.addNamespaces("test1", "test2");
     Long uuid = generator.getUUid("test1");

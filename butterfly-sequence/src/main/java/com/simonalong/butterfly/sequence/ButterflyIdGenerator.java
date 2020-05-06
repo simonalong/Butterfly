@@ -5,6 +5,8 @@ import com.simonalong.butterfly.sequence.exception.ButterflyException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +20,11 @@ import static com.simonalong.butterfly.sequence.UuidConstant.*;
  */
 public final class ButterflyIdGenerator {
 
+    /**
+     * 2020-02-22 00:00:00.000 对应的时间
+     */
+    static Long startTime = 1582300800000L;
+    private static final Integer FIRST_YEAR = 2020;
     private ButterflyConfig butterflyConfig;
     private static volatile ButterflyIdGenerator instance;
     /**
@@ -67,6 +74,25 @@ public final class ButterflyIdGenerator {
         return getUUidSplicer(namespace).getBitAllocator();
     }
 
+    /**
+     * 设置启动时间
+     * <p>
+     * 目前当前的启动时间是按照2020年2月22号算起，如果不设置，则最久可以用到2083年左右
+     */
+    public void setStartTime(Date startTimeDate) {
+        if (null != startTimeDate) {
+            startTime = startTimeDate.getTime();
+        }
+    }
+
+    public void setStartTime(int year, int month, int dayOfMonth, int hour, int minute, int second) {
+        if (year < FIRST_YEAR) {
+            throw new ButterflyException("请设置未来时间");
+        }
+        LocalDateTime localDateTime = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
+        startTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()).getTime();
+    }
+
     private UuidSplicer getUUidSplicer(String namespace) {
         if (!uUidBuilderMap.containsKey(namespace)) {
             throw new ButterflyException("命名空间" + namespace + "不存在，请先添加命名空间");
@@ -101,7 +127,7 @@ public final class ButterflyIdGenerator {
         resultMap.put("uuid", uid);
         resultMap.put("symbol", ((uid & symbolMark) >>> SYMBOL_LEFT_SHIFT));
         resultMap.put("time", ((uid & timeMark) >> TIME_LEFT_SHIFT));
-        resultMap.put("abstractTime", dateFormat.format(new Date(((uid & timeMark) >> TIME_LEFT_SHIFT) + START_TIME)));
+        resultMap.put("abstractTime", dateFormat.format(new Date(((uid & timeMark) >> TIME_LEFT_SHIFT) + startTime)));
         resultMap.put("sequence", ((uid & seqMark) >> SEQ_LEFT_SHIFT));
         resultMap.put("workerId", (uid & workerMark));
         return resultMap;

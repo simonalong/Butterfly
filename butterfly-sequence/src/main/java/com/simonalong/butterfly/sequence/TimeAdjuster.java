@@ -4,7 +4,6 @@ import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import lombok.experimental.UtilityClass;
 
 import static com.simonalong.butterfly.sequence.UuidConstant.DELAY_THREAD_HOLD;
-import static com.simonalong.butterfly.sequence.UuidConstant.START_TIME;
 import static com.simonalong.butterfly.sequence.UuidConstant.TIME_BACK;
 
 /**
@@ -56,9 +55,9 @@ public class TimeAdjuster {
      * 获取相对一个固定时间起点的时间，用于延长年的使用时间
      */
     public long getRelativeTime(long currentTime) {
-        if (currentTime <= START_TIME) {
+        if (currentTime <= ButterflyIdGenerator.startTime) {
             throw new ButterflyException("回拨时间超过2019-11-9 0.0.0.000");
         }
-        return currentTime - START_TIME;
+        return currentTime - ButterflyIdGenerator.startTime;
     }
 }

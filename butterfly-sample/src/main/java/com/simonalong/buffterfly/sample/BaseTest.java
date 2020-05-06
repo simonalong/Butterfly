@@ -43,6 +43,10 @@ public class BaseTest {
      */
     public void baseRun() {
         ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
+
+        // 设置起始时间，如果不设置，则默认从2020年2月22日开始
+        generator.setStartTime(2020, 5, 1, 0, 0, 0);
+
         generator.addNamespaces("test1", "test2", "test3", "test4");
 
         // 测试test1
