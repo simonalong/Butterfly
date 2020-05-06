@@ -27,5 +27,5 @@ Butterfly（蝴蝶）是一个超高性能的发号器框架。框架通过引�
 信息安全：自增位放在高位，id不是完全连续的，防止外部恶意的数据爬取<br/>
 易用性：开发接入非常简单<br/>
 
-[https://www.yuque.com/simonalong/butterfly](最新文档)
+[说明文档](https://www.yuque.com/simonalong/butterfly)
 
