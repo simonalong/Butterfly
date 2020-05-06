@@ -13,13 +13,9 @@ public interface ZkConstant {
      */
     String ZK_LOG_PRE = LOG_PRE + "[zk]";
     /**
-     * 格格家中间件的zk顶层路径
-     */
-    String PATH_PRE = "/com/simonalong";
-    /**
      * 根路径
      */
-    String ROOT_PATH = PATH_PRE + "/butterfly/sequence";
+    String ROOT_PATH = "/butterfly/sequence";
     /**
      * 机器节点的左前缀
      */

@@ -43,7 +43,7 @@ public class BaseTest {
      */
     public void baseRun() {
         ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
-        generator.addNamespaces("test1", "test2");
+        generator.addNamespaces("test1", "test2", "test3", "test4");
 
         // 测试test1
         show(ButterflyIdGenerator.parseUid(generator.getUUid("test1")));
@@ -54,8 +54,11 @@ public class BaseTest {
         show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
         show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
         show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
+
+        // 测试test3
+        show(ButterflyIdGenerator.parseUid(generator.getUUid("test3")));
+        // 测试test4
+        show(ButterflyIdGenerator.parseUid(generator.getUUid("test4")));
     }
 
     /**
