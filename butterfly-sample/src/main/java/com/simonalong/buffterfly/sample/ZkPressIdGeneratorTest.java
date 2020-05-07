@@ -24,14 +24,14 @@ public class ZkPressIdGeneratorTest extends BaseTest {
     @Test
     public void baseRunTest() {
         baseRun();
-        //{symbol=0, sequence=1, workerId=14, abstractTime=2020-05-03 10:12:56.022, time=6171176022, uuid=25883788273786894}
-        //{symbol=0, sequence=2, workerId=14, abstractTime=2020-05-03 10:12:56.022, time=6171176022, uuid=25883788273795086}
-        //{symbol=0, sequence=1, workerId=5, abstractTime=2020-05-03 10:12:56.435, time=6171176435, uuid=25883790006034437}
-        //{symbol=0, sequence=2, workerId=5, abstractTime=2020-05-03 10:12:56.435, time=6171176435, uuid=25883790006042629}
-        //{symbol=0, sequence=3, workerId=5, abstractTime=2020-05-03 10:12:56.435, time=6171176435, uuid=25883790006050821}
-        //{symbol=0, sequence=4, workerId=5, abstractTime=2020-05-03 10:12:56.435, time=6171176435, uuid=25883790006059013}
-        //{symbol=0, sequence=5, workerId=5, abstractTime=2020-05-03 10:12:56.435, time=6171176435, uuid=25883790006067205}
-        //{symbol=0, sequence=6, workerId=5, abstractTime=2020-05-03 10:12:56.435, time=6171176435, uuid=25883790006075397}
+        //{symbol=0, sequence=1, workerId=12, abstractTime=2020-05-07 22:58:25.787, time=601105787, uuid=2521220406845452}
+        //{symbol=0, sequence=2, workerId=12, abstractTime=2020-05-07 22:58:25.787, time=601105787, uuid=2521220406853644}
+        //{symbol=0, sequence=1, workerId=7, abstractTime=2020-05-07 22:58:26.040, time=601106040, uuid=2521221468004359}
+        //{symbol=0, sequence=2, workerId=7, abstractTime=2020-05-07 22:58:26.040, time=601106040, uuid=2521221468012551}
+        //{symbol=0, sequence=3, workerId=7, abstractTime=2020-05-07 22:58:26.040, time=601106040, uuid=2521221468020743}
+        //{symbol=0, sequence=4, workerId=7, abstractTime=2020-05-07 22:58:26.040, time=601106040, uuid=2521221468028935}
+        //{symbol=0, sequence=1, workerId=4, abstractTime=2020-05-07 22:58:26.065, time=601106065, uuid=2521221572861956}
+        //{symbol=0, sequence=1, workerId=8, abstractTime=2020-05-07 22:58:26.093, time=601106093, uuid=2521221690302472}
     }
 
     /**

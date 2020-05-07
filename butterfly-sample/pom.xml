@@ -24,17 +24,17 @@
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
-            <artifactId>butterfly-zookeeper-allocator</artifactId>
+            <artifactId>butterfly-allocator-zookeeper</artifactId>
             <version>${butterfly.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
-            <artifactId>butterfly-db-allocator</artifactId>
+            <artifactId>butterfly-allocator-db</artifactId>
             <version>${butterfly.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
-            <artifactId>butterfly-distribute-allocator</artifactId>
+            <artifactId>butterfly-allocator-distribute</artifactId>
             <version>${butterfly.version}</version>
         </dependency>
         <dependency>

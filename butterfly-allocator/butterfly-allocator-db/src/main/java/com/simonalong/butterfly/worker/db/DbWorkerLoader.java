@@ -23,7 +23,7 @@ public class DbWorkerLoader implements WorkerLoader {
             return false;
         }
         if (!(butterflyConfig instanceof DbButterflyConfig)) {
-            return true;
+            return false;
         }
 
         try {
