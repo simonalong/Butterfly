@@ -58,27 +58,27 @@
             <dependency>
                 <groupId>com.github.simonalong</groupId>
                 <artifactId>butterfly-sequence</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.simonalong</groupId>
-                <artifactId>butterfly-db-allocator</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <artifactId>butterfly-allocator-db</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.simonalong</groupId>
-                <artifactId>butterfly-distribute-allocator</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <artifactId>butterfly-allocator-distribute</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.simonalong</groupId>
-                <artifactId>butterfly-zookeeper-allocator</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <artifactId>butterfly-allocator-zookeeper</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.simonalong</groupId>
                 <artifactId>butterfly-api</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>

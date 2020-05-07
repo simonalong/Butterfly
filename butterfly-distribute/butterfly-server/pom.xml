@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
-            <artifactId>butterfly-zookeeper-allocator</artifactId>
+            <artifactId>butterfly-allocator-zookeeper</artifactId>
         </dependency>
 
         <dependency>
