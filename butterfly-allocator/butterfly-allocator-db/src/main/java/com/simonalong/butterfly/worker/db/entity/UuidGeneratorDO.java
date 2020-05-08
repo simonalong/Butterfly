@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  * @since 2020/4/26 10:28 PM
  */
 @Data
-@Table("neo_uuid_generator")
+@Table("butterfly_uuid_generator")
 @Accessors(chain = true)
 public class UuidGeneratorDO {
 

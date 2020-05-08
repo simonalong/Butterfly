@@ -1,4 +1,4 @@
-CREATE TABLE `neo_uuid_generator` (
+CREATE TABLE `butterfly_uuid_generator` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `namespace` varchar(128) DEFAULT '' COMMENT '命名空间',
   `work_id` int(16) COMMENT '工作id',
@@ -8,4 +8,4 @@ CREATE TABLE `neo_uuid_generator` (
   `process_id` varchar(128) NOT NULL DEFAULT '0' COMMENT '进程id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_name_work` (`namespace`,`work_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发号器表';

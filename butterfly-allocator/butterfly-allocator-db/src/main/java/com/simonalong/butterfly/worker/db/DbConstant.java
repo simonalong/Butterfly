@@ -15,5 +15,5 @@ public interface DbConstant {
     /**
      * 全局id生成器的表名
      */
-    String UUID_TABLE = "neo_uuid_generator";
+    String UUID_TABLE = "butterfly_uuid_generator";
 }
