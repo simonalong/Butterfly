@@ -42,7 +42,6 @@
         <neo.version>0.5.0</neo.version>
         <dubbo.version>2.7.1</dubbo.version>
         <curator.version>4.0.1</curator.version>
-        <revision>1.0.0-SNAPSHOT</revision>
     </properties>
 
     <dependencies>
