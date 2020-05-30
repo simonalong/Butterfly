@@ -24,8 +24,6 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="org.springframework" level="INFO" additivity="false"/>
-
     <logger name="com.simonalong.neo" level="INFO" additivity="true">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="THREAD_INFO" />
