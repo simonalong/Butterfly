@@ -10,26 +10,31 @@ public interface WorkerNodeHandler {
 
     /**
      * 当前业务的key
+     * @return uidKey
      */
     String getUidKey();
 
     /**
      * 当前工作节点的下次失效时间
+     * @return 时间
      */
     Long getLastExpireTime();
 
     /**
      * ip信息
+     * @return ip
      */
     String getIp();
 
     /**
      * 进程id
+     * @return pid
      */
     String getProcessId();
 
     /**
      * 获取节点的下表索引
+     * @return 节点名下标
      */
     Integer getWorkerId();
 
@@ -40,6 +45,7 @@ public interface WorkerNodeHandler {
 
     /**
      * 刷新worker节点信息
+     * @param workerNodePath 工作节点路径
      */
     void refreshNodeInfo(String workerNodePath);
 }

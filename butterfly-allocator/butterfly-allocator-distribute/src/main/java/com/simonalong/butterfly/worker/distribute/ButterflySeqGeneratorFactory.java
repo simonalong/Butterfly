@@ -31,9 +31,6 @@ public class ButterflySeqGeneratorFactory {
         return INSTANCE;
     }
 
-    /**
-     * 初始化
-     */
     public synchronized ButterflySeqGeneratorFactory init(String zkAddress) {
         this.zkAddress = zkAddress;
         // 首次调用

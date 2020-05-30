@@ -165,43 +165,58 @@
             </plugin>
 
             <!-- GPG -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>oss</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
+            <!-- GPG -->
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-gpg-plugin</artifactId>-->
+            <!--<version>1.6</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>sign-artifacts</id>-->
+            <!--<phase>verify</phase>-->
+            <!--<goals>-->
+            <!--<goal>sign</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+            <!--<groupId>org.sonatype.plugins</groupId>-->
+            <!--<artifactId>nexus-staging-maven-plugin</artifactId>-->
+            <!--<version>1.6.8</version>-->
+            <!--<extensions>true</extensions>-->
+            <!--<configuration>-->
+            <!--<serverId>oss</serverId>-->
+            <!--<nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+            <!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+            <!--</configuration>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 
+    <!--<distributionManagement>-->
+    <!--<snapshotRepository>-->
+    <!--<id>oss</id>-->
+    <!--<url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
+    <!--</snapshotRepository>-->
+    <!--<repository>-->
+    <!--<id>oss</id>-->
+    <!--<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+    <!--</repository>-->
+    <!--</distributionManagement>-->
+
     <distributionManagement>
-        <snapshotRepository>
-            <id>oss</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
+        <!-- 两个ID必须与 setting.xml中的<server><id>nexus-releases</id></server>保持一致-->
         <repository>
-            <id>oss</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>nexus-releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://localhost:8081/nexus/content/repositories/releases</url>
         </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
     </distributionManagement>
 
 </project>

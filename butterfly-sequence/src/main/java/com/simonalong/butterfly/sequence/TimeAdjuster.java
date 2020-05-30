@@ -53,6 +53,9 @@ public class TimeAdjuster {
 
     /**
      * 获取相对一个固定时间起点的时间，用于延长年的使用时间
+     *
+     * @param currentTime 当前时间
+     * @return 调整后的时间
      */
     public long getRelativeTime(long currentTime) {
         if (currentTime <= ButterflyIdGenerator.startTime) {

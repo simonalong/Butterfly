@@ -35,6 +35,7 @@ public final class ButterflyIdGenerator {
     /**
      * 全局id生成器的构造函数
      *
+     * @param butterflyConfig 配置
      * @return 全局id生成器对象
      */
     public static ButterflyIdGenerator getInstance(ButterflyConfig butterflyConfig) {
@@ -78,6 +79,7 @@ public final class ButterflyIdGenerator {
      * 设置启动时间
      * <p>
      * 目前当前的启动时间是按照2020年2月22号算起，如果不设置，则最久可以用到2083年左右
+     * @param startTimeDate 起始时间
      */
     public void setStartTime(Date startTimeDate) {
         if (null != startTimeDate) {
@@ -111,8 +113,8 @@ public final class ButterflyIdGenerator {
      *     <li>sequence：序列值</li>
      *     <li>workerId：分配的机器id</li>
      * </ul>
-     * @param uid
-     * @return
+     * @param uid 全局id
+     * @return 解析的数据
      */
     @SuppressWarnings("all")
     public static Map<String, Object> parseUid(Long uid) {

@@ -58,6 +58,9 @@ public class ZookeeperClient {
 
     /**
      * 创建zookeeper的客户端
+     *
+     * @param connectString 链接字符
+     * @return zk客户端
      */
     public ZookeeperClient connect(String connectString) {
         try {
@@ -80,6 +83,9 @@ public class ZookeeperClient {
 
     /**
      * 注册在连接断开或者会话超时时候的回调
+     *
+     * @param disconnectCallback 断开的回调
+     * @return zk客户端
      */
     public ZookeeperClient registerDisconnectCallback(Runnable disconnectCallback) {
         this.disconnectCallback = disconnectCallback;
@@ -94,7 +100,8 @@ public class ZookeeperClient {
     /**
      * 添加永久节点
      *
-     * @param nodePath 节点路径
+     * @param nodePath  节点路径
+     * @param data      节点数据
      * @return zk的客户端类
      */
     public Boolean addPersistentNode(String nodePath, String data) {
@@ -105,6 +112,7 @@ public class ZookeeperClient {
      * 添加永久临时节点
      *
      * @param nodePath 父级节点路径
+     * @param data 节点数据
      * @return 新生成的节点路径
      */
     public Boolean addPersistentSeqNode(String nodePath, String data) {
@@ -115,6 +123,7 @@ public class ZookeeperClient {
      * 添加临时节点
      *
      * @param nodePath 节点路径
+     * @param data 节点数据
      * @return 新生成的节点路径
      */
     public Boolean addEphemeralNode(String nodePath, String data) {
@@ -125,6 +134,7 @@ public class ZookeeperClient {
      * 添加临时节点
      *
      * @param nodePath 节点路径
+     * @param data 节点数据
      * @return 新生成的节点路径
      */
     public Boolean addEphemeralSeqNode(String nodePath, String data) {
@@ -173,6 +183,9 @@ public class ZookeeperClient {
 
     /**
      * 循环创建永久节点
+     *
+     * @param nodePath 节点路径
+     * @return 结果
      */
     public Boolean addPersistentNodeWithRecurse(String nodePath) {
         List<String> nodeList = Stream.of(nodePath.split("/")).filter(d -> !strIsEmpty(d)).collect(Collectors.toList());
@@ -208,6 +221,8 @@ public class ZookeeperClient {
 
     /**
      * 循环删除节点以及子节点
+     *
+     * @param nodePath 路径
      */
     public void deleteNodeCycle(String nodePath) {
         List<String> pathList = getChildrenPathList(nodePath);
@@ -273,7 +288,7 @@ public class ZookeeperClient {
     /**
      * 关闭ZK连接
      */
-    public void close() throws InterruptedException {
+    public void close() {
         if (null != this.zookeeper) {
             try {
                 this.zookeeper.close();
@@ -285,6 +300,9 @@ public class ZookeeperClient {
 
     /**
      * 获取对应路径的子节点名称列表
+     *
+     * @param path 路径
+     * @return 节点路径
      */
     public List<String> getChildrenPathList(String path) {
         try {
@@ -297,6 +315,9 @@ public class ZookeeperClient {
 
     /**
      * 获取对应路径的子节点名称列表
+     *
+     * @param path 路径
+     * @return 节点路径
      */
     public List<String> getChildrenNameList(String path) {
         try {
@@ -311,6 +332,7 @@ public class ZookeeperClient {
      * 读取指定节点数据内容
      *
      * @param path 路径
+     * @return 节点数据
      */
     public String readData(String path) {
         try {
@@ -340,6 +362,7 @@ public class ZookeeperClient {
      * 判断节点是否存在
      *
      * @param nodePath 节点的全路径
+     * @return 节点是否存在
      */
     public Boolean nodeExist(String nodePath) {
         try {
@@ -352,6 +375,11 @@ public class ZookeeperClient {
 
     /**
      * 分布式锁
+     *
+     * @param lockPath 锁路径
+     * @param callable 加锁成功后的处理
+     * @param <T> 类型
+     * @return 对象
      */
     public <T> T distributeLock(String lockPath, Callable<T> callable) {
         try {
@@ -372,15 +400,18 @@ public class ZookeeperClient {
 
     /**
      * 分布式锁
+     *
+     * @param lockPath 锁路径
+     * @param runnable 加锁成功后的处理
      */
-    public void distributeLock(String lockPath, Runnable callable) {
+    public void distributeLock(String lockPath, Runnable runnable) {
         try {
             // 添加分布式锁
             if (!addEphemeralNode(lockPath)) {
                 throw new RuntimeException("加锁失败");
             }
 
-            callable.run();
+            runnable.run();
         } catch (Exception e) {
             throw new RuntimeException("执行异常", e);
         } finally {

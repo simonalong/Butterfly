@@ -70,9 +70,6 @@ public class NamespaceNodeManager {
         return getWorkerNodeHandler(namespace).getWorkerId();
     }
 
-    /**
-     * 获取过期时间
-     */
     public Long getExpireTime(String namespace) {
         return getWorkerNodeHandler(namespace).getLastExpireTime();
     }
