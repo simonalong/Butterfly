@@ -79,14 +79,13 @@ public final class ButterflyIdGenerator {
      * 设置启动时间
      * <p>
      * 目前当前的启动时间是按照2020年2月22号算起，如果不设置，则最久可以用到2083年左右
-     * @param startTimeDate 起始时间
+     * @param year 起始时间
+     * @param month 起始时间
+     * @param dayOfMonth 起始时间
+     * @param hour 起始时间
+     * @param minute 起始时间
+     * @param second 起始时间
      */
-    public void setStartTime(Date startTimeDate) {
-        if (null != startTimeDate) {
-            startTime = startTimeDate.getTime();
-        }
-    }
-
     public void setStartTime(int year, int month, int dayOfMonth, int hour, int minute, int second) {
         if (year < FIRST_YEAR) {
             throw new ButterflyException("请设置未来时间");
