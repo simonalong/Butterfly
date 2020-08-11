@@ -114,13 +114,12 @@ public void test(){
 </dependency>
 ```
 #### 使用示例
+首先启动服务端butterfly-server模块，然后客户端这边使用如下即可
 ```java
 @Test
 public void test(){
     DistributeButterflyConfig config = new DistributeButterflyConfig();
-    config.setUrl("jdbc:mysql://127.0.0.1:3306/neo?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowPublicKeyRetrieval=true");
-    config.setUserName("neo_test");
-    config.setPassword("neo@Test123");
+    config.setZkHose("localhost:2181");
 
     ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
     // 设置起始时间，如果不设置，则默认从2020年2月22日开始
