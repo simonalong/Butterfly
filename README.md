@@ -33,9 +33,8 @@ Butterfly（蝴蝶）是一个超高性能的发号器框架。框架通过引�
 - （单机版）db分配workerId
 - （分布式版）distribute分配workerId
 
-我们这里仅仅用zookeeper来举例子
-
 目前还未发布到maven中央仓库，还在测试阶段，如果要使用，请自行打包到私人仓库
+### zookeeper分配workerId
 ```xml
 <dependency>
   <groupId>com.github.simonalong</groupId>
@@ -44,12 +43,84 @@ Butterfly（蝴蝶）是一个超高性能的发号器框架。框架通过引�
   <version>${last.version.release}</version>
 </dependency>
 ```
-使用示例
+#### 使用示例
 ```java
 @Test
 public void test(){
     ZkButterflyConfig config = new ZkButterflyConfig();
     config.setHost("localhost:2181");
+
+    ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
+    // 设置起始时间，如果不设置，则默认从2020年2月22日开始
+    generator.setStartTime(2020, 5, 1, 0, 0, 0);
+            
+    // 添加业务空间，如果业务空间不存在，则会注册
+    generator.addNamespaces("test1", "test2");
+    Long uuid = generator.getUUid("test1");
+    System.out.println(uuid);
+}
+```
+### db分配workerId
+```xml
+<dependency>
+  <groupId>com.github.simonalong</groupId>
+  <artifactId>butterfly-allocator-db</artifactId>
+  <!--替换为具体版本号-->
+  <version>${last.version.release}</version>
+</dependency>
+```
+#### 使用示例
+在对应的公共库中创建表
+```sql
+CREATE TABLE `butterfly_uuid_generator` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `namespace` varchar(128) DEFAULT '' COMMENT '命名空间',
+  `work_id` int(16) COMMENT '工作id',
+  `last_expire_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '下次失效时间',
+  `uid` varchar(128) DEFAULT '0' COMMENT '本次启动唯一id',
+  `ip` bigint(20) NOT NULL DEFAULT '0' COMMENT 'ip',
+  `process_id` varchar(128) NOT NULL DEFAULT '0' COMMENT '进程id',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_name_work` (`namespace`,`work_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发号器表';
+```
+编写db方式的测试
+```java
+@Test
+public void test(){
+    DbButterflyConfig config = new DbButterflyConfig();
+    config.setUrl("jdbc:mysql://127.0.0.1:3306/neo?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowPublicKeyRetrieval=true");
+    config.setUserName("neo_test");
+    config.setPassword("neo@Test123");
+
+    ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
+    // 设置起始时间，如果不设置，则默认从2020年2月22日开始
+    generator.setStartTime(2020, 5, 1, 0, 0, 0);
+            
+    // 添加业务空间，如果业务空间不存在，则会注册
+    generator.addNamespaces("test1", "test2");
+    Long uuid = generator.getUUid("test1");
+    System.out.println(uuid);
+}
+```
+
+### 分布式模式
+```xml
+<dependency>
+  <groupId>com.github.simonalong</groupId>
+  <artifactId>butterfly-allocator-distribute</artifactId>
+  <!--替换为具体版本号-->
+  <version>${last.version.release}</version>
+</dependency>
+```
+#### 使用示例
+```java
+@Test
+public void test(){
+    DistributeButterflyConfig config = new DistributeButterflyConfig();
+    config.setUrl("jdbc:mysql://127.0.0.1:3306/neo?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowPublicKeyRetrieval=true");
+    config.setUserName("neo_test");
+    config.setPassword("neo@Test123");
 
     ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
     // 设置起始时间，如果不设置，则默认从2020年2月22日开始
