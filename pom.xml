@@ -42,7 +42,7 @@
         <neo.version>0.5.0</neo.version>
         <dubbo.version>2.7.1</dubbo.version>
         <curator.version>4.0.1</curator.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <dependencies>
