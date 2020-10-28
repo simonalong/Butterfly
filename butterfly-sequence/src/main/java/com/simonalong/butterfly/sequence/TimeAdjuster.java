@@ -3,6 +3,9 @@ package com.simonalong.butterfly.sequence;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import lombok.experimental.UtilityClass;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static com.simonalong.butterfly.sequence.UuidConstant.DELAY_THREAD_HOLD;
 import static com.simonalong.butterfly.sequence.UuidConstant.TIME_BACK;
 
@@ -59,7 +62,7 @@ public class TimeAdjuster {
      */
     public long getRelativeTime(long currentTime) {
         if (currentTime <= ButterflyIdGenerator.startTime) {
-            throw new ButterflyException("回拨时间超过2019-11-9 0.0.0.000");
+            throw new ButterflyException("回拨时间超过：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(new Date(currentTime)));
         }
         return currentTime - ButterflyIdGenerator.startTime;
     }

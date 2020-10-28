@@ -1,6 +1,6 @@
 package com.simonalong.buffterfly.sample;
 
-import com.simonalong.butterfly.worker.distribute.config.DistributeButterflyConfig;
+import com.simonalong.butterfly.worker.distribute.config.DistributeDubboButterflyConfig;
 import lombok.SneakyThrows;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,12 +9,12 @@ import org.junit.Test;
  * @author shizi
  * @since 2020/5/3 2:14 AM
  */
-public class DistributePressIdGeneratorTest extends BaseTest {
+public class DistributeDubboPressIdGeneratorTest extends BaseTest {
 
     @BeforeClass
     public static void beforeClass() {
-        config = new DistributeButterflyConfig();
-        ((DistributeButterflyConfig)config).setZkHose("localhost:2181");
+        config = new DistributeDubboButterflyConfig();
+        ((DistributeDubboButterflyConfig)config).setZkHostAndPort("localhost:2181");
     }
 
     /**

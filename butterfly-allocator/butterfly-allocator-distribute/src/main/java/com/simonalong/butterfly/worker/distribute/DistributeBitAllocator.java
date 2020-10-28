@@ -1,14 +1,10 @@
 package com.simonalong.butterfly.worker.distribute;
 
-import com.simonalong.butterfly.distribute.api.ButterflyDistributeApi;
-import com.simonalong.butterfly.distribute.model.BitSequenceDTO;
-import com.simonalong.butterfly.distribute.model.Response;
 import com.simonalong.butterfly.sequence.ButterflyConfig;
 import com.simonalong.butterfly.sequence.allocator.BeanBitAllocator;
-import com.simonalong.butterfly.worker.distribute.config.DistributeButterflyConfig;
+import com.simonalong.butterfly.worker.distribute.config.DistributeDubboButterflyConfig;
+import com.simonalong.butterfly.worker.distribute.config.DistributeRestfulButterflyConfig;
 import lombok.extern.slf4j.Slf4j;
-
-import static com.simonalong.butterfly.worker.distribute.DistributeConstant.DTB_LOG_PRE;
 
 /**
  * @author shizi
@@ -29,7 +25,7 @@ public class DistributeBitAllocator implements BeanBitAllocator {
         if (null == butterflyConfig) {
             return false;
         }
-        return butterflyConfig instanceof DistributeButterflyConfig;
+        return butterflyConfig instanceof DistributeDubboButterflyConfig || butterflyConfig instanceof DistributeRestfulButterflyConfig;
     }
 
     /**
@@ -40,18 +36,11 @@ public class DistributeBitAllocator implements BeanBitAllocator {
      */
     @Override
     public void postConstruct(String namespace, ButterflyConfig butterflyConfig) {
-        DistributeButterflyConfig config = (DistributeButterflyConfig) butterflyConfig;
-        String zkHost = config.getZkHose();
+        // 初始化客户端
+        SequenceClient.getInstance().init(butterflyConfig);
 
-        ButterflySeqGeneratorFactory factory = ButterflySeqGeneratorFactory.getInstance().init(zkHost);
-        ButterflyDistributeApi api = factory.getSequenceApi();
-
-        Response<BitSequenceDTO> response = api.getNext(namespace);
-        if (!response.isSuccess()) {
-            log.error(DTB_LOG_PRE + "get seq fail，namespace={}, errCode={}, errMsg={}", namespace, response.getErrCode(), response.getErrMsg());
-            throw new RuntimeException("get seq fail：" + response.getErrMsg());
-        }
-        this.bufferManager = new BufferManager(response.getData());
+        // 首次回调
+        this.bufferManager = new BufferManager(SequenceClient.getInstance().getNext(namespace));
     }
 
     @Override

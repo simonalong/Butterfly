@@ -23,6 +23,7 @@ public final class WorkerIdHandlerFactory {
                 return allocator.loadIdHandler(namespace, butterflyConfig);
             }
         }
-        throw new ButterflyException("not find workerId allocator, please add butterfly-worker-allocator-db or butterfly-worker-allocator-distribute");
+//        throw new ButterflyException("not find workerId allocator, please add butterfly-worker-allocator-db or butterfly-worker-allocator-distribute");
+        return null;
     }
 }

@@ -105,7 +105,7 @@ public class BufferManager {
             try {
                 synchronized (this) {
                     refreshState = RefreshEnum.READY_RPC;
-                    updateBuffer(ButterflySeqGeneratorFactory.getInstance().getSequenceApi().getNext(namespace));
+                    updateBuffer(SequenceClient.getInstance().getNext(namespace));
                     refreshState = RefreshEnum.FINISH;
                 }
             } catch (Throwable e) {
@@ -136,13 +136,7 @@ public class BufferManager {
         refreshState = RefreshEnum.NON;
     }
 
-    private void updateBuffer(Response<BitSequenceDTO> sequenceDTO) {
-        if (!sequenceDTO.isSuccess()) {
-            log.error(DTB_LOG_PRE + "server return error：rsp={}", sequenceDTO);
-            throw new ButterflyException("server return error");
-        }
-
-        BitSequenceDTO bitSequence = sequenceDTO.getData();
+    private void updateBuffer(BitSequenceDTO bitSequence) {
         if (currentBuffer == buffer1) {
             buffer2.update(bitSequence);
         } else if (currentBuffer == buffer2) {

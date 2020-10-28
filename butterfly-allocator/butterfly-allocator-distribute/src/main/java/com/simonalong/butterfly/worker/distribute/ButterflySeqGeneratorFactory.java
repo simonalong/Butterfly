@@ -18,6 +18,8 @@ public class ButterflySeqGeneratorFactory {
     private static volatile ButterflyDistributeApi butterflyDistributeApi;
     private String zkAddress = null;
 
+    private ButterflySeqGeneratorFactory(){}
+
     public static ButterflySeqGeneratorFactory getInstance() {
         if (null != INSTANCE) {
             return INSTANCE;
@@ -36,6 +38,10 @@ public class ButterflySeqGeneratorFactory {
         // 首次调用
         getSequenceApi();
         return this;
+    }
+
+    public static boolean haveInitialized() {
+        return butterflyDistributeApi != null;
     }
 
     public ButterflyDistributeApi getSequenceApi() {

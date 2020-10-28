@@ -10,7 +10,10 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DistributeButterflyConfig extends ButterflyConfig {
+public class DistributeDubboButterflyConfig extends ButterflyConfig {
 
-    private String zkHose;
+    /**
+     * zookeeper的域名和端口配置，比如：host:port
+     */
+    private String zkHostAndPort;
 }
