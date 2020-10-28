@@ -1,9 +1,9 @@
-package com.simonalong.butterfly.distribute.server.config;
+package com.simonalong.butterfly.distribute.config;
 
 
+import com.simonalong.butterfly.distribute.exception.BusinessException;
 import com.simonalong.butterfly.distribute.model.Response;
-import com.simonalong.butterfly.distribute.server.exception.BusinessException;
-import com.simonalong.butterfly.distribute.server.util.ExceptionUtil;
+import com.simonalong.butterfly.distribute.uti.ExceptionUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.buf.StringUtils;

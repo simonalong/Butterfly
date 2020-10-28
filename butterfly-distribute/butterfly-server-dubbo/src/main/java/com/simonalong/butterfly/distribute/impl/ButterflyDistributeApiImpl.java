@@ -1,5 +1,6 @@
-package com.simonalong.butterfly.distribute.server.service;
+package com.simonalong.butterfly.distribute.impl;
 
+import com.simonalong.butterfly.distribute.api.ButterflyDistributeApi;
 import com.simonalong.butterfly.distribute.model.BitSequenceDTO;
 import com.simonalong.butterfly.distribute.model.Response;
 import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
@@ -7,26 +8,29 @@ import com.simonalong.butterfly.sequence.PaddedLong;
 import com.simonalong.butterfly.sequence.TimeAdjuster;
 import com.simonalong.butterfly.sequence.allocator.DefaultBitAllocator;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
-import org.apache.dubbo.common.utils.ConcurrentHashSet;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * @author shizi
- * @since 2020/10/28 5:26 下午
+ * @since 2020/4/28 12:11 AM
  */
+@Slf4j
 @Service
-public class DistributeService implements InitializingBean {
+public class ButterflyDistributeApiImpl implements ButterflyDistributeApi, InitializingBean {
 
     @Autowired
     private ButterflyIdGenerator butterflyIdGenerator;
-    private Set<String> namespaceSet = new ConcurrentHashSet<>();
+    private final Set<String> namespaceSet = new ConcurrentSkipListSet<>();
     private PaddedLong currentTime;
 
-    public BitSequenceDTO getNext(String namespace) {
+    @Override
+    public Response<BitSequenceDTO> getNext(String namespace) {
         DefaultBitAllocator bitAllocator;
         if (!namespaceSet.contains(namespace)) {
             butterflyIdGenerator.addNamespaces(namespace);
@@ -38,7 +42,7 @@ public class DistributeService implements InitializingBean {
         sequenceDTO.setNamespace(namespace);
         sequenceDTO.setTime(getTimeValue(namespace, bitAllocator));
         sequenceDTO.setWorkId(bitAllocator.getWorkIdValue());
-        return sequenceDTO;
+        return Response.success(sequenceDTO);
     }
 
     /**

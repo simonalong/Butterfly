@@ -16,6 +16,7 @@
 
     <modules>
         <module>butterfly-api</module>
-        <module>butterfly-server</module>
+        <module>butterfly-server-dubbo</module>
+        <module>butterfly-server-restful</module>
     </modules>
 </project>

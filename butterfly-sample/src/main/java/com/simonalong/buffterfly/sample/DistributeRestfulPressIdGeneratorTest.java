@@ -6,6 +6,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
+ * 运行该用例，请先将restful服务端创建起来
+ *
  * @author shizi
  * @since 2020/10/28 6:18 下午
  */
@@ -14,7 +16,7 @@ public class DistributeRestfulPressIdGeneratorTest extends BaseTest {
     @BeforeClass
     public static void beforeClass() {
         config = new DistributeRestfulButterflyConfig();
-        ((DistributeRestfulButterflyConfig)config).setHostAndPort("localhost:8080");
+        ((DistributeRestfulButterflyConfig)config).setHostAndPort("localhost:8800");
     }
 
     /**

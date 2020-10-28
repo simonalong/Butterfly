@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.distribute.server.util;
+package com.simonalong.butterfly.distribute.uti;
 
 import lombok.experimental.UtilityClass;
 

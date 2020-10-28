@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.distribute.server;
+package com.simonalong.butterfly.distribute;
 
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;

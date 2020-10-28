@@ -6,6 +6,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
+ * 运行该用例，请先将dubbo服务端创建起来
+ *
  * @author shizi
  * @since 2020/5/3 2:14 AM
  */

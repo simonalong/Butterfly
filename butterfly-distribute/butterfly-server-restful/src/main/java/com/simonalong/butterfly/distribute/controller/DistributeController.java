@@ -1,8 +1,8 @@
-package com.simonalong.butterfly.distribute.server.controller;
+package com.simonalong.butterfly.distribute.controller;
 
 import com.simonalong.butterfly.distribute.model.BitSequenceDTO;
 import com.simonalong.butterfly.distribute.model.Response;
-import com.simonalong.butterfly.distribute.server.service.DistributeService;
+import com.simonalong.butterfly.distribute.server.DistributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +21,7 @@ public class DistributeController {
     private DistributeService distributeService;
 
     @GetMapping("getNext/{namespace}")
-    public BitSequenceDTO getNext(@PathVariable("namespace") String namespace) {
-        return distributeService.getNext(namespace);
+    public Response<BitSequenceDTO> getNext(@PathVariable("namespace") String namespace) {
+        return Response.success(distributeService.getNext(namespace));
     }
 }

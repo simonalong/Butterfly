@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.distribute.server.exception;
+package com.simonalong.butterfly.distribute.exception;
 
 import lombok.Getter;
 

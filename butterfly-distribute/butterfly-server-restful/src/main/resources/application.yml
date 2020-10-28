@@ -1,0 +1,7 @@
+server:
+  port: 8800
+butterfly:
+  url: jdbc:mysql://localhost:3306/butterfly?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+  username: root
+  password:
+

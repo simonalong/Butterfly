@@ -6,11 +6,11 @@
         <artifactId>butterfly-distribute</artifactId>
         <groupId>com.github.simonalong</groupId>
         <version>1.0.0</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>butterfly-server</artifactId>
+    <artifactId>butterfly-server-restful</artifactId>
+
     <description>分布式模式（distribute）下的服务端</description>
 
     <dependencies>
@@ -20,7 +20,8 @@
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
-            <artifactId>butterfly-allocator-zookeeper</artifactId>
+            <artifactId>butterfly-allocator-db</artifactId>
+
         </dependency>
 
         <dependency>
@@ -30,23 +31,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-framework</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
         </dependency>
     </dependencies>
 

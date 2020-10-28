@@ -105,6 +105,9 @@ public void test(){
 ```
 
 ### 分布式模式
+分布式模式客户端一个，但是对应的服务端（代码很简单可以也自己写服务端）这边有两个：
+- dubbo方式的：服务端采用的是butterfly-allocator-zk方式获取workerId和time字段，然后将对应字段给客户端
+- restful方式的：服务端采用的是butterfly-allocator-db方式获取workerId和time字段，然后将对应字段给客户端
 ```xml
 <dependency>
   <groupId>com.github.simonalong</groupId>
@@ -113,13 +116,32 @@ public void test(){
   <version>${last.version.release}</version>
 </dependency>
 ```
-#### 使用示例
+#### 使用示例 - dubbo方式获取
 首先启动服务端butterfly-server模块，然后客户端这边使用如下即可
 ```java
 @Test
 public void test(){
-    DistributeButterflyConfig config = new DistributeButterflyConfig();
-    config.setZkHose("localhost:2181");
+    DistributeDubboButterflyConfig config = new DistributeDubboButterflyConfig();
+    config.setZkHoseAndPort("localhost:2181");
+
+    ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
+    // 设置起始时间，如果不设置，则默认从2020年2月22日开始
+    generator.setStartTime(2020, 5, 1, 0, 0, 0);
+            
+    // 添加业务空间，如果业务空间不存在，则会注册
+    generator.addNamespaces("test1", "test2");
+    Long uuid = generator.getUUid("test1");
+    System.out.println(uuid);
+}
+```
+
+#### 使用示例 - restful方式获取
+首先启动服务端butterfly-server模块，然后客户端这边使用如下即可
+```java
+@Test
+public void test(){
+    DistributeRestfulButterflyConfig config = new DistributeRestfulButterflyConfig();
+    config.setHostAndPort("localhost:8800");
 
     ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
     // 设置起始时间，如果不设置，则默认从2020年2月22日开始

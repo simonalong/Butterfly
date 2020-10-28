@@ -1,4 +1,4 @@
-package com.simonalong.butterfly.distribute.server.config;
+package com.simonalong.butterfly.distribute.config;
 
 import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
 import com.simonalong.butterfly.worker.zookeeper.ZkButterflyConfig;
