@@ -44,6 +44,9 @@ public class WebExceptionHandler extends RequestBodyAdviceAdapter {
 
     /**
      * 业务异常
+     * @param request request
+     * @param e 异常
+     * @return 返回值
      */
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -54,6 +57,9 @@ public class WebExceptionHandler extends RequestBodyAdviceAdapter {
 
     /**
      * 内部异常
+     * @param request request
+     * @param e 异常
+     * @return 返回值
      */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

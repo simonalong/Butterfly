@@ -12,7 +12,7 @@
     <groupId>com.github.simonalong</groupId>
     <artifactId>butterfly</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <name>butterfly</name>
     <url>https://github.com/SimonAlong/Butterfly</url>
