@@ -33,7 +33,7 @@ Butterfly（蝴蝶）是一个超高性能的发号器框架。框架通过引�
 - （单机版）db分配workerId
 - （分布式版）distribute分配workerId
 
-目前还未发布到maven中央仓库，还在测试阶段，如果要使用，请自行打包到私人仓库
+目前已发布到maven中央仓库
 ### zookeeper分配workerId
 ```xml
 <dependency>
