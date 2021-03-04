@@ -156,3 +156,7 @@ public void test(){
 
 ## 更多内容
 对于详细内容介绍，请见文档[Butterfly说明文档](https://www.yuque.com/simonalong/butterfly)
+
+## 技术咨询
+最近有一些朋友咨询，不过不多，暂时没有建群，有需要的可以加wx
+wx：zhoumo187108
