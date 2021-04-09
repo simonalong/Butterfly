@@ -115,22 +115,16 @@ public final class ButterflyIdGenerator {
      * @param uid 全局id
      * @return 解析的数据
      */
-    @SuppressWarnings("all")
     public static Map<String, Object> parseUid(Long uid) {
-        long symbolMark = 1 << (SYMBOL_LEFT_SHIFT);
-        long timeMark = (~(-1L << TIME_BITS)) << TIME_LEFT_SHIFT;
-        long seqMark = (~(-1L << SEQ_BITS)) << SEQ_LEFT_SHIFT;
-        long workerMark = ~(-1L << WORKER_BITS);
-
         Map<String, Object> resultMap = new HashMap<>();
-
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
         resultMap.put("uuid", uid);
-        resultMap.put("symbol", ((uid & symbolMark) >>> SYMBOL_LEFT_SHIFT));
-        resultMap.put("time", ((uid & timeMark) >> TIME_LEFT_SHIFT));
-        resultMap.put("abstractTime", dateFormat.format(new Date(((uid & timeMark) >> TIME_LEFT_SHIFT) + startTime)));
-        resultMap.put("sequence", ((uid & seqMark) >> SEQ_LEFT_SHIFT));
-        resultMap.put("workerId", (uid & workerMark));
+        resultMap.put("symbol", (uid & SYMBOL_MARK));
+        resultMap.put("time", (uid & TIME_MARK) >> (SEQ_HIGH_BITS + WORKER_BITS + SEQ_LOW_BITS));
+        resultMap.put("abstractTime", dateFormat.format(new Date(((uid & TIME_MARK) >> (SEQ_HIGH_BITS + WORKER_BITS + SEQ_LOW_BITS)) + startTime)));
+        resultMap.put("sequence", ((uid & SEQ_HIGH_MARK) >> WORKER_BITS) | (uid & SEQ_LOW_MARK));
+        resultMap.put("workerId", (uid & WORKER_MARK) >> SEQ_LOW_BITS);
         return resultMap;
     }
 }

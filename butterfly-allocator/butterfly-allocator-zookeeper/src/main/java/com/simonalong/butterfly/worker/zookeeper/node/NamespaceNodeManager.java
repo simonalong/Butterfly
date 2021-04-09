@@ -131,7 +131,7 @@ public class NamespaceNodeManager {
             ConfigNodeEntity configEntity = new ConfigNodeEntity();
             configEntity.setCurrentMaxMachine(DEFAULT_MAX_MACHINE_NUM);
             configEntity.setTimestampBits(TIME_BITS);
-            configEntity.setSequenceBits(SEQ_BITS);
+            configEntity.setSequenceBits(SEQ_HIGH_BITS + SEQ_LOW_BITS);
             configEntity.setWorkerBits(WORKER_BITS);
 
             // 创建 config 节点

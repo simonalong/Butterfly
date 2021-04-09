@@ -25,14 +25,18 @@ public class DbPressIdGeneratorTest extends BaseTest {
     @Test
     public void baseRunTest() {
         baseRun();
-        //{symbol=0, sequence=1, workerId=0, abstractTime=2020-05-03 10:08:56.075, time=6170936075, uuid=25882781863124992}
-        //{symbol=0, sequence=2, workerId=0, abstractTime=2020-05-03 10:08:56.075, time=6170936075, uuid=25882781863133184}
-        //{symbol=0, sequence=1, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612832768}
-        //{symbol=0, sequence=2, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612840960}
-        //{symbol=0, sequence=3, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612849152}
-        //{symbol=0, sequence=4, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612857344}
-        //{symbol=0, sequence=5, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612865536}
-        //{symbol=0, sequence=6, workerId=0, abstractTime=2020-05-03 10:08:56.969, time=6170936969, uuid=25882785612873728}
+        //命名空间：test1：{symbol=0, sequence=1, workerId=0, abstractTime=2021-04-09 17:22:52.658, time=29697772658, uuid=124561486650540033}
+        //命名空间：test1：{symbol=0, sequence=2, workerId=0, abstractTime=2021-04-09 17:22:52.658, time=29697772658, uuid=124561486650556416}
+
+        //命名空间：test2：{symbol=0, sequence=1, workerId=0, abstractTime=2021-04-09 17:22:53.127, time=29697773127, uuid=124561488617668609}
+        //命名空间：test2：{symbol=0, sequence=2, workerId=0, abstractTime=2021-04-09 17:22:53.127, time=29697773127, uuid=124561488617684992}
+        //命名空间：test2：{symbol=0, sequence=3, workerId=0, abstractTime=2021-04-09 17:22:53.127, time=29697773127, uuid=124561488617684993}
+        //命名空间：test2：{symbol=0, sequence=4, workerId=0, abstractTime=2021-04-09 17:22:53.127, time=29697773127, uuid=124561488617701376}
+        //命名空间：test2：{symbol=0, sequence=5, workerId=0, abstractTime=2021-04-09 17:22:53.127, time=29697773127, uuid=124561488617701377}
+
+        //命名空间：test3：{symbol=0, sequence=1, workerId=0, abstractTime=2021-04-09 17:22:53.157, time=29697773157, uuid=124561488743497729}
+
+        //命名空间：test4：{symbol=0, sequence=1, workerId=0, abstractTime=2021-04-09 17:22:53.186, time=29697773186, uuid=124561488865132545}
     }
 
     /**

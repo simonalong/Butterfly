@@ -3,12 +3,16 @@ package com.simonalong.buffterfly.sample;
 import com.simonalong.butterfly.sequence.ButterflyConfig;
 import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
 import lombok.SneakyThrows;
+import org.junit.Test;
 
+import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.simonalong.butterfly.sequence.UuidConstant.*;
 
 /**
  * @author shizi
@@ -50,19 +54,25 @@ public class BaseTest {
         generator.addNamespaces("test1", "test2", "test3", "test4");
 
         // 测试test1
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test1")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test1")));
+        showId("test1", generator);
+        showId("test1", generator);
 
         // 测试test2
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test2")));
+        showId("test2", generator);
+        showId("test2", generator);
+        showId("test2", generator);
+        showId("test2", generator);
+        showId("test2", generator);
 
         // 测试test3
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test3")));
+        showId("test3", generator);
+
         // 测试test4
-        show(ButterflyIdGenerator.parseUid(generator.getUUid("test4")));
+        showId("test4", generator);
+    }
+
+    private void showId(String namespace, ButterflyIdGenerator generator) {
+        show("命名空间：" + namespace + "：" + ButterflyIdGenerator.parseUid(generator.getUUid(namespace)));
     }
 
     /**
@@ -134,7 +144,6 @@ public class BaseTest {
         }
     }
 
-
     /**
      * 每次调用的统计，统计其中的QPS
      *
@@ -159,5 +168,22 @@ public class BaseTest {
         latch.await();
         long duration = System.currentTimeMillis() - start;
         show("biz=" + biz + ", qps = " + (callNum * concurrentNum) / (duration * 10.0) + "单位（w/s）");
+    }
+
+    @Test
+    public void test2() {
+        int workerId = 0;
+        long seq = 1;
+        long time = System.currentTimeMillis();
+
+        show(ButterflyIdGenerator.parseUid(getData(time, seq, workerId)));
+        show(ButterflyIdGenerator.parseUid(getData(time, seq + 1, workerId)));
+        show(ButterflyIdGenerator.parseUid(getData(time, seq + 2, workerId)));
+        show(ButterflyIdGenerator.parseUid(getData(time, seq + 3, workerId)));
+        show(ButterflyIdGenerator.parseUid(getData(time, seq + 4, workerId)));
+    }
+
+    private long getData(long time, long seq, long workerId) {
+        return (time << ((SEQ_HIGH_BITS + WORKER_BITS + SEQ_LOW_BITS)) | (((seq << WORKER_BITS) & SEQ_HIGH_MARK)) | ((workerId << SEQ_LOW_BITS) & WORKER_MARK) | (seq & SEQ_LOW_MARK));
     }
 }

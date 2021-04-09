@@ -6,14 +6,15 @@
     <parent>
         <artifactId>butterfly</artifactId>
         <groupId>com.github.simonalong</groupId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>butterfly-sample</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
         <junit.version>4.13.1</junit.version>
         <slf4j.version>1.7.28</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -46,6 +47,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.18</version>
         </dependency>
 
         <dependency>

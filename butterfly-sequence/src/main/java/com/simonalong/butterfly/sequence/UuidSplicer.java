@@ -40,6 +40,6 @@ final class UuidSplicer {
         long seq = bitAllocator.getSequenceValue();
         long time = bitAllocator.getTimeValue();
 
-        return (time << TIME_LEFT_SHIFT) | (seq << SEQ_LEFT_SHIFT) | workerId;
+        return (time << ((SEQ_HIGH_BITS + WORKER_BITS + SEQ_LOW_BITS)) | (((seq << WORKER_BITS) & SEQ_HIGH_MARK)) | ((workerId << SEQ_LOW_BITS) & WORKER_MARK) | (seq & SEQ_LOW_MARK));
     }
 }
