@@ -5,6 +5,8 @@ import com.simonalong.neo.annotation.Table;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.sql.Timestamp;
+
 /**
  * @author shizi
  * @since 2020/4/26 10:28 PM
@@ -37,7 +39,7 @@ public class UuidGeneratorDO {
      * 下次失效时间
      */
     @Column("last_expire_time")
-    private long lastExpireTime;
+    private Timestamp lastExpireTime;
 
     /**
      * 本次启动唯一id
