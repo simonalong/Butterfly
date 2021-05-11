@@ -170,7 +170,6 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      *
      * @return true：分配成功，false：分配失败
      */
-    @SuppressWarnings("all")
     private Boolean applyWorkerFromExistExpire() {
         Integer minId = neo.exeValue(Integer.class, "select min(id) from %s where namespace =? and last_expire_time < ?", UUID_TABLE, namespace, new Date());
         if (null == minId) {
