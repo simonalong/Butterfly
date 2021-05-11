@@ -205,7 +205,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
                 if (maxWorkerId + 1 < MAX_WORKER_SIZE) {
                     uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1));
                 } else {
-                    log.error(DB_LOG_PRE + "namespace {} have full worker, init fail");
+                    log.error(DB_LOG_PRE + "namespace {} have full worker, init fail", namespace);
                     return false;
                 }
             }

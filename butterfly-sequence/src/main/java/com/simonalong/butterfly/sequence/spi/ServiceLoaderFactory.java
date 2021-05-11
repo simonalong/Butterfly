@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @UtilityClass
 public class ServiceLoaderFactory {
 
-    private static final Map<Class, Collection<Object>> SERVICE_MAP = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, Collection<Object>> SERVICE_MAP = new ConcurrentHashMap<>();
 
     /**
      * 初始化某些类
