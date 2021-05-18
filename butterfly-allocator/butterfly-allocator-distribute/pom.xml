@@ -55,6 +55,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.simonalong</groupId>
+            <artifactId>Neo</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

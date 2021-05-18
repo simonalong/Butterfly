@@ -18,7 +18,6 @@
         <junit.version>4.13.1</junit.version>
         <slf4j.version>1.7.28</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <butterfly.version>1.0.3-SNAPSHOT</butterfly.version>
     </properties>
 
     <dependencies>
@@ -31,17 +30,17 @@
         <dependency>
             <groupId>com.github.simonalong</groupId>
             <artifactId>butterfly-allocator-zookeeper</artifactId>
-            <version>${butterfly.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
             <artifactId>butterfly-allocator-db</artifactId>
-            <version>${butterfly.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.simonalong</groupId>
             <artifactId>butterfly-allocator-distribute</artifactId>
-            <version>${butterfly.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -52,7 +51,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.13</version>
         </dependency>
 
         <dependency>
