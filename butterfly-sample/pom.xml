@@ -6,12 +6,12 @@
     <parent>
         <artifactId>butterfly</artifactId>
         <groupId>com.github.simonalong</groupId>
-        <version>1.0.3</version>
+        <version>1.0.4-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>butterfly-sample</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
