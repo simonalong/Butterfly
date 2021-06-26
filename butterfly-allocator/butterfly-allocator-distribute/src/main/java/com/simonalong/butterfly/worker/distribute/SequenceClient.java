@@ -64,10 +64,7 @@ public class SequenceClient {
             }
             return response.getData();
         } else if (null != serverHostAndPort) {
-            JSONObject res = (JSONObject)HttpUtil.get("http://" + serverHostAndPort + "/api/butterfly/v1/worker/getNext/" + namespace, new HashMap<>());
-            @SuppressWarnings("rawtypes")
-            Response response = res.toJavaObject(Response.class) ;
-            return ((JSONObject)response.getData()).toJavaObject(BitSequenceDTO.class);
+            return HttpHelper.getOfStandard(BitSequenceDTO.class, "http://" + serverHostAndPort + "/api/butterfly/v1/worker/getNext/" + namespace);
         } else {
             throw new ButterflyException("No available server configuration found");
         }

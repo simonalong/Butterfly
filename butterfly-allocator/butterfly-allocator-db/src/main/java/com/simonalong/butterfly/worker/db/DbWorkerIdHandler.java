@@ -7,11 +7,13 @@ import com.simonalong.butterfly.worker.db.entity.UuidGeneratorDO;
 import com.simonalong.neo.Neo;
 import com.simonalong.neo.NeoMap;
 import com.simonalong.neo.TableMap;
+import com.simonalong.neo.util.LocalDateTimeUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -72,7 +74,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
 
     @Override
     public Long getLastExpireTime() {
-        return uuidGeneratorDO.getLastExpireTime();
+        return LocalDateTimeUtil.timestampToLong(uuidGeneratorDO.getLastExpireTime());
     }
 
     @Override
@@ -91,7 +93,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
         uuidGeneratorDO.setId(id);
         uuidGeneratorDO.setWorkId(workerId);
         uuidGeneratorDO.setNamespace(namespace);
-        uuidGeneratorDO.setLastExpireTime(afterHour());
+        uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(afterHour()));
         uuidGeneratorDO.setUid(uidKey);
         uuidGeneratorDO.setProcessId(processId);
         uuidGeneratorDO.setIp(ip);
@@ -103,7 +105,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      */
     private void initHeartBeatReport() {
         scheduler = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
-            private AtomicInteger threadNum = new AtomicInteger(0);
+            private final AtomicInteger threadNum = new AtomicInteger(0);
 
             @Override
             @SuppressWarnings("all")
@@ -140,10 +142,10 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
         long lastExpireTime = afterHour();
         UuidGeneratorDO newGenerate = new UuidGeneratorDO();
         newGenerate.setId(uuidGeneratorDO.getId());
-        newGenerate.setLastExpireTime(lastExpireTime);
+        newGenerate.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
         newGenerate = neo.update(UUID_TABLE, newGenerate);
         if (null != newGenerate && null != newGenerate.getId()) {
-            uuidGeneratorDO.setLastExpireTime(lastExpireTime);
+            uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
         }
     }
 
@@ -170,7 +172,6 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      *
      * @return true：分配成功，false：分配失败
      */
-    @SuppressWarnings("all")
     private Boolean applyWorkerFromExistExpire() {
         Integer minId = neo.exeValue(Integer.class, "select min(id) from %s where namespace =? and last_expire_time < ?", UUID_TABLE, namespace, new Date());
         if (null == minId) {
@@ -205,7 +206,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
                 if (maxWorkerId + 1 < MAX_WORKER_SIZE) {
                     uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1));
                 } else {
-                    log.error(DB_LOG_PRE + "namespace {} have full worker, init fail");
+                    log.error(DB_LOG_PRE + "namespace {} have full worker, init fail", namespace);
                     return false;
                 }
             }

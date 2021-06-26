@@ -5,7 +5,6 @@ import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
 import lombok.SneakyThrows;
 import org.junit.Test;
 
-import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -30,7 +30,7 @@ public final class ButterflyIdGenerator {
     /**
      * key为对应业务命名空间，value为uuid的序列构造器
      */
-    private Map<String, UuidSplicer> uUidBuilderMap = new HashMap<>();
+    private final Map<String, UuidSplicer> uUidBuilderMap = new HashMap<>();
 
     /**
      * 全局id生成器的构造函数

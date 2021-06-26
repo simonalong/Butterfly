@@ -34,8 +34,8 @@ public class BufferManager {
     /**
      * 这里暂时设置刷新比率为0.4
      */
-    private float refreshRatio = 0.4f;
-    private int refreshValue = (int) (SEQ_MAX_SIZE * refreshRatio);
+    private final float refreshRatio = 0.4f;
+    private final int refreshValue = (int) (SEQ_MAX_SIZE * refreshRatio);
 
     public BufferManager(BitSequenceDTO bitSequenceDTO) {
         if (null == bitSequenceDTO) {
