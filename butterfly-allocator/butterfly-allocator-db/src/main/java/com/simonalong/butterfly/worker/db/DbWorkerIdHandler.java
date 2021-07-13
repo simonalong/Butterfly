@@ -198,21 +198,24 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      * 如果数据达到最大，则阻止进程启动
      */
     private void insertWorker() {
-        // 强制加表锁
-        neo.execute("lock tables %s write", UUID_TABLE);
-        Integer maxWorkerId = neo.exeValue(Integer.class, "select max(work_id) from %s where namespace = ?", UUID_TABLE, namespace);
-        if (null == maxWorkerId) {
-            uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, 0));
-        } else {
-            if (maxWorkerId + 1 < MAX_WORKER_SIZE) {
-                uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1));
+        try {
+            // 强制加表锁
+            neo.execute("lock tables %s write", UUID_TABLE);
+            Integer maxWorkerId = neo.exeValue(Integer.class, "select max(work_id) from %s where namespace = ?", UUID_TABLE, namespace);
+            if (null == maxWorkerId) {
+                uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, 0));
             } else {
-                log.error(DB_LOG_PRE + "namespace {} have full worker, init fail", namespace);
-                throw new WorkerIdFullException("namespace " + namespace + " have full worker, init fail");
+                if (maxWorkerId + 1 < MAX_WORKER_SIZE) {
+                    uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1));
+                } else {
+                    log.error(DB_LOG_PRE + "namespace {} have full worker, init fail", namespace);
+                    throw new WorkerIdFullException("namespace " + namespace + " have full worker, init fail");
+                }
             }
+        } finally {
+            // 解锁
+            neo.execute("unlock tables");
         }
-        // 解锁
-        neo.execute("unlock tables");
     }
 
     private String getIpStr() {
