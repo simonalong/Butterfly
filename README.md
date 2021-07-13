@@ -102,7 +102,7 @@ CREATE TABLE `butterfly_uuid_generator` (
   `ip` varchar(20) NOT NULL DEFAULT '0' COMMENT 'ip',
   `process_id` varchar(128) NOT NULL DEFAULT '0' COMMENT '进程id',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_name_work` (`namespace`,`work_id`)
+  UNIQUE KEY `uk_name_work` (`namespace`,`work_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发号器表';
 ```
 编写db方式的测试
