@@ -3,8 +3,10 @@ package com.simonalong.buffterfly.sample;
 import com.simonalong.butterfly.sequence.ButterflyConfig;
 import com.simonalong.butterfly.sequence.ButterflyIdGenerator;
 import lombok.SneakyThrows;
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -175,11 +177,20 @@ public class BaseTest {
         long seq = 1;
         long time = System.currentTimeMillis();
 
-        show(ButterflyIdGenerator.parseUid(getData(time, seq, workerId)));
-        show(ButterflyIdGenerator.parseUid(getData(time, seq + 1, workerId)));
-        show(ButterflyIdGenerator.parseUid(getData(time, seq + 2, workerId)));
-        show(ButterflyIdGenerator.parseUid(getData(time, seq + 3, workerId)));
-        show(ButterflyIdGenerator.parseUid(getData(time, seq + 4, workerId)));
+        Map<String, Object> map1 = ButterflyIdGenerator.parseUid(getData(time, seq, workerId));
+        Assert.assertEquals(map1.get("sequence"), seq);
+
+        Map<String, Object> map2 = ButterflyIdGenerator.parseUid(getData(time, seq + 1, workerId));
+        Assert.assertEquals(map2.get("sequence"), seq + 1);
+
+        Map<String, Object> map3 = ButterflyIdGenerator.parseUid(getData(time, seq + 2, workerId));
+        Assert.assertEquals(map3.get("sequence"), seq + 2);
+
+        Map<String, Object> map4 = ButterflyIdGenerator.parseUid(getData(time, seq + 3, workerId));
+        Assert.assertEquals(map4.get("sequence"), seq + 3);
+
+        Map<String, Object> map5 = ButterflyIdGenerator.parseUid(getData(time, seq + 4, workerId));
+        Assert.assertEquals(map5.get("sequence"), seq + 4);
     }
 
     private long getData(long time, long seq, long workerId) {
