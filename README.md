@@ -179,5 +179,5 @@ public void test(){
 对于详细内容介绍，请见文档[Butterfly说明文档](https://www.yuque.com/simonalong/butterfly)
 
 ## 技术咨询
-最近有一些朋友咨询，就先建了个小群，有需要的可以加wx
+最近有一些朋友咨询，就先建了个小群，有需要的可以加
 wx：zhoumo187108
