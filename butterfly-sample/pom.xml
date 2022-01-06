@@ -17,7 +17,7 @@
         <maven.deploy.skip>true</maven.deploy.skip>
         <junit.version>4.13.1</junit.version>
         <slf4j.version>1.7.28</slf4j.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.10</logback.version>
     </properties>
 
     <dependencies>
