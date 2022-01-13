@@ -12,7 +12,7 @@
     <groupId>com.github.simonalong</groupId>
     <artifactId>butterfly</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 
     <name>butterfly</name>
     <url>https://github.com/SimonAlong/Butterfly</url>
@@ -40,7 +40,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <slf4j.version>1.7.28</slf4j.version>
         <neo.version>0.7.2</neo.version>
-        <dubbo.version>2.7.13</dubbo.version>
+        <dubbo.version>2.7.15</dubbo.version>
         <curator.version>4.0.1</curator.version>
         <junit.version>4.13.1</junit.version>
         <fastjson.version>1.2.46</fastjson.version>
