@@ -12,7 +12,7 @@
     <groupId>com.github.simonalong</groupId>
     <artifactId>butterfly</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
 
     <name>butterfly</name>
     <url>https://github.com/SimonAlong/Butterfly</url>
@@ -43,7 +43,7 @@
         <dubbo.version>2.7.15</dubbo.version>
         <curator.version>4.0.1</curator.version>
         <junit.version>4.13.1</junit.version>
-        <fastjson.version>1.2.46</fastjson.version>
+        <fastjson.version>1.2.79</fastjson.version>
     </properties>
 
     <dependencies>
