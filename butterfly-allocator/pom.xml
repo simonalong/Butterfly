@@ -5,7 +5,7 @@
     <parent>
         <artifactId>butterfly</artifactId>
         <groupId>com.github.simonalong</groupId>
-        <version>1.1.1</version>
+        <version>1.1.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
