@@ -150,11 +150,27 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
     }
 
     private void allocateWorker() {
+        ensureTableButterflyUuidGeneratorExist();
+
         if (applyWorkerFromExistExpire()) {
             return;
         }
 
         insertWorker();
+    }
+
+    private void ensureTableButterflyUuidGeneratorExist() {
+        neo.execute("CREATE TABLE IF NOT EXISTS `butterfly_uuid_generator` (\n" +
+            "  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',\n" +
+            "  `namespace` varchar(128) DEFAULT '' COMMENT '命名空间',\n" +
+            "  `work_id` int(16) COMMENT '工作id',\n" +
+            "  `last_expire_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '下次失效时间',\n" +
+            "  `uid` varchar(128) DEFAULT '0' COMMENT '本次启动唯一id',\n" +
+            "  `ip` varchar(20) NOT NULL DEFAULT '0' COMMENT 'ip',\n" +
+            "  `process_id` varchar(128) NOT NULL DEFAULT '0' COMMENT '进程id',\n" +
+            "  PRIMARY KEY (`id`),\n" +
+            "  UNIQUE KEY `uk_name_work` (`namespace`,`work_id`)\n" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发号器表';\n");
     }
 
     private void checkNamespace(String namespace) {
