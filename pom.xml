@@ -40,6 +40,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <slf4j.version>1.7.28</slf4j.version>
         <neo.version>0.7.6</neo.version>
+        <mybatis.version>3.4.5</mybatis.version>
         <dubbo.version>2.7.15</dubbo.version>
         <curator.version>4.0.1</curator.version>
         <junit.version>4.13.1</junit.version>
@@ -97,6 +98,11 @@
                 <groupId>com.github.simonalong</groupId>
                 <artifactId>Neo</artifactId>
                 <version>${neo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
