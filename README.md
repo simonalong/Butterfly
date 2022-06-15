@@ -113,6 +113,8 @@ public void test(){
     config.setUrl("jdbc:mysql://127.0.0.1:3306/neo?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowPublicKeyRetrieval=true");
     config.setUserName("neo_test");
     config.setPassword("neo@Test123");
+    // 设置自动创建必要的表，不设置默认为false
+    config.setAutoCreateTable(true);
 
     ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
     // 设置起始时间，如果不设置，则默认从2020年2月22日开始

@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -48,11 +47,13 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
     private Neo neo;
     private String namespace;
     private UuidGeneratorDO uuidGeneratorDO;
+    private Boolean autoCreateTable;
 
-    public DbWorkerIdHandler(String namespace, Neo neo) {
+    public DbWorkerIdHandler(String namespace, Neo neo, Boolean autoCreateTable) {
         this.namespace = namespace;
         this.neo = neo;
         this.uuidGeneratorDO = new UuidGeneratorDO();
+        this.autoCreateTable = autoCreateTable;
         init();
     }
 
@@ -150,7 +151,9 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
     }
 
     private void allocateWorker() {
-        ensureTableButterflyUuidGeneratorExist();
+        if (Boolean.TRUE.equals(this.autoCreateTable)) {
+            ensureTableButterflyUuidGeneratorExist();
+        }
 
         if (applyWorkerFromExistExpire()) {
             return;
@@ -160,6 +163,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
     }
 
     private void ensureTableButterflyUuidGeneratorExist() {
+        log.debug(DB_LOG_PRE + "auto creating table `butterfly_uuid_generator`");
         neo.execute("CREATE TABLE IF NOT EXISTS `butterfly_uuid_generator` (\n" +
             "  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',\n" +
             "  `namespace` varchar(128) DEFAULT '' COMMENT '命名空间',\n" +

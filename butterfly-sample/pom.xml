@@ -116,6 +116,40 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.28.0</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <!-- 使用mysql:8 docker image -->
+                            <name>mysql:8</name>
+                            <!-- 定义docker run mysql:8 时的参数 -->
+                            <run>
+                                <ports>
+                                    <!-- host port到container port的映射
+                                    这里随机选择一个host port，并将值存到property docker-mysql.port里 -->
+                                    <port>3306:3306</port>
+                                </ports>
+                                <!-- 启动时给的环境变量，参阅文档：https://hub.docker.com/_/mysql -->
+                                <env>
+                                    <MYSQL_ROOT_PASSWORD>123456</MYSQL_ROOT_PASSWORD>
+                                    <MYSQL_DATABASE>neo</MYSQL_DATABASE>
+                                    <MYSQL_USER>neo_test</MYSQL_USER>
+                                    <MYSQL_PASSWORD>neo@Test123</MYSQL_PASSWORD>
+                                </env>
+                                <!-- 设置判定container启动成功的的条件及timeout -->
+                                <wait>
+                                    <!-- 如果container打出了这行日志，则说明容器启动成功 -->
+                                    <log>MySQL init process done. Ready for start up.</log>
+                                    <time>120000</time>
+                                </wait>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

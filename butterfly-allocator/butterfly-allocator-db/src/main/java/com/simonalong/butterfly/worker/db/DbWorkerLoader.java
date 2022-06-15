@@ -40,6 +40,6 @@ public class DbWorkerLoader implements WorkerLoader {
 
     @Override
     public WorkerIdHandler loadIdHandler(String namespace, ButterflyConfig butterflyConfig) {
-        return new DbWorkerIdHandler(namespace, db);
+        return new DbWorkerIdHandler(namespace, db, ((DbButterflyConfig) butterflyConfig).getAutoCreateTable());
     }
 }
