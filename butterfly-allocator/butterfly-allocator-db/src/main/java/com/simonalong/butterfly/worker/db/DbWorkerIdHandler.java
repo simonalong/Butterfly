@@ -8,6 +8,7 @@ import com.simonalong.neo.Neo;
 import com.simonalong.neo.NeoMap;
 import com.simonalong.neo.TableMap;
 import com.simonalong.neo.util.LocalDateTimeUtil;
+import com.simonalong.neo.util.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.management.ManagementFactory;
@@ -126,12 +127,19 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      */
     private void addShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            log.info(DB_LOG_PRE + "process ready to quit, clear resources of db");
-            neo.delete(UUID_TABLE, uuidGeneratorDO.getId());
+            log.info(DB_LOG_PRE + "process ready to quit, expire generator record of db now");
+            expireCurrentGeneratorRecord();
             if (null != scheduler) {
                 scheduler.shutdown();
             }
         }));
+    }
+
+    private void expireCurrentGeneratorRecord() {
+        UuidGeneratorDO newGenerate = new UuidGeneratorDO();
+        newGenerate.setId(uuidGeneratorDO.getId());
+        newGenerate.setLastExpireTime(TimeUtils.longToTimestamp(System.currentTimeMillis()));
+        neo.update(UUID_TABLE, newGenerate);
     }
 
     /**
