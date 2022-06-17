@@ -43,7 +43,7 @@
         <dubbo.version>2.7.15</dubbo.version>
         <curator.version>4.0.1</curator.version>
         <junit.version>4.13.1</junit.version>
-        <fastjson.version>1.2.79</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
     </properties>
 
     <dependencies>
