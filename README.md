@@ -59,7 +59,7 @@ Butterfly（蝴蝶）是一个超高性能的发号器框架。框架通过引�
 ```xml
 <dependency>
   <groupId>com.github.simonalong</groupId>
-  <artifactId>butterfly-zookeeper-allocator</artifactId>
+  <artifactId>butterfly-allocator-zookeeper</artifactId>
   <!--替换为具体版本号-->
   <version>${last.version.release}</version>
 </dependency>
