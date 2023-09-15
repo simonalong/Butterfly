@@ -89,18 +89,6 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
         ip = getIpStr();
     }
 
-//    private UuidGeneratorDO generateUuidGeneratorDo(Long id, Integer workerId) {
-//        UuidGeneratorDO uuidGeneratorDO = new UuidGeneratorDO();
-//        uuidGeneratorDO.setId(id);
-//        uuidGeneratorDO.setWorkId(workerId);
-//        uuidGeneratorDO.setNamespace(namespace);
-//        uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(afterHour()));
-//        uuidGeneratorDO.setUid(uidKey);
-//        uuidGeneratorDO.setProcessId(processId);
-//        uuidGeneratorDO.setIp(ip);
-//        return uuidGeneratorDO;
-//    }
-
     /**
      * 初始化数据的心跳上报
      */
@@ -140,13 +128,17 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      * 主要为更新下次失效时间
      */
     private void refreshNodeInfo() {
-        long lastExpireTime = afterHour();
-        UuidGeneratorDO newGenerate = new UuidGeneratorDO();
-        newGenerate.setId(uuidGeneratorDO.getId());
-        newGenerate.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
-        newGenerate = ormProxy.update(UUID_TABLE, newGenerate);
-        if (null != newGenerate && null != newGenerate.getId()) {
-            uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
+        try {
+            long lastExpireTime = afterHour();
+            UuidGeneratorDO newGenerate = new UuidGeneratorDO();
+            newGenerate.setId(uuidGeneratorDO.getId());
+            newGenerate.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
+            newGenerate = ormProxy.update(UUID_TABLE, newGenerate);
+            if (null != newGenerate && null != newGenerate.getId()) {
+                uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
+            }
+        } catch (Throwable e) {
+            log.error("刷新节点信息异常：", e);
         }
     }
 
@@ -155,7 +147,8 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
             return;
         }
 
-        insertWorker();
+        //新增一个worker
+        uuidGeneratorDO = ormProxy.insertWorker(namespace, uidKey, processId, ip);
     }
 
     private void checkNamespace(String namespace) {
@@ -185,32 +178,6 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
             return true;
         }
         return false;
-    }
-
-    /**
-     * 新增一个worker
-     * <p>
-     * 如果数据达到最大，则阻止进程启动
-     */
-    private void insertWorker() {
-//        try {
-//            // 强制加表锁
-//            neo.execute("lock tables %s write", UUID_TABLE);
-//            Integer maxWorkerId = neo.exeValue(Integer.class, "select max(work_id) from %s where namespace = ?", UUID_TABLE, namespace);
-//            if (null == maxWorkerId) {
-//                uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, 0));
-//            } else {
-//                if (maxWorkerId + 1 < MAX_WORKER_SIZE) {
-//                    uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1));
-//                } else {
-//                    log.error(DB_LOG_PRE + "namespace {} have full worker, init fail", namespace);
-//                    throw new WorkerIdFullException("namespace " + namespace + " have full worker, init fail");
-//                }
-//            }
-//        } finally {
-//            // 解锁
-//            neo.execute("unlock tables");
-//        }
     }
 
     private String getIpStr() {

@@ -1,5 +1,6 @@
 package com.simonalong.butterfly.worker.db;
 
+import com.simonalong.butterfly.sequence.exception.WorkerIdFullException;
 import com.simonalong.butterfly.worker.db.entity.UuidGeneratorDO;
 import com.simonalong.butterfly.worker.db.mapper.UuidGeneratorMapper;
 import com.simonalong.neo.Neo;
@@ -10,6 +11,7 @@ import com.simonalong.neo.util.LocalDateTimeUtil;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
@@ -24,12 +26,15 @@ import java.util.Date;
 import java.util.Properties;
 
 import static com.simonalong.butterfly.sequence.UuidConstant.KEEP_NODE_EXIST_TIME;
+import static com.simonalong.butterfly.sequence.UuidConstant.MAX_WORKER_SIZE;
+import static com.simonalong.butterfly.worker.db.DbConstant.DB_LOG_PRE;
 import static com.simonalong.butterfly.worker.db.DbConstant.UUID_TABLE;
 
 /**
  * @author shizi
  * @since 2022-06-11 16:46:17
  */
+@Slf4j
 public class DbOrmProxy {
 
     private static final DbOrmProxy INSTANCE = new DbOrmProxy();
@@ -186,6 +191,34 @@ public class DbOrmProxy {
         }
     }
 
+    public UuidGeneratorDO insertWorker(String namespace, String uidKey, String processId, String ip) {
+        UuidGeneratorDO uuidGeneratorDO = new UuidGeneratorDO();
+        if ("neo".equals(ormType)) {
+            try {
+                // 强制加表锁
+                neo.execute("lock tables %s write", UUID_TABLE);
+                Integer maxWorkerId = neo.exeValue(Integer.class, "select max(work_id) from %s where namespace = ?", UUID_TABLE, namespace);
+                if (null == maxWorkerId) {
+                    uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, 0, namespace, uidKey, processId, ip));
+                } else {
+                    if (maxWorkerId + 1 < MAX_WORKER_SIZE) {
+                        uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1, namespace, uidKey, processId, ip));
+                    } else {
+                        log.error(DB_LOG_PRE + "namespace {} have full worker, init fail", namespace);
+                        throw new WorkerIdFullException("namespace " + namespace + " have full worker, init fail");
+                    }
+                }
+                return uuidGeneratorDO;
+            } finally {
+                // 解锁
+                neo.execute("unlock tables");
+            }
+        } else if ("mybatis".equals(ormType)) {
+            // todo mybatis 还未开始搞
+        }
+        return uuidGeneratorDO;
+    }
+
     private UuidGeneratorDO generateUuidGeneratorDo(Long id, Integer workerId, String namespace, String uidKey, String processId, String ip) {
         UuidGeneratorDO uuidGeneratorDO = new UuidGeneratorDO();
         uuidGeneratorDO.setId(id);
@@ -197,6 +230,4 @@ public class DbOrmProxy {
         uuidGeneratorDO.setIp(ip);
         return uuidGeneratorDO;
     }
-
-
 }

@@ -89,7 +89,11 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler {
      */
     @Override
     public void refreshNodeInfo() {
-        updateWorkerNodeInfo(getWorkerNodeEntity());
+        try {
+            updateWorkerNodeInfo(getWorkerNodeEntity());
+        } catch (Throwable e) {
+            log.error("刷新节点信息异常：", e);
+        }
     }
 
     /**
