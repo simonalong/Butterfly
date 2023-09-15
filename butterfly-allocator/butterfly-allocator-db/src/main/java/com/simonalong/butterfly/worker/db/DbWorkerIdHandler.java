@@ -139,13 +139,17 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      * 主要为更新下次失效时间
      */
     private void refreshNodeInfo() {
-        long lastExpireTime = afterHour();
-        UuidGeneratorDO newGenerate = new UuidGeneratorDO();
-        newGenerate.setId(uuidGeneratorDO.getId());
-        newGenerate.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
-        newGenerate = neo.update(UUID_TABLE, newGenerate);
-        if (null != newGenerate && null != newGenerate.getId()) {
-            uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
+        try {
+            long lastExpireTime = afterHour();
+            UuidGeneratorDO newGenerate = new UuidGeneratorDO();
+            newGenerate.setId(uuidGeneratorDO.getId());
+            newGenerate.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
+            newGenerate = neo.update(UUID_TABLE, newGenerate);
+            if (null != newGenerate && null != newGenerate.getId()) {
+                uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
+            }
+        } catch (Throwable e) {
+            log.error("刷新节点信息异常：", e);
         }
     }
 
