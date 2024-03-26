@@ -6,7 +6,6 @@ import com.simonalong.butterfly.sequence.spi.WorkerIdHandler;
 import com.simonalong.butterfly.worker.db.entity.UuidGeneratorDO;
 import com.simonalong.neo.Neo;
 import com.simonalong.neo.NeoMap;
-import com.simonalong.neo.Pair;
 import com.simonalong.neo.TableMap;
 import com.simonalong.neo.util.LocalDateTimeUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -46,13 +45,13 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      * worker_x 节点信息
      */
     private ScheduledThreadPoolExecutor scheduler;
-    private DbOrmProxy ormProxy;
+    private Neo neo;
     private String namespace;
     private UuidGeneratorDO uuidGeneratorDO;
 
-    public DbWorkerIdHandler(String namespace, DbOrmProxy ormProxy) {
+    public DbWorkerIdHandler(String namespace, Neo neo) {
         this.namespace = namespace;
-        this.ormProxy = ormProxy;
+        this.neo = neo;
         this.uuidGeneratorDO = new UuidGeneratorDO();
         init();
     }
@@ -89,17 +88,17 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
         ip = getIpStr();
     }
 
-//    private UuidGeneratorDO generateUuidGeneratorDo(Long id, Integer workerId) {
-//        UuidGeneratorDO uuidGeneratorDO = new UuidGeneratorDO();
-//        uuidGeneratorDO.setId(id);
-//        uuidGeneratorDO.setWorkId(workerId);
-//        uuidGeneratorDO.setNamespace(namespace);
-//        uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(afterHour()));
-//        uuidGeneratorDO.setUid(uidKey);
-//        uuidGeneratorDO.setProcessId(processId);
-//        uuidGeneratorDO.setIp(ip);
-//        return uuidGeneratorDO;
-//    }
+    private UuidGeneratorDO generateUuidGeneratorDo(Long id, Integer workerId) {
+        UuidGeneratorDO uuidGeneratorDO = new UuidGeneratorDO();
+        uuidGeneratorDO.setId(id);
+        uuidGeneratorDO.setWorkId(workerId);
+        uuidGeneratorDO.setNamespace(namespace);
+        uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(afterHour()));
+        uuidGeneratorDO.setUid(uidKey);
+        uuidGeneratorDO.setProcessId(processId);
+        uuidGeneratorDO.setIp(ip);
+        return uuidGeneratorDO;
+    }
 
     /**
      * 初始化数据的心跳上报
@@ -127,7 +126,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
     private void addShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             log.info(DB_LOG_PRE + "process ready to quit, clear resources of db");
-            ormProxy.delete(uuidGeneratorDO.getId());
+            neo.delete(UUID_TABLE, uuidGeneratorDO.getId());
             if (null != scheduler) {
                 scheduler.shutdown();
             }
@@ -144,7 +143,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
         UuidGeneratorDO newGenerate = new UuidGeneratorDO();
         newGenerate.setId(uuidGeneratorDO.getId());
         newGenerate.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
-        newGenerate = ormProxy.update(UUID_TABLE, newGenerate);
+        newGenerate = neo.update(UUID_TABLE, newGenerate);
         if (null != newGenerate && null != newGenerate.getId()) {
             uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
         }
@@ -174,17 +173,23 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      * @return true：分配成功，false：分配失败
      */
     private Boolean applyWorkerFromExistExpire() {
-        Long minId = ormProxy.selectMinId(namespace);
+        Integer minId = neo.exeValue(Integer.class, "select min(id) from %s where namespace =? and last_expire_time < ?", UUID_TABLE, namespace, new Date());
         if (null == minId) {
             return false;
         }
 
-        Pair<Boolean, UuidGeneratorDO> pair = ormProxy.doApplyWorkerFromExistExpire(minId, namespace, uidKey, processId, ip);
-        if (pair.getKey()) {
-            uuidGeneratorDO = pair.getValue();
-            return true;
-        }
-        return false;
+        return neo.tx(() -> {
+            TableMap result = neo.exeOne("select id, work_id, last_expire_time from %s where id = ? for update", UUID_TABLE, minId);
+            if (null == result) {
+                return false;
+            }
+            NeoMap selectOne = result.getNeoMap(UUID_TABLE);
+            if (null != selectOne && selectOne.get(Date.class, "last_expire_time").compareTo(new Date()) < 0) {
+                uuidGeneratorDO = neo.update(UUID_TABLE, generateUuidGeneratorDo(selectOne.getLong("id"), selectOne.getInteger("work_id")));
+                return true;
+            }
+            return false;
+        });
     }
 
     /**
@@ -193,24 +198,24 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
      * 如果数据达到最大，则阻止进程启动
      */
     private void insertWorker() {
-//        try {
-//            // 强制加表锁
-//            neo.execute("lock tables %s write", UUID_TABLE);
-//            Integer maxWorkerId = neo.exeValue(Integer.class, "select max(work_id) from %s where namespace = ?", UUID_TABLE, namespace);
-//            if (null == maxWorkerId) {
-//                uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, 0));
-//            } else {
-//                if (maxWorkerId + 1 < MAX_WORKER_SIZE) {
-//                    uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1));
-//                } else {
-//                    log.error(DB_LOG_PRE + "namespace {} have full worker, init fail", namespace);
-//                    throw new WorkerIdFullException("namespace " + namespace + " have full worker, init fail");
-//                }
-//            }
-//        } finally {
-//            // 解锁
-//            neo.execute("unlock tables");
-//        }
+        try {
+            // 强制加表锁
+            neo.execute("lock tables %s write", UUID_TABLE);
+            Integer maxWorkerId = neo.exeValue(Integer.class, "select max(work_id) from %s where namespace = ?", UUID_TABLE, namespace);
+            if (null == maxWorkerId) {
+                uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, 0));
+            } else {
+                if (maxWorkerId + 1 < MAX_WORKER_SIZE) {
+                    uuidGeneratorDO = neo.insert(UUID_TABLE, generateUuidGeneratorDo(null, maxWorkerId + 1));
+                } else {
+                    log.error(DB_LOG_PRE + "namespace {} have full worker, init fail", namespace);
+                    throw new WorkerIdFullException("namespace " + namespace + " have full worker, init fail");
+                }
+            }
+        } finally {
+            // 解锁
+            neo.execute("unlock tables");
+        }
     }
 
     private String getIpStr() {
