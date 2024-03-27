@@ -2,7 +2,12 @@ package com.simonalong.butterfly.sequence.spi;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.LinkedList;
+import java.util.ServiceLoader;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

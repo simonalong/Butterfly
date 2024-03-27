@@ -19,7 +19,7 @@ public interface ZkConstant {
     /**
      * 机器节点的左前缀
      */
-    String WORKER_NODE = "/worker";
+    String WORKER_NODE = "/worker_";
     /**
      * 每个业务中的配置节点路径
      */

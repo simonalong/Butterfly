@@ -12,7 +12,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.simonalong.butterfly.sequence.UuidConstant.*;
+import static com.simonalong.butterfly.sequence.UuidConstant.SYMBOL_MARK;
+import static com.simonalong.butterfly.sequence.UuidConstant.TIME_MARK;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_HIGH_BITS;
+import static com.simonalong.butterfly.sequence.UuidConstant.WORKER_BITS;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_LOW_BITS;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_HIGH_MARK;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_LOW_MARK;
+import static com.simonalong.butterfly.sequence.UuidConstant.WORKER_MARK;
+
 
 /**
  * @author shizi

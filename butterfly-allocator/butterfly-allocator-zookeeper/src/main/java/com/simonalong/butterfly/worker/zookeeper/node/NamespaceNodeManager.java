@@ -10,9 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.simonalong.butterfly.sequence.UuidConstant.*;
+import static com.simonalong.butterfly.sequence.UuidConstant.DISTRIBUTE_SERVER;
+import static com.simonalong.butterfly.sequence.UuidConstant.TIME_BITS;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_HIGH_BITS;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_LOW_BITS;
+import static com.simonalong.butterfly.sequence.UuidConstant.WORKER_BITS;
 import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.ROOT_PATH;
 import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.ZK_LOG_PRE;
+import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.WORKER_NODE;
 
 /**
  * @author shizi
@@ -139,7 +144,7 @@ public class NamespaceNodeManager {
 
             // 创建 worker 节点
             for (int index = 0; index < DEFAULT_MAX_MACHINE_NUM; index++) {
-                zkClient.addPersistentNode(namespacePath + "/worker_" + index);
+                zkClient.addPersistentNode(namespacePath + WORKER_NODE + index);
             }
         }
     }

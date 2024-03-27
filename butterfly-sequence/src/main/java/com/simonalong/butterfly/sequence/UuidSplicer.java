@@ -6,7 +6,15 @@ import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.simonalong.butterfly.sequence.UuidConstant.*;
+import static com.simonalong.butterfly.sequence.UuidConstant.DELAY_START_TIME;
+import static com.simonalong.butterfly.sequence.UuidConstant.LOG_PRE;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_HIGH_BITS;
+import static com.simonalong.butterfly.sequence.UuidConstant.WORKER_BITS;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_LOW_BITS;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_HIGH_MARK;
+import static com.simonalong.butterfly.sequence.UuidConstant.WORKER_MARK;
+import static com.simonalong.butterfly.sequence.UuidConstant.SEQ_LOW_MARK;
+
 
 /**
  * @author shizi

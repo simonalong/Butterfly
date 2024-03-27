@@ -3,7 +3,12 @@ package com.simonalong.butterfly.worker.zookeeper;
 import com.alibaba.fastjson.JSON;
 import com.simonalong.butterfly.sequence.exception.ButterflyException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.zookeeper.*;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.WatchedEvent;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.Watcher;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -256,7 +261,6 @@ public class ZookeeperClient {
             log.info(ZK_LOG_PRE + "---------------------start-------------------");
             Event.KeeperState state = event.getState();
             Event.EventType type = event.getType();
-            String path = event.getPath();
 
             log.info(ZK_LOG_PRE + "receive Watcher notify");
             log.info(ZK_LOG_PRE + "connect status:\t" + state.toString());
@@ -368,29 +372,31 @@ public class ZookeeperClient {
         try {
             return null != this.zookeeper.exists(nodePath, false);
         } catch (KeeperException | InterruptedException e) {
-            log.error(ZK_LOG_PRE + "judge node exist fail", e);
+            log.error(ZK_LOG_PRE + "judge node exist fail, path=" + nodePath, e);
         }
         return false;
     }
 
     /**
-     * 分布式锁
+     * 分布式锁，尝试加锁
+     * <ul>
+     *     <li>说明：修改为添加永久节点；临时节点存在时间配置不准确问题，进而导致正好业务没执行完就失效了，这里不排队，不做通用分布式锁，因此这里改用永久节点，在业务的正常运行中任何异常情况可以执行完删除；如果是业务异常退出情况，则手动删除也不错</li>
+     * </ul>
      *
      * @param lockPath 锁路径
      * @param callable 加锁成功后的处理
-     * @param <T> 类型
-     * @return 对象
+     *
+     * @return true：成功；false：失败
      */
-    public <T> T distributeLock(String lockPath, Callable<T> callable) {
+    public Boolean distributeTryLock(String lockPath, Callable<Boolean> callable) {
+        // 添加永久节点
+        if (!addPersistentNode(lockPath)) {
+            return false;
+        }
         try {
-            // 添加分布式锁
-            if (!addEphemeralNode(lockPath)) {
-                throw new RuntimeException("加锁失败");
-            }
-
             return callable.call();
-        } catch (Exception e) {
-            throw new RuntimeException("执行异常", e);
+        } catch (Throwable e) {
+            return false;
         } finally {
             if (nodeExist(lockPath)) {
                 deleteNode(lockPath);
@@ -398,22 +404,12 @@ public class ZookeeperClient {
         }
     }
 
-    /**
-     * 分布式锁
-     *
-     * @param lockPath 锁路径
-     * @param runnable 加锁成功后的处理
-     */
-    public void distributeLock(String lockPath, Runnable runnable) {
+    public void distributeTryLock(String lockPath, Runnable runnable) {
+        if (!addPersistentNode(lockPath)) {
+            return;
+        }
         try {
-            // 添加分布式锁
-            if (!addEphemeralNode(lockPath)) {
-                throw new RuntimeException("加锁失败");
-            }
-
             runnable.run();
-        } catch (Exception e) {
-            throw new RuntimeException("执行异常", e);
         } finally {
             if (nodeExist(lockPath)) {
                 deleteNode(lockPath);
@@ -428,17 +424,24 @@ public class ZookeeperClient {
         try {
             if (null == this.zookeeper.exists(node, false)) {
                 String realPath = zookeeper.create(node, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode);
-                log.info(ZK_LOG_PRE + "node create success, Path: " + realPath);
-                return true;
+                if (null != this.zookeeper.exists(node, false)) {
+                    log.info(ZK_LOG_PRE + "node create success, Path: " + realPath);
+                    return true;
+                } else {
+                    log.info(ZK_LOG_PRE + "node(" + node + ") has existed");
+                    return false;
+                }
             } else {
                 log.info(ZK_LOG_PRE + "node(" + node + ") has existed");
                 return false;
             }
-        } catch (KeeperException e) {
-            log.error(ZK_LOG_PRE + "node(" + node + ") create fail");
+        } catch (KeeperException.NodeExistsException e) {
+            log.warn(ZK_LOG_PRE + "node(" + node + ") has existed", e);
         } catch (InterruptedException e) {
-            log.error(ZK_LOG_PRE + "node(" + node + ") create fail");
+            log.error(ZK_LOG_PRE + "node(" + node + ") create fail", e);
             Thread.currentThread().interrupt();
+        } catch (Throwable e) {
+            log.error(ZK_LOG_PRE + "node(" + node + ") create fail", e);
         }
         return false;
     }

@@ -37,8 +37,8 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler {
      */
     private WorkerNodeEntity workerNodeEntity;
     private ScheduledThreadPoolExecutor scheduler;
-    private ZookeeperClient zookeeperClient;
-    private WorkerIdAllocator workerIdAllocator;
+    private final ZookeeperClient zookeeperClient;
+    private final WorkerIdAllocator workerIdAllocator;
 
     public DefaultWorkerNodeHandler(String namespace, ZookeeperClient zookeeperClient, ConfigNodeHandler configNodeHandler) {
         this.zookeeperClient = zookeeperClient;
@@ -150,7 +150,9 @@ public class DefaultWorkerNodeHandler implements WorkerNodeHandler {
     }
 
     private void updateWorkerNodeInfo(WorkerNodeEntity workerNodeInfo) {
-        updateWorkerNodeInfo(workerIdAllocator.getWorkerNodePath(), workerNodeInfo);
+        if (null != workerIdAllocator) {
+            updateWorkerNodeInfo(workerIdAllocator.getWorkerNodePath(), workerNodeInfo);
+        }
     }
 
     /**

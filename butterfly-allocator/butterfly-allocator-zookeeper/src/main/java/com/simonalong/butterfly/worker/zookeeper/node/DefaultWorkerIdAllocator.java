@@ -8,7 +8,8 @@ import com.simonalong.butterfly.worker.zookeeper.entity.WorkerNodeEntity;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.simonalong.butterfly.sequence.UuidConstant.MAX_WORKER_SIZE;
-import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.*;
+import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.SESSION_NODE;
+import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.ZK_LOG_PRE;
 
 /**
  * @author shizi
@@ -20,11 +21,11 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
     /**
      * 当前分配的索引（就是workerId）
      */
-    private Integer index;
-    private String namespace;
+    private Integer workerId;
+    private final String namespace;
     protected ZookeeperClient zkClient;
-    private WorkerNodeHandler workerNodeHandler;
-    private ConfigNodeHandler configNodeHandler;
+    private final WorkerNodeHandler workerNodeHandler;
+    private final ConfigNodeHandler configNodeHandler;
 
     public DefaultWorkerIdAllocator(String namespace, ZookeeperClient zkClient, WorkerNodeHandler workerNodeHandler, ConfigNodeHandler configNodeHandler) {
         this.namespace = namespace;
@@ -36,12 +37,12 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
 
     @Override
     public Integer getWorkerId() {
-        return index;
+        return workerId;
     }
 
     @Override
     public String getWorkerNodePath() {
-        return getNodePathWithIndex(getWorkerId());
+        return ZkNodeHelper.getWorkerPath(namespace, workerId);
     }
 
     /**
@@ -58,14 +59,14 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
         zkClient.reconnect().registerDisconnectCallback(this::init);
 
         // 初始化索引
-        index = getWorkId(workerNodeHandler.getUidKey().hashCode());
+        workerId = getWorkId(workerNodeHandler.getUidKey().hashCode());
 
         // 初始化节点信息
         initNode();
     }
 
     private void initNode() {
-        if (findNode(index)) {
+        if (findNode(workerId)) {
             return;
         }
         // 没有找到可用worker节点，则扩充worker节点
@@ -80,17 +81,25 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
      */
     private Boolean findNode(final Integer index) {
         log.info(ZK_LOG_PRE + " find one node to create session, workerId = " + index);
-        String workerNodePathTem = getNodePathWithIndex(index);
+        String workerNodePathTem = ZkNodeHelper.getWorkerPath(namespace, index);
         if (zkClient.nodeExist(workerNodePathTem)) {
-            if (addSessionNode(workerNodePathTem)) {
-                savePath(index);
-                return true;
+            // 添加分布式锁
+            Boolean result = zkClient.distributeTryLock(ZkNodeHelper.getSessionCreateLock(namespace, index), () -> {
+                if (addSessionNode(workerNodePathTem)) {
+                    setWorkerId(index);
+                    return true;
+                }
+                return false;
+            });
+
+            if (result) {
+               return true;
             }
         }
 
         // 如果转了一圈都没有找到，则考虑扩容
         Integer nextIndex = getWorkId(index + 1);
-        if (nextIndex.equals(this.index)) {
+        if (nextIndex.equals(this.workerId)) {
             return false;
         }
         return findNode(nextIndex);
@@ -120,9 +129,9 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
 
         // 节点过期：创建session节点
         if (null != lastTime && lastTime < System.currentTimeMillis()) {
-            return zkClient.distributeLock(ZkNodeHelper.getSessionCreateLock(namespace), () -> createSession(workerPath));
+            return createSession(workerPath);
         } else {
-            // 节点未过期：如果是自己，则可以使用
+            // 节点未过期：如果是自己，则可以使用；否则创建
             if (null != uidKeyTem && workerNodeEntity.getUidKey().equals(workerNodeHandler.getUidKey())) {
                 return createSession(workerPath);
             }
@@ -162,7 +171,7 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
             throw new ButterflyException("当前最大值" + maxMachineNum + "已到机器最大值");
         }
 
-        zkClient.distributeLock(ZkNodeHelper.getBizExpandLock(namespace), () -> {
+        zkClient.distributeTryLock(ZkNodeHelper.getBizExpandLock(namespace), () -> {
             // 扩容
             if (innerExpand(maxMachineNum)) {
                 log.info(ZK_LOG_PRE + " expand success, ready to find one node to create session");
@@ -173,11 +182,11 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
     }
 
     private Boolean innerExpand(Integer maxMachineNum) {
-        String leftPath = getNodePathWithPre();
         for (int index = maxMachineNum; index < maxMachineNum * 2; index++) {
-            String workerPath = leftPath + index;
             // 添加永久节点
-            zkClient.addPersistentNode(workerPath);
+            if (!zkClient.addPersistentNode(ZkNodeHelper.getWorkerPath(namespace, index))){
+                log.warn(ZK_LOG_PRE + "add persistent node error");
+            }
         }
 
         log.debug(ZK_LOG_PRE + " maxMachineNum * 2 have created finished");
@@ -186,8 +195,8 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
         return true;
     }
 
-    private void savePath(Integer workerId) {
-        this.index = workerId;
+    private void setWorkerId(Integer workerId) {
+        this.workerId = workerId;
     }
 
     /**
@@ -210,18 +219,5 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
      */
     private Integer getMaxMachineNum() {
         return Math.toIntExact(MAX_WORKER_SIZE);
-    }
-
-    /**
-     * 获取要分配的节点的带索引的路径
-     *
-     * @param workerId 节点索引
-     */
-    private String getNodePathWithIndex(final Integer workerId) {
-        return getNodePathWithPre() + workerId;
-    }
-
-    private String getNodePathWithPre() {
-        return ROOT_PATH + "/" + namespace + WORKER_NODE + "_";
     }
 }

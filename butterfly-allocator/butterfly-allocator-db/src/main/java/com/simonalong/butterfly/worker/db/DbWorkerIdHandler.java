@@ -7,13 +7,12 @@ import com.simonalong.butterfly.worker.db.entity.UuidGeneratorDO;
 import com.simonalong.neo.Neo;
 import com.simonalong.neo.NeoMap;
 import com.simonalong.neo.TableMap;
-import com.simonalong.neo.util.LocalDateTimeUtil;
+import com.simonalong.neo.util.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -21,7 +20,11 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.simonalong.butterfly.sequence.UuidConstant.*;
+import static com.simonalong.butterfly.sequence.UuidConstant.DISTRIBUTE_SERVER;
+import static com.simonalong.butterfly.sequence.UuidConstant.HEART_TIME;
+import static com.simonalong.butterfly.sequence.UuidConstant.MAX_WORKER_SIZE;
+import static com.simonalong.butterfly.sequence.UuidConstant.KEEP_NODE_EXIST_TIME;
+
 import static com.simonalong.butterfly.worker.db.DbConstant.DB_LOG_PRE;
 import static com.simonalong.butterfly.worker.db.DbConstant.UUID_TABLE;
 
@@ -74,7 +77,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
 
     @Override
     public Long getLastExpireTime() {
-        return LocalDateTimeUtil.timestampToLong(uuidGeneratorDO.getLastExpireTime());
+        return TimeUtils.timestampToLong(uuidGeneratorDO.getLastExpireTime());
     }
 
     @Override
@@ -93,7 +96,7 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
         uuidGeneratorDO.setId(id);
         uuidGeneratorDO.setWorkId(workerId);
         uuidGeneratorDO.setNamespace(namespace);
-        uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(afterHour()));
+        uuidGeneratorDO.setLastExpireTime(TimeUtils.longToTimestamp(afterHour()));
         uuidGeneratorDO.setUid(uidKey);
         uuidGeneratorDO.setProcessId(processId);
         uuidGeneratorDO.setIp(ip);
@@ -143,10 +146,10 @@ public class DbWorkerIdHandler implements WorkerIdHandler {
             long lastExpireTime = afterHour();
             UuidGeneratorDO newGenerate = new UuidGeneratorDO();
             newGenerate.setId(uuidGeneratorDO.getId());
-            newGenerate.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
+            newGenerate.setLastExpireTime(TimeUtils.longToTimestamp(lastExpireTime));
             newGenerate = neo.update(UUID_TABLE, newGenerate);
             if (null != newGenerate && null != newGenerate.getId()) {
-                uuidGeneratorDO.setLastExpireTime(LocalDateTimeUtil.longToTimestamp(lastExpireTime));
+                uuidGeneratorDO.setLastExpireTime(TimeUtils.longToTimestamp(lastExpireTime));
             }
         } catch (Throwable e) {
             log.error("刷新节点信息异常：", e);
