@@ -204,7 +204,7 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
         });
 
         if (!result) {
-            // 添加监听器，等待B
+            // 添加监听器，等待某个节点完成更新
             lockReleaseListener.listen((nodeContent)->{
                 // todo 待完成
                 if (nodeContent.equals("success")) {
