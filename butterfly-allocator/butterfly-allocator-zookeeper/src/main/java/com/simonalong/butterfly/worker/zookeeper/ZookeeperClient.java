@@ -10,11 +10,10 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.Watcher;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Phaser;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,6 +45,27 @@ public class ZookeeperClient {
      */
     private Runnable disconnectCallback;
     private Runnable connectSuccessCallback;
+    /**
+     * 节点内容变更回调器列表
+     */
+    private Map<String, List<ZookeeperNodeDataListener>> nodeContentChangeListenerMap = new HashMap<>();
+
+    /**
+     * zk节点内容变更回调器
+     */
+    public static class ZookeeperNodeDataListener {
+        private Consumer<String> consumer;
+
+        // 添加监听回调
+        public void listen(Consumer<String> consumer) {
+            this.consumer = consumer;
+        }
+
+        // 消息通知
+        public void notify(String nodeContent) {
+            consumer.accept(nodeContent);
+        }
+    }
 
     private ZookeeperClient() {
     }
@@ -100,6 +120,23 @@ public class ZookeeperClient {
     public ZookeeperClient registerConnectSuccessCallback(Runnable connectSuccessCallback) {
         this.connectSuccessCallback = connectSuccessCallback;
         return this;
+    }
+
+    /**
+     * 添加节点数据变更监听器
+     * @param nodePath 节点路径
+     */
+    public void addNodeDataChangeListener(String nodePath, ZookeeperNodeDataListener nodeDataListener) {
+        this.nodeContentChangeListenerMap.compute(nodePath, (key, value) -> {
+            if (null == value) {
+                List<ZookeeperNodeDataListener> listeners = new ArrayList<>();
+                listeners.add(nodeDataListener);
+                return listeners;
+            } else {
+                value.add(nodeDataListener);
+                return value;
+            }
+        });
     }
 
     /**
@@ -273,6 +310,14 @@ public class ZookeeperClient {
                     if (null != connectSuccessCallback) {
                         connectSuccessCallback.run();
                     }
+                } else if (Event.EventType.NodeDataChanged == type) {
+                    log.info(ZK_LOG_PRE + "node content change");
+                    List<ZookeeperNodeDataListener> pathContentListeners = nodeContentChangeListenerMap.get(event.getPath());
+                    if (null != pathContentListeners && !pathContentListeners.isEmpty()) {
+                        for (ZookeeperNodeDataListener pathContentListener : pathContentListeners) {
+                            pathContentListener.notify(readData(event.getPath()));
+                        }
+                    }
                 }
             } else if (Event.KeeperState.Disconnected == state) {
                 log.error(ZK_LOG_PRE + "disconnect to zookeeper server", new ButterflyException("disconnect to zookeeper server"));
@@ -396,6 +441,7 @@ public class ZookeeperClient {
         try {
             return callable.call();
         } catch (Throwable e) {
+            log.error(ZK_LOG_PRE + "distributeTryLock fail, path = "+lockPath, e);
             return false;
         } finally {
             if (nodeExist(lockPath)) {
@@ -404,18 +450,18 @@ public class ZookeeperClient {
         }
     }
 
-    public void distributeTryLock(String lockPath, Runnable runnable) {
-        if (!addPersistentNode(lockPath)) {
-            return;
-        }
-        try {
-            runnable.run();
-        } finally {
-            if (nodeExist(lockPath)) {
-                deleteNode(lockPath);
-            }
-        }
-    }
+//    public void distributeTryLock(String lockPath, Runnable runnable) {
+//        if (!addPersistentNode(lockPath)) {
+//            return;
+//        }
+//        try {
+//            runnable.run();
+//        } finally {
+//            if (nodeExist(lockPath)) {
+//                deleteNode(lockPath);
+//            }
+//        }
+//    }
 
     /**
      * 给这个节点中创建临时节点

@@ -7,6 +7,8 @@ import com.simonalong.butterfly.worker.zookeeper.entity.SessionNodeEntity;
 import com.simonalong.butterfly.worker.zookeeper.entity.WorkerNodeEntity;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.function.Consumer;
+
 import static com.simonalong.butterfly.sequence.UuidConstant.MAX_WORKER_SIZE;
 import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.SESSION_NODE;
 import static com.simonalong.butterfly.worker.zookeeper.ZkConstant.ZK_LOG_PRE;
@@ -171,28 +173,72 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
             throw new ButterflyException("当前最大值" + maxMachineNum + "已到机器最大值");
         }
 
-        zkClient.distributeTryLock(ZkNodeHelper.getBizExpandLock(namespace), () -> {
+        // 如果有可用节点则返回
+        if (findNode(workerId)) {
+            return;
+        }
+
+
+        ZookeeperClient.ZookeeperNodeDataListener lockReleaseListener = new ZookeeperClient.ZookeeperNodeDataListener();
+
+        // 添加监听器：锁节点的监听器，用于在扩容完成时候，其他集群节点能够接收到通知
+        zkClient.addNodeDataChangeListener(ZkNodeHelper.getBizExpandLock(namespace), lockReleaseListener);
+
+        Boolean result = zkClient.distributeTryLock(ZkNodeHelper.getBizExpandLock(namespace), () -> {
+            // 如果有可用节点则返回
+            if (findNode(workerId)) {
+                return true;
+            }
+
             // 扩容
             if (innerExpand(maxMachineNum)) {
                 log.info(ZK_LOG_PRE + " expand success, ready to find one node to create session");
                 // 扩容成功，重新分配节点
                 findNode(maxMachineNum);
+
+                // todo 更新session节点数据中的锁内容为"release"
+
+                return true;
             }
+            return false;
         });
+
+        if (!result) {
+            // 添加监听器，等待B
+            lockReleaseListener.listen((nodeContent)->{
+                // todo 待完成
+                if (nodeContent.equals("success")) {
+                    if (findNode(workerId)) {
+                        // todo
+//                        return true;
+                    }
+                    // 没有找到可用worker节点，则扩充worker节点
+                    expandWorker();
+                    //
+                    log.error("find error. expand node is error！！！！！");
+//                    return false;
+                }
+            });
+        }
     }
 
     private Boolean innerExpand(Integer maxMachineNum) {
-        for (int index = maxMachineNum; index < maxMachineNum * 2; index++) {
-            // 添加永久节点
-            if (!zkClient.addPersistentNode(ZkNodeHelper.getWorkerPath(namespace, index))){
-                log.warn(ZK_LOG_PRE + "add persistent node error");
+        try {
+            for (int index = maxMachineNum; index < maxMachineNum * 2; index++) {
+                // 添加永久节点
+                if (!zkClient.addPersistentNode(ZkNodeHelper.getWorkerPath(namespace, index))){
+                    log.warn(ZK_LOG_PRE + "add persistent node error");
+                }
             }
+
+            log.debug(ZK_LOG_PRE + " maxMachineNum * 2 have created finished");
+
+            configNodeHandler.updateCurrentMaxMachineNum(maxMachineNum * 2);
+            return true;
+        } catch (Throwable e) {
+            log.debug(ZK_LOG_PRE + " inner expand error，", e);
+            return false;
         }
-
-        log.debug(ZK_LOG_PRE + " maxMachineNum * 2 have created finished");
-
-        configNodeHandler.updateCurrentMaxMachineNum(maxMachineNum * 2);
-        return true;
     }
 
     private void setWorkerId(Integer workerId) {
