@@ -165,7 +165,10 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
     /**
      * 扩展机器的个数
      * <p>
-     * 如果节点不存在，则创建worker节点并添加session节点，如果节点存在，看下是否能够添加到数据中（这个时候认为已经有其他进程也参与了扩容）
+     * 如果节点不存在，则创建worker节点并添加session节点，如果节点存在，看下是否能够添加到数据中（这个时候认为已经有其他进程也参与了扩容），一旦多进程参加扩容，则加锁失败，只有一个进程会加锁成功，其他进程添加config节点监听器；
+     * 在加锁成功的进程执行完扩容后，修改config节点信息，其他扩容加锁失败的节点继续执行可用节点
+     * <p>
+     *
      */
     private void expandWorker() {
         Integer maxMachineNum = configNodeHandler.getCurrentMaxMachineNum();
@@ -228,7 +231,7 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
                                 return;
                             }
 
-                            // 没有找到可用worker节点，
+                            // 没有找到可用worker节点，这种情况较少，一般扩容都是很大，这种情况业务方面重启一下就好了
                             throw new ZookeeperClient.ExpandNodeException("expand fail");
                         } else {
                             // 如果不是end，则继续监听
