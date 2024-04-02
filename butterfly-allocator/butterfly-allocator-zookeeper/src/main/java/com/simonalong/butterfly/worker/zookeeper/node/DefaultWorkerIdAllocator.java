@@ -212,6 +212,7 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
                 }
             } else {
                 CountDownLatch downLatch = new CountDownLatch(1);
+                log.warn(ZK_LOG_PRE + " expand lock fail, wait for other node update ");
                 lockReleaseListener.listen((configNodeData)->{
                     if (null == configNodeData) {
                         return;
@@ -246,7 +247,7 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
     }
 
     private Boolean innerExpand(Integer maxMachineNum) {
-        configNodeHandler.updateCurrentMaxMachineNumAndExpandStatus(maxMachineNum * 2, ZkConstant.EXPAND_STATUS_START);
+        configNodeHandler.updateCurrentMaxMachineNum(maxMachineNum * 2);
         try {
             for (int index = maxMachineNum; index < maxMachineNum * 2; index++) {
                 // 添加永久节点
