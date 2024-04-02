@@ -437,67 +437,6 @@ public class ZookeeperClient {
             deleteNode(lockPath);
         }
     }
-//
-//    public void distributeLockAndRun(String lockPath, Runnable lockSuccessRunnable, Runnable lockFailRunnable) {
-//        // 添加永久节点
-//        if (!addPersistentNode(lockPath)) {
-//            lockFailRunnable.run();
-//            return;
-//        }
-//
-//        try {
-//            lockSuccessRunnable.run();
-//        } catch (Throwable e) {
-//            log.error(ZK_LOG_PRE + "distributeTryLock fail, path = "+lockPath, e);
-//        } finally {
-//            if (nodeExist(lockPath)) {
-//                deleteNode(lockPath);
-//            }
-//        }
-//    }
-//
-//    /**
-//     * 分布式锁，尝试加锁
-//     * <ul>
-//     *     <li>说明：修改为添加永久节点；临时节点存在时间配置不准确问题，进而导致正好业务没执行完就失效了，这里不排队，不做通用分布式锁，因此这里改用永久节点，在业务的正常运行中任何异常情况可以执行完删除；如果是业务异常退出情况，则手动删除也不错</li>
-//     * </ul>
-//     *
-//     * @param lockPath 锁路径
-//     * @param callable 加锁成功后的处理
-//     *
-//     * @return true：成功加锁并成功运行；false：可能加锁失败也可能没有运行也可能运行失败
-//     */
-//    public Boolean distributeLockAndRun(String lockPath, Callable<Boolean> callable, Runnable lockFailRunnable) {
-//        // 添加永久节点
-//        if (!addPersistentNode(lockPath)) {
-//            lockFailRunnable.run();
-//            return false;
-//        }
-//
-//        try {
-//            return callable.call();
-//        } catch (Throwable e) {
-//            log.error(ZK_LOG_PRE + "distributeTryLock fail, path = "+lockPath, e);
-//            return false;
-//        } finally {
-//            if (nodeExist(lockPath)) {
-//                deleteNode(lockPath);
-//            }
-//        }
-//    }
-
-//    public void distributeTryLock(String lockPath, Runnable runnable) {
-//        if (!addPersistentNode(lockPath)) {
-//            return;
-//        }
-//        try {
-//            runnable.run();
-//        } finally {
-//            if (nodeExist(lockPath)) {
-//                deleteNode(lockPath);
-//            }
-//        }
-//    }
 
     /**
      * 给这个节点中创建临时节点
