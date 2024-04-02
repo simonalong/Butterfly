@@ -17,7 +17,21 @@ public interface ConfigNodeHandler {
     /**
      * 更新当前最大的机器个数
      *
-     * @param value 待更新的值
+     * @param maxMachine 待更新的最大机器值
      */
-    void updateCurrentMaxMachineNum(int value);
+    void updateCurrentMaxMachineNum(int maxMachine);
+
+    /**
+     * 更新当前最大的机器个数和更新扩展动作的状态
+     *
+     * @param maxMachine 待更新的最大机器值和扩容动作的状态
+     */
+    void updateCurrentMaxMachineNumAndExpandStatus(int maxMachine, String expandStatus);
+
+    /**
+     * 更新扩展动作的状态
+     *
+     * @param expandStatus 扩容动作的状态
+     */
+    void updateExpandStatus(String expandStatus);
 }

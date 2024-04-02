@@ -29,4 +29,8 @@ public class ConfigNodeEntity implements Serializable {
      * 自增序列占用的bit个数
      */
     private Integer sequenceBits;
+    /**
+     * 扩容状态：start，end
+     */
+    private String expandStatus;
 }

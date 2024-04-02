@@ -36,7 +36,30 @@ public class DefaultConfigNodeHandler implements ConfigNodeHandler {
     public void updateCurrentMaxMachineNum(int maxMachine) {
         configNodeEntity.setCurrentMaxMachine(maxMachine);
         try {
-            zookeeperClient.writeNodeData(ZkNodeHelper.getConfigPath(namespace), JSON.toJSONString(configNodeEntity.setCurrentMaxMachine(maxMachine)));
+            zookeeperClient.writeNodeData(ZkNodeHelper.getConfigPath(namespace), JSON.toJSONString(configNodeEntity));
+        } catch (Throwable e) {
+            log.error(ZK_LOG_PRE + "update workerId fail");
+            throw new ButterflyException("update workerId fail");
+        }
+    }
+
+    @Override
+    public void updateCurrentMaxMachineNumAndExpandStatus(int maxMachine, String expandStatus){
+        configNodeEntity.setCurrentMaxMachine(maxMachine);
+        configNodeEntity.setExpandStatus(expandStatus);
+        try {
+            zookeeperClient.writeNodeData(ZkNodeHelper.getConfigPath(namespace), JSON.toJSONString(configNodeEntity));
+        } catch (Throwable e) {
+            log.error(ZK_LOG_PRE + "update workerId fail");
+            throw new ButterflyException("update workerId fail");
+        }
+    }
+
+    @Override
+    public void updateExpandStatus(String expandStatus) {
+        configNodeEntity.setExpandStatus(expandStatus);
+        try {
+            zookeeperClient.writeNodeData(ZkNodeHelper.getConfigPath(namespace), JSON.toJSONString(configNodeEntity));
         } catch (Throwable e) {
             log.error(ZK_LOG_PRE + "update workerId fail");
             throw new ButterflyException("update workerId fail");

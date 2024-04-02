@@ -36,4 +36,13 @@ public interface ZkConstant {
      * session创建时候的锁
      */
     String SESSION_CREATE_LOCK = "/session_lock";
+
+    /**
+     * 扩展状态：开始
+     */
+    String EXPAND_STATUS_START = "start";
+    /**
+     * 扩展状态：结束
+     */
+    String EXPAND_STATUS_END = "end";
 }
