@@ -72,6 +72,22 @@ public class BaseTest {
         showId("test4", generator);
     }
 
+    /**
+     * 单次测试
+     */
+    public void baseSingleRun() {
+        ButterflyIdGenerator generator = ButterflyIdGenerator.getInstance(config);
+
+        // 设置起始时间，如果不设置，则默认从2020年2月22日开始
+        generator.setStartTime(2023, 5, 1, 0, 0, 0);
+
+        generator.addNamespaces("single");
+
+        // 测试test1
+        showId("single", generator);
+        showId("single", generator);
+    }
+
     private void showId(String namespace, ButterflyIdGenerator generator) {
         show("命名空间：" + namespace + "：" + ButterflyIdGenerator.parseUid(generator.getUUid(namespace)));
     }

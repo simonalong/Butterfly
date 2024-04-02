@@ -19,6 +19,14 @@ public class ZkPressIdGeneratorTest extends BaseTest {
     }
 
     /**
+     * 单次测试
+     */
+    @Test
+    public void singleTest() {
+        baseSingleRun();
+    }
+
+    /**
      * 基本测试
      */
     @Test

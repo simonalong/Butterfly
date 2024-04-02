@@ -101,6 +101,8 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
             }
         }
 
+        log.warn(ZK_LOG_PRE + "find worker_{} fail, ready to find worker_{}", index, index+1);
+
         // 如果转了一圈都没有找到，则考虑扩容
         Integer nextIndex = getWorkId(index + 1);
         if (nextIndex.equals(this.workerId)) {
@@ -166,7 +168,6 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
      * 如果节点不存在，则创建worker节点并添加session节点，如果节点存在，看下是否能够添加到数据中（这个时候认为已经有其他进程也参与了扩容）
      */
     private void expandWorker() {
-        // 当前最大的机器个数
         Integer maxMachineNum = configNodeHandler.getCurrentMaxMachineNum();
         log.info(ZK_LOG_PRE + " ready to expand, biz=" + namespace + ", maxMachineNum=" + maxMachineNum);
 
@@ -180,7 +181,7 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
             return;
         }
 
-        // 添加监听器：锁节点的监听器，用于在扩容完成时候，其他集群节点能够接收到通知
+        // 添加监听器：用于在扩容完成时候，其他集群节点能够接收到通知
         ZookeeperClient.ZookeeperNodeDataListener lockReleaseListener = new ZookeeperClient.ZookeeperNodeDataListener();
         zkClient.addNodeDataChangeListener(ZkNodeHelper.getConfigPath(namespace), lockReleaseListener);
 
@@ -204,14 +205,13 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
                         return;
                     }
                     log.error("findNode fail, maxMachineNum=" + maxMachineNum);
-                    throw new RuntimeException("findNode fail, maxMachineNum=" + maxMachineNum);
+                    throw new ZookeeperClient.ExpandNodeException("findNode fail, maxMachineNum=" + maxMachineNum);
                 } else {
                     log.error("expand fail, path=" + lockPath);
-                    throw new RuntimeException("expand fail, path=" + lockPath);
+                    throw new ZookeeperClient.ExpandNodeException("expand fail, path=" + lockPath);
                 }
             } else {
                 CountDownLatch downLatch = new CountDownLatch(1);
-                // 添加监听器，等待某个节点完成更新
                 lockReleaseListener.listen((configNodeData)->{
                     if (null == configNodeData) {
                         return;
@@ -219,14 +219,20 @@ public class DefaultWorkerIdAllocator implements WorkerIdAllocator {
 
                     log.info(ZK_LOG_PRE + "receive expand success signal. ready to find session");
                     ConfigNodeEntity configNodeEntity = JSON.parseObject(configNodeData, ConfigNodeEntity.class);
-                    if (null != configNodeEntity && configNodeEntity.getExpandStatus().equals(ZkConstant.EXPAND_STATUS_END)) {
-                        if (findNode(maxMachineNum)) {
-                            downLatch.countDown();
-                            return;
+                    if (null != configNodeEntity){
+                        String expandStatus = configNodeEntity.getExpandStatus();
+                        if (null != expandStatus && expandStatus.equals(ZkConstant.EXPAND_STATUS_END)) {
+                            if (findNode(maxMachineNum)) {
+                                downLatch.countDown();
+                                return;
+                            }
+
+                            // 没有找到可用worker节点，
+                            throw new ZookeeperClient.ExpandNodeException("expand fail");
+                        } else {
+                            // 如果不是end，则继续监听
+                            zkClient.setNodeWatch(ZkNodeHelper.getConfigPath(namespace));
                         }
-                        // 没有找到可用worker节点，则扩充worker节点
-                        expandWorker();
-                        downLatch.countDown();
                     }
                 });
 
